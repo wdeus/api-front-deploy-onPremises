@@ -37,14 +37,12 @@
     }
 
     .logo-img{
-      width: 35px;
-      height: 35px;
+      width: 100%;
+      height: unset;
       display: block;
       margin-left: 2px;
-      position: absolute;
-      top: 12px;
         img{
-            width: 35px;
+            width: 100%;
         }
     }
 
