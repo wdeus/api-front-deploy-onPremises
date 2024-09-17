@@ -11,7 +11,7 @@
   </div>
   <div class="card-body">
     <div class="chart-area">
-      <canvas baseChart id="lineChartExample" [datasets]="lineChartData" [labels]="lineChartLabels"
+      <canvas baseChart [id]="chartId" [datasets]="lineChartData" [labels]="lineChartLabels"
         [colors]="lineChartColors" [options]="lineChartOptions" [chartType]="lineChartType"></canvas>
     </div>
   </div>
