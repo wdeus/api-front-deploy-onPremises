@@ -1,8 +1,7 @@
 <div class="card card-chart">
   <div class="card-header">
-    <h5 class="card-category">Global Sales</h5>
-    <h4 class="card-title">Shipped Products</h4>
-    <div>
+    <div class="d-flex justify-content-between">
+      <h5 class="card-title">{{description}}</h5>
       <button type="button" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
         ngbDropdownToggle>
         <i class="now-ui-icons loader_gear"></i>
@@ -11,8 +10,8 @@
   </div>
   <div class="card-body">
     <div class="chart-area">
-      <canvas baseChart [id]="chartId" [datasets]="lineChartData" [labels]="lineChartLabels"
-        [colors]="lineChartColors" [options]="lineChartOptions" [chartType]="lineChartType"></canvas>
+      <canvas baseChart [id]="chartId" [datasets]="lineChartData" [labels]="lineChartLabels" [colors]="lineChartColors"
+        [options]="lineChartOptions" [chartType]="lineChartType"></canvas>
     </div>
   </div>
   <div class="card-footer">

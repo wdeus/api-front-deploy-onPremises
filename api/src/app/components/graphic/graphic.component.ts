@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-graphic',
@@ -15,6 +15,7 @@ export class GraphicComponent implements AfterViewInit {
   public gradientChartOptionsConfigurationWithNumbersAndGrid: any;
 
   @Input() public chartId: string = '';
+  @Input() public description: string = '';
   @Input() public lineChartType: string = 'line';
   @Input() public lineChartData: Array<any>;
   @Input() public lineChartOptions: any;
