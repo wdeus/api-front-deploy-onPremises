@@ -9,6 +9,7 @@ import { TypographyComponent } from '../../typography/typography.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { ChartsModule } from 'ng2-charts';
 import { GraphicComponent } from '../../components/graphic/graphic.component';
+import { CardDataComponent } from '../../components/card-data/card-data.component';
 
 @NgModule({
   imports: [
@@ -16,14 +17,15 @@ import { GraphicComponent } from '../../components/graphic/graphic.component';
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ChartsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     DashboardComponent,
     TableListComponent,
     TypographyComponent,
     IconsComponent,
-    GraphicComponent
+    GraphicComponent,
+    CardDataComponent
   ],
 })
 

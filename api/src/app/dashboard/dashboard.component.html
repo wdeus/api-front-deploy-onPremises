@@ -6,16 +6,24 @@
 
 <div class="main-content">
   <div class="row">
+    <div class="col-lg-4">
+      <!--<app-card-data></app-card-data>-->
+    </div>
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4">
+    </div>
   </div>
   <div class="row">
     <div class="col-lg-6">
       <app-graphic *ngIf="!isLoading" chartId="lineChart" lineChartType="line" [lineChartData]="lineChartData"
-        [lineChartOptions]="lineChartOptions" [lineChartColors]="lineChartColors"
+        [lineChartOptions]="lineChartOptions" [lineChartColors]="lineChartColors" [idx]="1"
         [lineChartLabels]="lineChartLabels"></app-graphic>
     </div>
     <div class="col-lg-6 col-md-6">
-      <app-graphic *ngIf="!isLoading" chartId="lineChartWithNumbersAndGridData " lineChartType="line" [lineChartData]="lineChartWithNumbersAndGridData"
-        [lineChartOptions]="lineChartWithNumbersAndGridOptions" [lineChartColors]="lineChartWithNumbersAndGridColors"
+      <app-graphic *ngIf="!isLoading" chartId="lineChartWithNumbersAndGridData " lineChartType="line"
+        [lineChartData]="lineChartWithNumbersAndGridData" [lineChartOptions]="lineChartWithNumbersAndGridOptions"
+        [lineChartColors]="lineChartWithNumbersAndGridColors" [idx]="2"
         [lineChartLabels]="lineBigDashboardChartLabels"></app-graphic>
     </div>
   </div>
