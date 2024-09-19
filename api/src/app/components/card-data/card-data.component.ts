@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-card-data',
@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card-data.component.scss']
 })
 export class CardDataComponent implements OnInit {
+  @Input() description: string;
+  @Input() value: number;
+  @Input() filters: string;
+  @Input() color: string = "black";
 
   constructor() { }
 

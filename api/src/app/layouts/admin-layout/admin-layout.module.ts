@@ -29,4 +29,4 @@ import { CardDataComponent } from '../../components/card-data/card-data.componen
   ],
 })
 
-export class AdminLayoutModule {}
+export class AdminLayoutModule { }
