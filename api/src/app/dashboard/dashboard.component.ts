@@ -33,9 +33,12 @@ export class DashboardComponent implements OnInit {
     public lineChartWithNumbersAndGridLabels: Array<any>;
     public lineChartWithNumbersAndGridColors: Array<any>
 
+    isLoading: boolean = true;
+
     constructor() { }
 
     ngOnInit() {
+        this.isLoading = true;
         this.chartColor = "#FFFFFF";
         this.canvas = document.getElementById("bigDashboardChart");
         this.ctx = this.canvas.getContext("2d");
@@ -234,17 +237,6 @@ export class DashboardComponent implements OnInit {
             }
         };
 
-        this.canvas = document.getElementById("lineChartExample");
-        this.ctx = this.canvas.getContext("2d");
-
-        this.gradientStroke = this.ctx.createLinearGradient(500, 0, 100, 0);
-        this.gradientStroke.addColorStop(0, '#80b6f4');
-        this.gradientStroke.addColorStop(1, this.chartColor);
-
-        this.gradientFill = this.ctx.createLinearGradient(0, 170, 0, 50);
-        this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        this.gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
-
         this.lineChartData = [
             {
                 label: "Active Users",
@@ -270,17 +262,6 @@ export class DashboardComponent implements OnInit {
 
         this.lineChartType = 'line';
 
-        this.canvas = document.getElementById("lineChartExampleWithNumbersAndGrid");
-        this.ctx = this.canvas.getContext("2d");
-
-        this.gradientStroke = this.ctx.createLinearGradient(500, 0, 100, 0);
-        this.gradientStroke.addColorStop(0, '#18ce0f');
-        this.gradientStroke.addColorStop(1, this.chartColor);
-
-        this.gradientFill = this.ctx.createLinearGradient(0, 170, 0, 50);
-        this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        this.gradientFill.addColorStop(1, this.hexToRGB('#18ce0f', 0.4));
-
         this.lineChartWithNumbersAndGridData = [
             {
                 label: "Email Stats",
@@ -304,30 +285,7 @@ export class DashboardComponent implements OnInit {
         this.lineChartWithNumbersAndGridLabels = ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"];
         this.lineChartWithNumbersAndGridOptions = this.gradientChartOptionsConfigurationWithNumbersAndGrid;
 
-        this.lineChartWithNumbersAndGridType = 'line';
 
-
-
-
-        this.canvas = document.getElementById("barChartSimpleGradientsNumbers");
-        this.ctx = this.canvas.getContext("2d");
-
-        this.gradientFill = this.ctx.createLinearGradient(0, 170, 0, 50);
-        this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-        this.gradientFill.addColorStop(1, this.hexToRGB('#2CA8FF', 0.6));
-
+        this.isLoading = false;
     }
-
-    public hexToRGB(hex, alpha) {
-        var r = parseInt(hex.slice(1, 3), 16),
-            g = parseInt(hex.slice(3, 5), 16),
-            b = parseInt(hex.slice(5, 7), 16);
-
-        if (alpha) {
-            return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-        } else {
-            return "rgb(" + r + ", " + g + ", " + b + ")";
-        }
-    }
-
 }
