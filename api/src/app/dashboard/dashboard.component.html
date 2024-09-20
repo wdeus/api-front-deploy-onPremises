@@ -6,14 +6,8 @@
 
 <div class="main-content">
   <div class="row">
-    <div class="col-lg-4">
-      <app-card-data filters="filtro foda 1" [description]="'CARD'" [value]="100"></app-card-data>
-    </div>
-    <div class="col-lg-4">
-      <app-card-data filters="filtro foda 1" [description]="'CARD'" [value]="100"></app-card-data>
-    </div>
-    <div class="col-lg-4">
-      <app-card-data filters="filtro foda 1" [description]="'CARD'" [value]="100"></app-card-data>
+    <div class="col-lg-4" *ngFor="let card of cardData">
+      <app-card-data filters="filtro foda 1" [description]="cardData.request.description" [value]="card.value"></app-card-data>
     </div>
   </div>
   <div class="row">
