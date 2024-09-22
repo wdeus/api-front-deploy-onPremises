@@ -3,6 +3,7 @@ import { forkJoin } from 'rxjs';
 import { DashboardRequest } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
 import { DashboardService } from '../services/dashboard.service';
+import { CardData, DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +24,6 @@ export class DashboardComponent implements OnInit {
   isLoading: boolean = true;
 
   cardData: { request: DashboardRequest, value: number }[] = []
-
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
@@ -122,22 +122,52 @@ export class DashboardComponent implements OnInit {
   }
 
   createCardRequest(idx: number): DashboardRequest {
+    if (idx == 1) {
+      return {
+        'description': 'Vagas em aberto',
+        'eixoX': {
+          'nome': 'fato_vaga',
+          'campo': 'nr_posicoes_abertas'
+        },
+        'filtros': []
+      }
+    }
+
+    if (idx == 2) {
+      const now = new Date();
+      now.setDate(now.getDate() - 7)
+      return {
+        'description': 'Entrevistas marcadas',
+        'eixoX': {
+          'nome': 'fato_entrevista',
+          'campo': 'nr_entrevistas'
+        },
+        'filtros': [
+          {
+            'nome': 'dim_entrevista',
+            'campo': 'dt_entrevista',
+            'valor': now.toISOString().split('T')[0],
+            'comparador': '>='
+          }
+        ]
+      }
+    }
+
     return {
-      'description': 'Candidatos Inscritos',
+      'description': 'Feedbacks positivos',
       'eixoX': {
-        'nome': 'fato_vaga',
-        'campo': 'nr_candidatos_inscritos'
+        'nome': 'fato_entrevista',
+        'campo': 'nr_entrevistas'
       },
       'filtros': [
         {
-          "nome": "dim_vaga",
-          "campo": "titulo",
+          "nome": "dim_feedback",
+          "campo": "id_dim_feedback",
           "comparador": "=",
-          "valor": "Desenvolvedor Java"
+          "valor": "1"
         }
       ]
     }
-
   }
 
   createGraphicRequest(idx: number): DashboardRequest {
@@ -223,9 +253,9 @@ export class DashboardComponent implements OnInit {
       graphicThree: this.dashboardService.getGraphicData(requestGraphicThree),
     })
       .subscribe(response => {
-        this.cardData.push({ value: response.cardOne[0], request: requestCardOne });
-        this.cardData.push({ value: response.cardTwo[0], request: requestCardOne });
-        this.cardData.push({ value: response.cardThree[0], request: requestCardOne });
+        this.cardData.push({ value: response.cardOne.reduce((a, b) => a + b, 0), request: requestCardOne });
+        this.cardData.push({ value: response.cardTwo.reduce((a, b) => a + b, 0), request: requestCardTwo });
+        this.cardData.push({ value: response.cardThree.reduce((a, b) => a + b, 0), request: requestCardThree });
 
         let data = response.graphicTwo.map(x => x[0]);
         let labels = response.graphicTwo.map(x => x[1])
