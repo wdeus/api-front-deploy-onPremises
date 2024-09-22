@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "now-ui-dashboard-angular": {
+    "api": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -61,14 +61,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "now-ui-dashboard-angular:build"
+            "browserTarget": "api:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "now-ui-dashboard-angular:build:production"
+              "browserTarget": "api:build:production"
             },
             "development": {
-              "browserTarget": "now-ui-dashboard-angular:build:development"
+              "browserTarget": "api:build:development"
             },
             "defaultConfiguration": "development"
           }
@@ -121,7 +121,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "now-ui-dashboard-angular:serve"
+            "devServerTarget": "api:serve"
           }
         },
         "lint": {
@@ -136,14 +136,10 @@
       }
     }
   },
-  "defaultProject": "now-ui-dashboard-angular",
+  "defaultProject": "api",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
+      "style": "scss"
     }
   },
   "cli": {
