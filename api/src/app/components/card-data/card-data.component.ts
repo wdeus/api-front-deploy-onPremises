@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DashboardFilter } from '../../models/dashboard-request.model';
 
 @Component({
   selector: 'app-card-data',
@@ -8,12 +9,11 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CardDataComponent implements OnInit {
   @Input() description: string;
   @Input() value: number;
-  @Input() filters: string;
+  @Input() filters: DashboardFilter[];
   @Input() color: string = "black";
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

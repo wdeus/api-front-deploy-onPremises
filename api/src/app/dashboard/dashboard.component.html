@@ -4,20 +4,21 @@
     [chartType]="lineBigDashboardChartType"></canvas>
 </div>
 
-<div class="main-content">
+<div class="main-content" *ngIf="!isLoading">
   <div class="row">
     <div class="col-lg-4" *ngFor="let card of cardData">
-      <app-card-data filters="filtro foda 1" [description]="cardData.request.description" [value]="card.value"></app-card-data>
+      <app-card-data [filters]="card.request.filtros" [description]="card.request.description"
+        [value]="card.value"></app-card-data>
     </div>
   </div>
   <div class="row">
     <div class="col-lg-6">
-      <app-graphic *ngIf="!isLoading" chartId="lineChart" lineChartType="line" [lineChartData]="lineChartData"
+      <app-graphic chartId="lineChart" lineChartType="line" [lineChartData]="lineChartData"
         [lineChartOptions]="lineChartOptions" [lineChartColors]="lineChartColors" [idx]="1"
         [lineChartLabels]="lineChartLabels"></app-graphic>
     </div>
     <div class="col-lg-6 col-md-6">
-      <app-graphic *ngIf="!isLoading" chartId="lineChartWithNumbersAndGridData " lineChartType="line"
+      <app-graphic chartId="lineChartWithNumbersAndGridData " lineChartType="line"
         [lineChartData]="lineChartWithNumbersAndGridData" [lineChartOptions]="lineChartWithNumbersAndGridOptions"
         [lineChartColors]="lineChartWithNumbersAndGridColors" [idx]="2"
         [lineChartLabels]="lineBigDashboardChartLabels"></app-graphic>
