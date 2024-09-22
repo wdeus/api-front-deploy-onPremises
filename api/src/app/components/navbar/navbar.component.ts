@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  private listTitles: any[];
+  listTitles: any[];
   location: Location;
   mobile_menu_visible: any = 0;
-  private toggleButton: any;
-  private sidebarVisible: boolean;
+  toggleButton: any;
+  sidebarVisible: boolean;
 
   public isCollapsed = true;
 
@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
   collapse() {
     this.isCollapsed = !this.isCollapsed;
     const navbar = document.getElementsByTagName('nav')[0];
-    console.log(navbar);
+
     if (!this.isCollapsed) {
       navbar.classList.remove('navbar-transparent');
       navbar.classList.add('bg-white');
@@ -58,7 +58,7 @@ export class NavbarComponent implements OnInit {
       mainPanel.style.position = 'fixed';
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
       toggleButton.classList.add('toggled');
     }, 500);
 
@@ -66,19 +66,21 @@ export class NavbarComponent implements OnInit {
 
     this.sidebarVisible = true;
   };
+
   sidebarClose() {
     const html = document.getElementsByTagName('html')[0];
     this.toggleButton.classList.remove('toggled');
     const mainPanel = <HTMLElement>document.getElementsByClassName('main-panel')[0];
 
     if (window.innerWidth < 991) {
-      setTimeout(function() {
+      setTimeout(function () {
         mainPanel.style.position = '';
       }, 500);
     }
     this.sidebarVisible = false;
     html.classList.remove('nav-open');
   };
+
   sidebarToggle() {
     // const toggleButton = this.toggleButton;
     // const html = document.getElementsByTagName('html')[0];
@@ -97,13 +99,13 @@ export class NavbarComponent implements OnInit {
       if ($layer) {
         $layer.remove();
       }
-      setTimeout(function() {
+      setTimeout(function () {
         $toggle.classList.remove('toggled');
       }, 400);
 
       this.mobile_menu_visible = 0;
     } else {
-      setTimeout(function() {
+      setTimeout(function () {
         $toggle.classList.add('toggled');
       }, 430);
 
@@ -117,15 +119,15 @@ export class NavbarComponent implements OnInit {
         document.getElementsByClassName('wrapper-full-page')[0].appendChild($layer);
       }
 
-      setTimeout(function() {
+      setTimeout(function () {
         $layer.classList.add('visible');
       }, 100);
 
-      $layer.onclick = function() { //asign a function
+      $layer.onclick = function () { //asign a function
         html.classList.remove('nav-open');
         this.mobile_menu_visible = 0;
         $layer.classList.remove('visible');
-        setTimeout(function() {
+        setTimeout(function () {
           $layer.remove();
           $toggle.classList.remove('toggled');
         }, 400);
