@@ -1,4 +1,4 @@
-<div class="panel-header panel-header-lg">
+<div class="panel-header panel-header-lg" *ngIf="!isLoading">
   <canvas baseChart id="mainChart" [datasets]="graphicOneParameter.data" [labels]="graphicOneParameter.labels"
     [colors]="graphicOneParameter.colors" [options]="options"
     [chartType]="graphicOneParameter.type"></canvas>
