@@ -3,7 +3,7 @@ import { forkJoin } from 'rxjs';
 import { DashboardRequest } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
 import { DashboardService } from '../services/dashboard.service';
-import { CardData, DashboardService } from '../services/dashboard.service';
+import { CardData } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
