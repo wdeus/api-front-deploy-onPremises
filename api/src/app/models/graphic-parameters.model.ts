@@ -1,7 +1,7 @@
 export interface GraphicParameters {
   type: string,
-  data: [],
+  data: any[],
   options: any,
   labels: string[],
-  colors: []
+  colors: any[]
 }

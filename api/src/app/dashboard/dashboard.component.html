@@ -13,15 +13,15 @@
   </div>
   <div class="row">
     <div class="col-lg-6">
-      <app-graphic chartId="lineChart" lineChartType="line" [lineChartData]="lineChartData"
-        [lineChartOptions]="lineChartOptions" [lineChartColors]="lineChartColors" [idx]="1"
-        [lineChartLabels]="lineChartLabels"></app-graphic>
+      <app-graphic chartId="chartOne" [lineChartType]="graphicTwoParameter.type" [lineChartData]="graphicTwoParameter.data"
+        [lineChartOptions]="graphicTwoParameter.options" [lineChartColors]="graphicTwoParameter.colors" [idx]="1"
+        [lineChartLabels]="graphicTwoParameter.labels"></app-graphic>
     </div>
     <div class="col-lg-6 col-md-6">
-      <app-graphic chartId="lineChartWithNumbersAndGridData " lineChartType="line"
-        [lineChartData]="lineChartWithNumbersAndGridData" [lineChartOptions]="lineChartWithNumbersAndGridOptions"
-        [lineChartColors]="lineChartWithNumbersAndGridColors" [idx]="2"
-        [lineChartLabels]="lineBigDashboardChartLabels"></app-graphic>
+      <app-graphic chartId="chartTwo" [lineChartType]="graphicThreeParameter.type"
+        [lineChartData]="graphicThreeParameter.data" [lineChartOptions]="graphicThreeParameter.options"
+        [lineChartColors]="graphicThreeParameter.colors" [idx]="2"
+        [lineChartLabels]="graphicThreeParameter.labels"></app-graphic>
     </div>
   </div>
 </div>

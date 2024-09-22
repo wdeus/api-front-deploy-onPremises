@@ -23,36 +23,81 @@ export class DashboardComponent implements OnInit {
   public lineBigDashboardChartColors: Array<any>
   public lineBigDashboardChartType: string;
 
-  public lineChartType: string;
-  public lineChartData: Array<any>;
-  public lineChartOptions: any;
-  public lineChartLabels: Array<any>;
-  public lineChartColors: Array<any>
-
-  public lineChartWithNumbersAndGridType: string;
-  public lineChartWithNumbersAndGridData: Array<any>;
-  public lineChartWithNumbersAndGridOptions: any;
-  public lineChartWithNumbersAndGridLabels: Array<any>;
-  public lineChartWithNumbersAndGridColors: Array<any>
+  private graphicTwoParameter?: GraphicParameters;
+  private graphicThreeParameter?: GraphicParameters;
 
   isLoading: boolean = true;
 
   cardData: { request: DashboardRequest, value: number }[] = []
-  graphicData: {
-    graphicParameters: GraphicParameters,
-    request: DashboardRequest
-  }[] = []
 
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
     this.isLoading = true;
     this.chartColor = "#FFFFFF";
-
-    this.createCards();
+    this.createConfigurations();
 
     this.createBigGraph();
+    this.loadData();
+  }
 
+  createGraphicThree(title: string, labels: string[], data: number[]) {
+    this.graphicThreeParameter = {
+      labels: labels,
+      data: [
+        {
+          label: title,
+          pointBorderWidth: 2,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 1,
+          pointRadius: 4,
+          fill: true,
+          borderWidth: 2,
+          data: data
+        }
+      ],
+      colors: [
+        {
+          borderColor: "#18ce0f",
+          pointBorderColor: "#FFF",
+          pointBackgroundColor: "#18ce0f",
+          backgroundColor: this.gradientFill
+        }
+      ],
+      type: 'line',
+      options: this.gradientChartOptionsConfigurationWithNumbersAndGrid
+    }
+  }
+
+  createGraphicTwo(title: string, labels: string[], data: number[]) {
+    this.graphicTwoParameter = {
+      labels: labels,
+      data: [
+        {
+          label: title,
+          pointBorderWidth: 2,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 1,
+          pointRadius: 4,
+          fill: true,
+          borderWidth: 2,
+          data: data
+        }
+      ],
+      colors: [
+        {
+          borderColor: "#f96332",
+          pointBorderColor: "#FFF",
+          pointBackgroundColor: "#f96332",
+          backgroundColor: this.gradientFill
+        }
+      ],
+      options: this.gradientChartOptionsConfiguration,
+      type: 'line'
+    }
+  }
+
+  createConfigurations() {
     this.gradientChartOptionsConfiguration = {
       maintainAspectRatio: false,
       legend: {
@@ -150,53 +195,6 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
-
-    this.lineChartData = [
-      {
-        label: "Active Users",
-        pointBorderWidth: 2,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 1,
-        pointRadius: 4,
-        fill: true,
-        borderWidth: 2,
-        data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
-      }
-    ];
-    this.lineChartColors = [
-      {
-        borderColor: "#f96332",
-        pointBorderColor: "#FFF",
-        pointBackgroundColor: "#f96332",
-        backgroundColor: this.gradientFill
-      }
-    ];
-    this.lineChartLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    this.lineChartOptions = this.gradientChartOptionsConfiguration;
-    this.lineChartType = 'line';
-
-    this.lineChartWithNumbersAndGridData = [
-      {
-        label: "Email Stats",
-        pointBorderWidth: 2,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 1,
-        pointRadius: 4,
-        fill: true,
-        borderWidth: 2,
-        data: [40, 500, 650, 700, 1200, 1250, 1300, 1900]
-      }
-    ];
-    this.lineChartWithNumbersAndGridColors = [
-      {
-        borderColor: "#18ce0f",
-        pointBorderColor: "#FFF",
-        pointBackgroundColor: "#18ce0f",
-        backgroundColor: this.gradientFill
-      }
-    ];
-    this.lineChartWithNumbersAndGridLabels = ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"];
-    this.lineChartWithNumbersAndGridOptions = this.gradientChartOptionsConfigurationWithNumbersAndGrid;
 
   }
 
@@ -334,7 +332,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  createCards() {
+  loadData() {
     const [requestCardOne, requestCardTwo, requestCardThree] =
       [this.createCardRequest(1), this.createCardRequest(2), this.createCardRequest(3)]
 
@@ -354,7 +352,13 @@ export class DashboardComponent implements OnInit {
         this.cardData.push({ value: response.cardTwo[0], request: requestCardOne });
         this.cardData.push({ value: response.cardThree[0], request: requestCardOne });
 
-        this.graphicData.push()
+        let data = response.graphicTwo.map(x => x[0]);
+        let labels = response.graphicTwo.map(x => x[1])
+        this.createGraphicTwo(requestGraphicTwo.description, labels, data)
+
+        data = response.graphicThree.map(x => x[0]);
+        labels = response.graphicThree.map(x => x[1])
+        this.createGraphicThree(requestGraphicThree.description, labels, data)
 
         this.isLoading = false;
       });
