@@ -2,7 +2,7 @@ export interface DashboardRequest{
   description:string;
   eixoX: DashboardAxis;
   eixoY?: DashboardAxis | null;
-  filtro: DashboardFilter[]
+  filtros: DashboardFilter[]
 
 }
 
