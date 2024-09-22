@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
     this.chartColor = "#FFFFFF";
 
     this.createCards();
+
     this.createBigGraph();
 
     this.gradientChartOptionsConfiguration = {
