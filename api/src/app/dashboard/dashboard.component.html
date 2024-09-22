@@ -1,7 +1,7 @@
 <div class="panel-header panel-header-lg">
-  <canvas baseChart id="bigDashboardChart" [datasets]="lineBigDashboardChartData" [labels]="lineBigDashboardChartLabels"
-    [colors]="lineBigDashboardChartColors" [options]="lineBigDashboardChartOptions"
-    [chartType]="lineBigDashboardChartType"></canvas>
+  <canvas baseChart id="mainChart" [datasets]="graphicOneParameter.data" [labels]="graphicOneParameter.labels"
+    [colors]="graphicOneParameter.colors" [options]="options"
+    [chartType]="graphicOneParameter.type"></canvas>
 </div>
 
 <div class="main-content" *ngIf="!isLoading">
@@ -13,14 +13,13 @@
   </div>
   <div class="row">
     <div class="col-lg-6">
-      <app-graphic chartId="chartOne" [lineChartType]="graphicTwoParameter.type" [lineChartData]="graphicTwoParameter.data"
-        [lineChartOptions]="graphicTwoParameter.options" [lineChartColors]="graphicTwoParameter.colors" [idx]="1"
+      <app-graphic chartId="chartOne" [lineChartType]="graphicTwoParameter.type"
+        [lineChartData]="graphicTwoParameter.data" [lineChartColors]="graphicTwoParameter.colors" [idx]="1"
         [lineChartLabels]="graphicTwoParameter.labels"></app-graphic>
     </div>
     <div class="col-lg-6 col-md-6">
       <app-graphic chartId="chartTwo" [lineChartType]="graphicThreeParameter.type"
-        [lineChartData]="graphicThreeParameter.data" [lineChartOptions]="graphicThreeParameter.options"
-        [lineChartColors]="graphicThreeParameter.colors" [idx]="2"
+        [lineChartData]="graphicThreeParameter.data" [lineChartColors]="graphicThreeParameter.colors" [idx]="2"
         [lineChartLabels]="graphicThreeParameter.labels"></app-graphic>
     </div>
   </div>

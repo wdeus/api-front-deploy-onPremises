@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-graphic',
   templateUrl: './graphic.component.html',
   styleUrls: ['./graphic.component.scss']
 })
-export class GraphicComponent implements AfterViewInit {
+export class GraphicComponent implements OnInit, AfterViewInit {
   public gradientStroke: any;
   public chartColor = "#FFFFFF";
   public canvas: any;
@@ -13,17 +13,21 @@ export class GraphicComponent implements AfterViewInit {
   public gradientFill: any;
   public gradientChartOptionsConfiguration: any;
   public gradientChartOptionsConfigurationWithNumbersAndGrid: any;
+  public lineChartOptions: any;
 
+  @Input() public idx: number = 0;
   @Input() public chartId: string = '';
   @Input() public description: string = '';
   @Input() public lineChartType: string = 'line';
   @Input() public lineChartData: Array<any>;
-  @Input() public lineChartOptions: any;
   @Input() public lineChartLabels: Array<any>;
   @Input() public lineChartColors: Array<any>
-  @Input() public idx: number = 0;
 
   constructor() { }
+
+  ngOnInit(): void {
+    this.lineChartOptions = this.createDefaultConfig();
+  }
 
   ngAfterViewInit(): void {
     this.canvas = document.getElementsByTagName('canvas')[this.idx];
@@ -83,5 +87,55 @@ export class GraphicComponent implements AfterViewInit {
     this.gradientFill = this.ctx.createLinearGradient(0, 170, 0, 50);
     this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
     this.gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+  }
+
+  createDefaultConfig() {
+    return {
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      tooltips: {
+        bodySpacing: 4,
+        mode: "nearest",
+        intersect: 0,
+        position: "nearest",
+        xPadding: 10,
+        yPadding: 10,
+        caretPadding: 10
+      },
+      responsive: true,
+      scales: {
+        yAxes: [{
+          gridLines: {
+            zeroLineColor: "transparent",
+            drawBorder: false
+          },
+          ticks: {
+            stepSize: 500
+          }
+        }],
+        xAxes: [{
+          display: 0,
+          ticks: {
+            display: false
+          },
+          gridLines: {
+            zeroLineColor: "transparent",
+            drawTicks: false,
+            display: false,
+            drawBorder: false
+          }
+        }]
+      },
+      layout: {
+        padding: {
+          left: 0,
+          right: 15,
+          top: 15,
+          bottom: 15
+        }
+      }
+    };
   }
 }

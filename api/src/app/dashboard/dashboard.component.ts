@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { DashboardRequest } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
-import { CardData, DashboardService, GraphicData } from '../services/dashboard.service';
+import { DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,17 +14,11 @@ export class DashboardComponent implements OnInit {
   public canvas: any;
   public ctx: any;
   public gradientFill: any;
-  public gradientChartOptionsConfiguration: any;
-  public gradientChartOptionsConfigurationWithNumbersAndGrid: any;
+  public options: any;
 
-  public lineBigDashboardChartData: Array<any>;
-  public lineBigDashboardChartOptions: any;
-  public lineBigDashboardChartLabels: Array<any>;
-  public lineBigDashboardChartColors: Array<any>
-  public lineBigDashboardChartType: string;
-
-  private graphicTwoParameter?: GraphicParameters;
-  private graphicThreeParameter?: GraphicParameters;
+  graphicOneParameter?: GraphicParameters;
+  graphicTwoParameter?: GraphicParameters;
+  graphicThreeParameter?: GraphicParameters;
 
   isLoading: boolean = true;
 
@@ -35,42 +29,23 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.chartColor = "#FFFFFF";
-    this.createConfigurations();
-
-    this.createBigGraph();
     this.loadData();
   }
 
-  createGraphicThree(title: string, labels: string[], data: number[]) {
-    this.graphicThreeParameter = {
-      labels: labels,
-      data: [
-        {
-          label: title,
-          pointBorderWidth: 2,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 1,
-          pointRadius: 4,
-          fill: true,
-          borderWidth: 2,
-          data: data
-        }
-      ],
-      colors: [
-        {
-          borderColor: "#18ce0f",
-          pointBorderColor: "#FFF",
-          pointBackgroundColor: "#18ce0f",
-          backgroundColor: this.gradientFill
-        }
-      ],
-      type: 'line',
-      options: this.gradientChartOptionsConfigurationWithNumbersAndGrid
+  createGraphic(title: string, color: 'orange' | 'green', labels: string[], data: number[]) {
+    const colorObj = color == 'green' ? {
+      borderColor: "#18ce0f",
+      pointBorderColor: "#FFF",
+      pointBackgroundColor: "#18ce0f",
+      backgroundColor: this.gradientFill
+    } : {
+      borderColor: "#f96332",
+      pointBorderColor: "#FFF",
+      pointBackgroundColor: "#f96332",
+      backgroundColor: this.gradientFill
     }
-  }
 
-  createGraphicTwo(title: string, labels: string[], data: number[]) {
-    this.graphicTwoParameter = {
+    return {
       labels: labels,
       data: [
         {
@@ -84,158 +59,24 @@ export class DashboardComponent implements OnInit {
           data: data
         }
       ],
-      colors: [
-        {
-          borderColor: "#f96332",
-          pointBorderColor: "#FFF",
-          pointBackgroundColor: "#f96332",
-          backgroundColor: this.gradientFill
-        }
-      ],
-      options: this.gradientChartOptionsConfiguration,
+      colors: [colorObj],
       type: 'line'
     }
   }
 
-  createConfigurations() {
-    this.gradientChartOptionsConfiguration = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      tooltips: {
-        bodySpacing: 4,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest",
-        xPadding: 10,
-        yPadding: 10,
-        caretPadding: 10
-      },
-      responsive: 1,
-      scales: {
-        yAxes: [{
-          display: 0,
-          ticks: {
-            display: false
-          },
-          gridLines: {
-            zeroLineColor: "transparent",
-            drawTicks: false,
-            display: false,
-            drawBorder: false
-          }
-        }],
-        xAxes: [{
-          display: 0,
-          ticks: {
-            display: false
-          },
-          gridLines: {
-            zeroLineColor: "transparent",
-            drawTicks: false,
-            display: false,
-            drawBorder: false
-          }
-        }]
-      },
-      layout: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 15,
-          bottom: 15
-        }
-      }
-    };
-    this.gradientChartOptionsConfigurationWithNumbersAndGrid = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      tooltips: {
-        bodySpacing: 4,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest",
-        xPadding: 10,
-        yPadding: 10,
-        caretPadding: 10
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          gridLines: {
-            zeroLineColor: "transparent",
-            drawBorder: false
-          },
-          ticks: {
-            stepSize: 500
-          }
-        }],
-        xAxes: [{
-          display: 0,
-          ticks: {
-            display: false
-          },
-          gridLines: {
-            zeroLineColor: "transparent",
-            drawTicks: false,
-            display: false,
-            drawBorder: false
-          }
-        }]
-      },
-      layout: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 15,
-          bottom: 15
-        }
-      }
-    };
-
-  }
-
-  createBigGraph() {
-    this.canvas = document.getElementById("bigDashboardChart");
+  createBigGraphic(title: string, labels: string[], data: number[]) {
+    this.canvas = document.getElementById("mainChart");
     this.ctx = this.canvas.getContext("2d");
 
     this.gradientFill = this.ctx.createLinearGradient(0, 200, 0, 50);
     this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
     this.gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.24)");
 
-    this.lineBigDashboardChartData = [
-      {
-        label: "Data",
-
-        pointBorderWidth: 1,
-        pointHoverRadius: 7,
-        pointHoverBorderWidth: 2,
-        pointRadius: 5,
-        fill: true,
-
-        borderWidth: 2,
-        data: [50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95]
-      }
-    ];
-    this.lineBigDashboardChartColors = [
-      {
-        backgroundColor: this.gradientFill,
-        borderColor: this.chartColor,
-        pointBorderColor: this.chartColor,
-        pointBackgroundColor: "#2c2c2c",
-        pointHoverBackgroundColor: "#2c2c2c",
-        pointHoverBorderColor: this.chartColor,
-      }
-    ];
-    this.lineBigDashboardChartLabels = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    this.lineBigDashboardChartOptions = {
+    this.options = {
       layout: {
         padding: {
           left: 20,
-          right: 20,
+          right: 40,
           top: 0,
           bottom: 0
         }
@@ -251,44 +92,33 @@ export class DashboardComponent implements OnInit {
         intersect: 0,
         position: "nearest"
       },
-      legend: {
-        position: "bottom",
-        fillStyle: "#FFF",
-        display: false
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            fontColor: "rgba(255,255,255,0.4)",
-            fontStyle: "bold",
-            beginAtZero: true,
-            maxTicksLimit: 5,
-            padding: 10
-          },
-          gridLines: {
-            drawTicks: true,
-            drawBorder: false,
-            display: true,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent"
-          }
-
-        }],
-        xAxes: [{
-          gridLines: {
-            zeroLineColor: "transparent",
-            display: false,
-
-          },
-          ticks: {
-            padding: 10,
-            fontColor: "rgba(255,255,255,0.4)",
-            fontStyle: "bold"
-          }
-        }]
-      }
     };
-    this.lineBigDashboardChartType = 'line';
+    return {
+      labels: labels,
+      data: [
+        {
+          label: title,
+          pointBorderWidth: 1,
+          pointHoverRadius: 7,
+          pointHoverBorderWidth: 2,
+          pointRadius: 5,
+          fill: true,
+          borderWidth: 2,
+          data: data
+        }
+      ],
+      colors: [
+        {
+          backgroundColor: this.gradientFill,
+          borderColor: this.chartColor,
+          pointBorderColor: this.chartColor,
+          pointBackgroundColor: "#2c2c2c",
+          pointHoverBackgroundColor: "#2c2c2c",
+          pointHoverBorderColor: this.chartColor,
+        }
+      ],
+      type: 'line'
+    }
   }
 
   createCardRequest(idx: number): DashboardRequest {
@@ -311,22 +141,66 @@ export class DashboardComponent implements OnInit {
   }
 
   createGraphicRequest(idx: number): DashboardRequest {
+    if (idx == 1) {
+      return {
+        'description': 'Tempo medio do processo',
+        "eixoX": {
+          "nome": "fato_vaga",
+          "campo": "tempo_medio_processo"
+        },
+        "eixoY": {
+          "nome": "dim_vaga",
+          "campo": "titulo"
+        },
+        "filtros": [
+          {
+            "nome": "dim_periodo",
+            "campo": "dt_abertura",
+            "comparador": ">=",
+            "valor": "2000-09-22"
+          }
+        ]
+      }
+    }
+
+    if (idx == 2) {
+      return {
+        'description': 'Numero de processos abertos nos ultimos 12 meses',
+        "eixoX": {
+          "nome": "fato_vaga",
+          "campo": "nr_posicoes_abertas"
+        },
+        "eixoY": {
+          "nome": "dim_vaga",
+          "campo": "titulo"
+        },
+        "filtros": [
+          {
+            "nome": "dim_periodo",
+            "campo": "dt_abertura",
+            "comparador": ">=",
+            "valor": "2023-09-22"
+          }
+        ]
+      }
+    }
+
     return {
-      'description': '',
+      'description': 'Feedbacks recebidos',
       "eixoX": {
-        "nome": "fato_vaga",
-        "campo": "salario_inicial_medio"
+        "nome": "fato_entrevista",
+        "campo": "nr_entrevistas"
       },
       "eixoY": {
-        "nome": "dim_vaga",
-        "campo": "titulo"
+        "nome": "dim_feedback",
+        "campo": "descricao"
       },
       "filtros": [
         {
-          "nome": "dim_periodo",
-          "campo": "dt_abertura",
-          "comparador": "<=",
-          "valor": "2024-11-02"
+          "nome": "dim_entrevista",
+          "campo": "dt_entrevista",
+          "comparador": ">=",
+          "valor": "2023-09-22"
         }
       ]
     }
@@ -344,6 +218,7 @@ export class DashboardComponent implements OnInit {
       cardOne: this.dashboardService.getCardData(requestCardOne),
       cardTwo: this.dashboardService.getCardData(requestCardTwo),
       cardThree: this.dashboardService.getCardData(requestCardThree),
+      graphicOne: this.dashboardService.getGraphicData(requestGraphicOne),
       graphicTwo: this.dashboardService.getGraphicData(requestGraphicTwo),
       graphicThree: this.dashboardService.getGraphicData(requestGraphicThree),
     })
@@ -354,11 +229,15 @@ export class DashboardComponent implements OnInit {
 
         let data = response.graphicTwo.map(x => x[0]);
         let labels = response.graphicTwo.map(x => x[1])
-        this.createGraphicTwo(requestGraphicTwo.description, labels, data)
+        this.graphicTwoParameter = this.createGraphic(requestGraphicTwo.description, 'green', labels, data)
 
         data = response.graphicThree.map(x => x[0]);
         labels = response.graphicThree.map(x => x[1])
-        this.createGraphicThree(requestGraphicThree.description, labels, data)
+        this.graphicThreeParameter = this.createGraphic(requestGraphicThree.description, 'orange', labels, data)
+
+        data = response.graphicOne.map(x => x[0]);
+        labels = response.graphicOne.map(x => x[1])
+        this.graphicOneParameter = this.createBigGraphic(requestGraphicOne.description, labels, data)
 
         this.isLoading = false;
       });
