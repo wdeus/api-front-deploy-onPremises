@@ -154,19 +154,12 @@ export class DashboardComponent implements OnInit {
     }
 
     return {
-      'description': 'Feedbacks positivos',
+      'description': 'Feedbacks Totais',
       'eixoX': {
         'nome': 'fato_entrevista',
         'campo': 'nr_entrevistas'
       },
-      'filtros': [
-        {
-          "nome": "dim_feedback",
-          "campo": "id_dim_feedback",
-          "comparador": "=",
-          "valor": "1"
-        }
-      ]
+      'filtros': []
     }
   }
 
