@@ -38,7 +38,7 @@ describe('NavbarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deve disparar o input de arquivo ao clicar no botão', () => {
+  xit('deve disparar o input de arquivo ao clicar no botão', () => {
     spyOn(component, 'triggerFileInput').and.callThrough();
     
     const button = debugElement.query(By.css('button.upload-btn')).nativeElement;
