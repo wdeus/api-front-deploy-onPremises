@@ -22,4 +22,18 @@ describe('SidebarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it ('ngOnInit', () =>{
+    expect(component.menuItems).toBeTruthy();
+  })
+
+  it ('isMobileMenu', () =>{
+    spyOnProperty(window, 'innerWidth', 'get').and.returnValue(1000)
+    expect(component.isMobileMenu()).toBeFalse();
+  })
+  it ('isMobileMenu', () =>{
+    spyOnProperty(window, 'innerWidth', 'get').and.returnValue(800)
+    expect(component.isMobileMenu()).toBeTrue();
+  })
+
 });

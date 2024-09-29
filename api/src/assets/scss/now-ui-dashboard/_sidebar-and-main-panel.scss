@@ -1,3 +1,4 @@
+
 .wrapper{
     position: relative;
     top: 0;
@@ -39,8 +40,8 @@
     .logo-img{
       width: 100%;
       height: unset;
-      display: block;
-      margin-left: 2px;
+      display: flex;
+      padding: 6%;
         img{
             width: 100%;
         }
@@ -378,3 +379,4 @@
 .panel-header-lg{
   height: 380px
 }
+
