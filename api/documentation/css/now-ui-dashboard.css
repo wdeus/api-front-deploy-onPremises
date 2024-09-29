@@ -4116,17 +4116,17 @@ Created using IcoMoon - icomoon.io
 
 .sidebar[data-color="orange"]:after,
 .off-canvas-sidebar[data-color="orange"]:after {
-  background: #f96332;
+  background: #f18524;
 }
 
 .sidebar[data-color="orange"] .nav li.active>a,
 .off-canvas-sidebar[data-color="orange"] .nav li.active>a {
-  color: #f96332;
+  color: #f18524;
 }
 
 .sidebar[data-color="orange"] .nav li.active>a i,
 .off-canvas-sidebar[data-color="orange"] .nav li.active>a i {
-  color: #f96332;
+  color: #f18524;
 }
 
 .sidebar[data-color="red"]:after,

@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
 import Chart from 'chart.js';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -10,16 +11,21 @@ import Chart from 'chart.js';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-    private listTitles: any[];
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+  
+  private listTitles: any[];
     location: Location;
-      mobile_menu_visible: any = 0;
+    isLoading:boolean = false;  
+    mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
 
     public isCollapsed = true;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    constructor(location: Location,  private element: ElementRef, private router: Router,private httpService: HttpClient) {
       this.location = location;
+      this.httpService = httpService;
           this.sidebarVisible = false;
     }
 
@@ -152,4 +158,40 @@ export class NavbarComponent implements OnInit {
       }
       return 'Dashboard';
     }
+
+    
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
+
+  importDadosProvisionados(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      // Mostrar o spinner enquanto o upload está em progresso
+      this.isLoading = true;
+
+      // Criar um objeto FormData
+      const formData: FormData = new FormData();
+      formData.append('file', file, file.name); 
+
+      this.httpService.post("http://localhost:8080/importacao", formData, {
+        headers: { 'enctype': 'multipart/form-data' }
+      }).subscribe(
+        response => {
+          console.log('Arquivo enviado com sucesso', response);
+          this.isLoading = false; 
+        },
+        error => {
+          console.error('Erro ao enviar arquivo', error);
+          this.isLoading = false; 
+        }
+      );
+    } else {
+      console.log("Nenhum arquivo selecionado.");
+    }
+  }
 }
+
+     
+    
