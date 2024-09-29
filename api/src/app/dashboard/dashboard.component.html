@@ -12,12 +12,12 @@
   </div>
   <div class="row">
     <div class="col-lg-6">
-      <app-graphic chartId="chartOne" [lineChartType]="graphicTwoParameter.type"
+      <app-graphic [description]="'Vagas abertas no ultimo ano'" chartId="chartOne" [lineChartType]="graphicTwoParameter.type"
         [lineChartData]="graphicTwoParameter.data" [lineChartColors]="graphicTwoParameter.colors" [idx]="1"
         [lineChartLabels]="graphicTwoParameter.labels"></app-graphic>
     </div>
     <div class="col-lg-6">
-      <app-graphic chartId="chartTwo" [lineChartType]="graphicThreeParameter.type"
+      <app-graphic chartId="chartTwo" [description]="'Feedbacks por descricao'" [lineChartType]="graphicThreeParameter.type"
         [lineChartData]="graphicThreeParameter.data" [lineChartColors]="graphicThreeParameter.colors" [idx]="2"
         [lineChartLabels]="graphicThreeParameter.labels"></app-graphic>
     </div>
