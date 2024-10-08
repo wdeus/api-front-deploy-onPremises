@@ -1,7 +1,7 @@
 @include form-control-placeholder($default-color, 1);
 
 .form-control {
-    background-color: $transparent-bg;
+    background-color: white;
     border: 1px solid $light-gray;
     border-radius: $btn-round-radius;
     color: $black-color;

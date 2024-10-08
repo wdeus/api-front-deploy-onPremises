@@ -11,7 +11,20 @@
   </div>
   <div class="row">
     <div class="col">
-      <label>Nome</label>
+      <div class="form-group">
+        <label>Descrição</label>
+        <input class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>Tabela</label>
+        <select class="form-control" [formControl]="form.controls.indicador.get('nome')">
+          <option *ngFor="let filtro of filtroFatos" [value]="filtro.nome">{{filtro.alias}}</option>
+        </select>
+      </div>
     </div>
     <div class="col">
       Campo
