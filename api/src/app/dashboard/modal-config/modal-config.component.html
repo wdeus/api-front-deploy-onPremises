@@ -1,0 +1,95 @@
+<div class="custom-modal">   
+  <div class="modal-header">
+    <h4 class="modal-title">Gerenciamento de dashboard</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+  </div>
+  
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <label for="filterSelect" class="form-label">Escolha um filtro:</label>
+        <select id="filterSelect" (change)="filter()" [(ngModel)]="filterType" class="form-control mb-3">
+          <option value="" disabled selected>Selecione um filtro</option>
+          <option value="fato">Fato</option>
+          <option value="dimensao">Dimensão</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="filterType === 'dimensao'">
+      <div class="card-body">
+        <label for="fatoSelect" class="form-label">Escolha um fato:</label>
+        <select id="fatoSelect" (change)="onFatoChange($event.target.value)" [(ngModel)]="selectedFato" class="form-control mb-3">
+          <option value="" disabled selected>Selecione um fato</option>
+          <option value="fato_entrevista">Fato Entrevista</option>
+          <option value="fato_vaga">Fato Vaga</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="selectedFato === 'fato_entrevista'">
+      <div class="card-body">
+        <label>Escolha uma tabela</label>
+        <ul class="list-group mt-3">
+          <li *ngFor="let item of itemList" class="list-group-item">
+            <div class="form-check">
+              <input 
+                type="radio"   
+                [value]="item.nome" 
+                [(ngModel)]="selectedItem" 
+                class="form-check-input"
+              />
+              <label class="form-check-label" for="radio-{{item.alias}}">{{item.alias}}</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    
+    <div class="card" *ngIf="selectedFato === 'fato_vaga'">
+      <div class="card-body">
+        <label>Escolha uma tabela</label>
+        <ul class="list-group mt-3">
+          <li *ngFor="let item of itemList" class="list-group-item">
+            <div class="form-check">
+              <input 
+                type="radio"   
+                [value]="item.nome" 
+                [(ngModel)]="selectedItem" 
+                class="form-check-input"
+              />
+              <label class="form-check-label" for="radio-{{item.alias}}">{{item.alias}}</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="selectedItem && campos.length > 0">
+      <div class="card-body">
+        <label>Escolha um campo</label>
+        <ul class="list-group mt-3">
+          <li *ngFor="let campo of campos" class="list-group-item">
+            <div class="form-check">
+              <input 
+                type="radio"   
+                [value]="campo" 
+                [(ngModel)]="selectedCampo" 
+                class="form-check-input"
+              />
+              <label class="form-check-label" for="radio-{{campo}}">{{campo}}</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()">Fechar</button>
+    <button type="button" class="btn btn-primary" (click)="configure()">Configurar</button>
+  </div>
+</div>

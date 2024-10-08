@@ -1,15 +1,31 @@
-<div class="panel-header panel-header-lg">
+<!-- Cabeçalho do painel com botão no canto direito -->
+<div class="panel-header panel-header-lg" style="position: relative;">
+  <!-- Botão posicionado dentro do cabeçalho do painel -->
+  <button type="button"
+          (click)="loadFilters()"
+          class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret float-right responsive-button"
+          style="position: absolute; margin-bottom: 50px; right: 20px;"
+          ngbDropdownToggle>
+    <i class="now-ui-icons loader_gear"></i>
+  </button>
+
+  <!-- Gráfico principal -->
   <canvas baseChart id="mainChart" [datasets]="graphicOneParameter?.data" [labels]="graphicOneParameter?.labels"
-    [colors]="graphicOneParameter?.colors" [options]="options" [chartType]="graphicOneParameter?.type"></canvas>
+    [colors]="graphicOneParameter?.colors" [options]="options" [chartType]="graphicOneParameter?.type">
+  </canvas>
 </div>
 
+<!-- Conteúdo principal -->
 <div class="main-content" *ngIf="!isLoading">
   <div class="row">
+
     <div class="col-lg-4" *ngFor="let card of cardData">
       <app-card-data [filters]="card.request.filtros" [description]="card.request.description"
         [value]="card.value"></app-card-data>
     </div>
   </div>
+  
+  <!-- Gráficos adicionais -->
   <div class="row">
     <div class="col-lg-6">
       <app-graphic [description]="'Vagas abertas no ultimo ano'" chartId="chartOne" [lineChartType]="graphicTwoParameter.type"
@@ -17,9 +33,11 @@
         [lineChartLabels]="graphicTwoParameter.labels"></app-graphic>
     </div>
     <div class="col-lg-6">
+      
       <app-graphic chartId="chartTwo" [description]="'Feedbacks por descricao'" [lineChartType]="graphicThreeParameter.type"
         [lineChartData]="graphicThreeParameter.data" [lineChartColors]="graphicThreeParameter.colors" [idx]="2"
         [lineChartLabels]="graphicThreeParameter.labels"></app-graphic>
     </div>
   </div>
 </div>
+

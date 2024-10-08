@@ -15,7 +15,7 @@
   </div>
   <div class="card-footer">
     <h5 class="card-category" *ngFor="let filter of filters">
-      <div>Filtrando por: {{filter.nome.replace("dim_","")}} {{filter.comparador}} {{filter.valor}}</div>
+      <div>Filtrando por: {{filter.nome.replace(nome,"")}} {{filter.comparador}} {{formatarData(filter.valor)}}</div>
     </h5>
     <h5 class="card-category" *ngIf="filters && filters.length == 0">
       <div>Sem filtros</div>

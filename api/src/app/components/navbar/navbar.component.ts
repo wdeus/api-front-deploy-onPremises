@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
-import { Router } from '@angular/router';
+import { Router,NavigationEnd  } from '@angular/router';
 import Chart from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 
@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
-
+  isDashboardRoute: boolean = false;
   
   private listTitles: any[];
     location: Location;
@@ -30,6 +30,13 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit(){
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          if(event.urlAfterRedirects.includes('/dashboard')){
+            this.isDashboardRoute = true;
+          };
+        }
+      });
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -186,6 +193,7 @@ export class NavbarComponent implements OnInit {
           console.error('Erro ao enviar arquivo', error);
           this.isLoading = false; 
         }
+
       );
     } else {
       console.log("Nenhum arquivo selecionado.");

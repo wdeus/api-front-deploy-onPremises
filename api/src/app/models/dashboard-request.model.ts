@@ -17,3 +17,11 @@ export interface DashboardFilter{
   comparador: '<>' | '>' | '<' | '>=' | '<=' | '='
   valor: string;
 }
+
+
+export interface FiltrosCampos{
+  nome:string;
+  campos: string[];
+  alias:string;
+
+}

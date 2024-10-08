@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
-import { DashboardRequest } from '../models/dashboard-request.model';
+import { Component, OnInit, Pipe } from '@angular/core';
+import { forkJoin, of } from 'rxjs';
+import { DashboardRequest, FiltrosCampos } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
 import { DashboardService } from '../services/dashboard.service';
 import { CardData } from '../services/dashboard.service';
+import { HttpClient } from '@angular/common/http';
+import { ModalConfigComponent } from './modal-config/modal-config.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { catchError } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -16,15 +21,24 @@ export class DashboardComponent implements OnInit {
   public ctx: any;
   public gradientFill: any;
   public options: any;
-
+  private dataFilterFato:any;
+  
+  private dataFilterDimensao:any;
   graphicOneParameter?: GraphicParameters;
   graphicTwoParameter?: GraphicParameters;
   graphicThreeParameter?: GraphicParameters;
 
   isLoading: boolean = true;
 
-  cardData: { request: DashboardRequest, value: number }[] = []
-  constructor(private dashboardService: DashboardService) { }
+  cardData: { request: DashboardRequest, value: number }[] = [];
+  itemList:FiltrosCampos[] = [];
+
+  
+  constructor(
+    private dashboardService: DashboardService,
+    private httpService:HttpClient,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -120,8 +134,12 @@ export class DashboardComponent implements OnInit {
       type: 'line'
     }
   }
+  
+ 
+
 
   createCardRequest(idx: number): DashboardRequest {
+ 
     if (idx == 1) {
       return {
         'description': 'Vagas em aberto',
@@ -135,6 +153,7 @@ export class DashboardComponent implements OnInit {
 
     if (idx == 2) {
       const now = new Date();
+
       now.setDate(now.getDate() - 7)
       return {
         'description': 'Entrevistas marcadas',
@@ -164,21 +183,25 @@ export class DashboardComponent implements OnInit {
   }
 
   createGraphicRequest(idx: number): DashboardRequest {
+    const campo = sessionStorage.getItem("campo");
+    const tabela = sessionStorage.getItem("tabela");
+    const nome = sessionStorage.getItem("nome");
+    const fato = sessionStorage.getItem("fato");
     if (idx == 1) {
       return {
-        'description': 'Tempo medio do processo',
+        'description': tabela ?? 'Tempo medio do processo',
         "eixoX": {
-          "nome": "fato_vaga",
-          "campo": "tempo_medio_processo"
+          "nome":  "fato_vaga",
+          "campo":  "tempo_medio_processo"
         },
         "eixoY": {
-          "nome": "dim_vaga",
-          "campo": "titulo"
+          "nome":  "dim_vaga",
+          "campo":   "titulo"
         },
         "filtros": [
           {
-            "nome": "dim_periodo",
-            "campo": "dt_abertura",
+            "nome":   "dim_periodo",
+            "campo":    "dt_abertura",
             "comparador": ">=",
             "valor": "2000-09-22"
           }
@@ -188,19 +211,19 @@ export class DashboardComponent implements OnInit {
 
     if (idx == 2) {
       return {
-        'description': 'Numero de processos abertos nos ultimos 12 meses',
+        'description':  tabela ?? 'Numero de processos abertos nos ultimos 12 meses',
         "eixoX": {
-          "nome": "fato_vaga",
-          "campo": "nr_posicoes_abertas"
+          "nome":  "fato_vaga",
+          "campo":   "nr_posicoes_abertas"
         },
         "eixoY": {
-          "nome": "dim_vaga",
-          "campo": "titulo"
+          "nome":  "dim_vaga",
+          "campo":  "titulo"
         },
         "filtros": [
           {
-            "nome": "dim_periodo",
-            "campo": "dt_abertura",
+            "nome":  "dim_periodo",
+            "campo":  "dt_abertura",
             "comparador": ">=",
             "valor": "2023-09-22"
           }
@@ -209,19 +232,19 @@ export class DashboardComponent implements OnInit {
     }
 
     return {
-      'description': 'Feedbacks recebidos',
+      'description':  tabela ?? 'Feedbacks recebidos',
       "eixoX": {
-        "nome": "fato_entrevista",
-        "campo": "nr_entrevistas"
+        "nome": fato ?? "fato_entrevista",
+        "campo": campo ?? "nr_entrevistas"
       },
       "eixoY": {
         "nome": "dim_feedback",
-        "campo": "descricao"
+        "campo":   "descricao"
       },
       "filtros": [
         {
-          "nome": "dim_entrevista",
-          "campo": "dt_entrevista",
+          "nome":  "dim_entrevista",
+          "campo":   "dt_entrevista",
           "comparador": ">=",
           "valor": "2023-09-22"
         }
@@ -265,4 +288,54 @@ export class DashboardComponent implements OnInit {
         this.isLoading = false;
       });
   }
+
+
+
+  
+  loadFilters() {
+    const modalRef = this.modalService.open(ModalConfigComponent, { size: 'lg', backdrop: 'static' });
+  
+    forkJoin({
+      fato: this.httpService.get("http://localhost:8080/filtros/fato").pipe(
+        catchError(error => {
+          console.error('Erro ao buscar filtro fato:', error);
+          return of([]); // Use of() to return an observable
+        })
+      ),
+      dimensao: this.httpService.get("http://localhost:8080/filtros/dimensao").pipe(
+        catchError(error => {
+          console.error('Erro ao buscar filtro dimensao:', error);
+          return of([]); // Use of() to return an observable
+        })
+      )
+    }).subscribe({
+      next: (responses) => {
+        this.dataFilterFato = responses.fato;
+        this.dataFilterDimensao = responses.dimensao;
+  
+        // Set itemList to the fetched data
+        this.itemList = [...this.dataFilterFato, ...this.dataFilterDimensao];
+  
+        // Pass itemList to the modal instance
+        modalRef.componentInstance.itemList = this.itemList;
+  
+        console.log("Resposta do filtro fato: ", this.dataFilterFato);
+        console.log("Resposta do filtro dimensao: ", this.dataFilterDimensao);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar filtros:', error);
+      }
+    });
+  }
+
+  transform(items: any[], filter: string): any[] {
+    if (!items || !filter) {
+      return items;
+    }
+    return items.filter(item => 
+      item.alias.toLowerCase().includes(filter.toLowerCase()) || 
+      item.nome.toLowerCase().includes(filter.toLowerCase())
+    );
+  }
+  
 }

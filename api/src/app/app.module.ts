@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalConfigComponent } from './dashboard/modal-config/modal-config.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    ModalConfigComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
