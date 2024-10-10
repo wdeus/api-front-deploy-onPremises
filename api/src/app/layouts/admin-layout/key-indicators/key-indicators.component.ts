@@ -10,13 +10,14 @@ import { KeyIndicatorsService } from '../../../services/key-indicators.service';
 export class KeyIndicatorsComponent implements OnInit {
 
   tableData: KeyIndicator[] = [];
+  user: string = 'admin';
 
   constructor(private keyIndicatorsService: KeyIndicatorsService) { }
 
   ngOnInit(): void {
     this.keyIndicatorsService.getKeyIndicators()
       .subscribe(resp => {
-        this.tableData = resp;
+        this.tableData = resp.filter(x => x.usuario == this.user);
       });
   }
 }
