@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { KeyIndicator } from '../../../models/key-indicator.model';
+import { KeyIndicatorsService } from '../../../services/key-indicators.service';
 
 @Component({
   selector: 'key-indicators',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KeyIndicatorsComponent implements OnInit {
 
-  constructor() { }
+  tableData: KeyIndicator[] = [];
+
+  constructor(private keyIndicatorsService: KeyIndicatorsService) { }
 
   ngOnInit(): void {
+    this.keyIndicatorsService.getKeyIndicators()
+      .subscribe(resp => {
+        this.tableData = resp;
+      });
   }
-
 }
