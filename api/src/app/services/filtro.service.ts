@@ -14,4 +14,9 @@ export class FiltroService {
     const url = `${environment.apiUrl}filtros/fatos`;
     return this.httpClient.get<any[]>(url);
   }
+
+  getDimensoes(fato: string): Observable<any[]> {
+    const url = `${environment.apiUrl}filtros/dimensoes?fato=`+fato;
+    return this.httpClient.get<any[]>(url);
+  }
 }

@@ -38,7 +38,7 @@
       <div class="form-group">
         <label>Comparador</label>
         <select class="form-control" [formControl]="form.controls.indicador.get('comparador')">
-          <option *ngFor="let filtro of Comparadores" [value]="filtro">{{filtro}}</option>
+          <option *ngFor="let filtro of comparadores" [value]="filtro">{{filtro}}</option>
         </select>
       </div>
     </div>
@@ -62,7 +62,7 @@
       <div class="form-group">
         <label>Nome</label>
         <select class="form-control" [formControl]="form.controls.filtro.get('nome')">
-          <option *ngFor="let filtro of filtroFatos" [value]="filtro.nome">{{filtro.alias}}</option>
+          <option *ngFor="let filtro of dimensoes" [value]="filtro.nome">{{filtro.alias}}</option>
         </select>
       </div>
     </div>
@@ -78,7 +78,7 @@
       <div class="form-group">
         <label>Comparador</label>
         <select class="form-control" [formControl]="form.controls.filtro.get('comparador')">
-          <option *ngFor="let filtro of Comparadores" [value]="filtro">{{filtro}}</option>
+          <option *ngFor="let filtro of comparadores" [value]="filtro">{{filtro}}</option>
         </select>
       </div>
     </div>
@@ -92,7 +92,7 @@
 
   <div class="row d-flex mt-4">
     <div class="col d-flex justify-content-end">
-      <button class="btn btn-success">Criar Indicador</button>
+      <button class="btn btn-success" (click)="save()">Criar Indicador</button>
     </div>
   </div>
 </div>
