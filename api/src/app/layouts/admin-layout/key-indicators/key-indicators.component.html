@@ -11,7 +11,7 @@
         <div class="card-body">
           <div class="table-responsive">
             <table class="table">
-              <thead class=" text-primary">
+              <thead class="text-primary">
                 <th>
                   Descritivo
                 </th>
@@ -24,27 +24,21 @@
                 <th>
                   Comparador
                 </th>
-                <th class="text-right">
+                <th>
                   Valor
+                </th>
+                <th>
+                  Filtro
                 </th>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    Dakota Rice
-                  </td>
-                  <td>
-                    Dakota Rice
-                  </td>
-                  <td>
-                    Dakota Rice
-                  </td>
-                  <td>
-                    Oud-Turnhout
-                  </td>
-                  <td class="text-right">
-                    $36,738
-                  </td>
+                <tr *ngFor="let item of tableData">
+                  <td>{{item.descricao}}</td>
+                  <td>{{item.indicador.nome}}</td>
+                  <td>{{item.indicador.campo}}</td>
+                  <td>{{item.indicador.comparador}}</td>
+                  <td>{{item.indicador.valor}}</td>
+                  <td>{{item.filtro.campo}} {{item.filtro.comparador}} {{item.filtro.valor}}</td>
                 </tr>
               </tbody>
             </table>
