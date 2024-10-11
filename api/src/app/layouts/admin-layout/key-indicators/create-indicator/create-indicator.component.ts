@@ -10,6 +10,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class CreateIndicatorComponent implements OnInit {
   filtroFatos = [];
   fatoCampos = [];
+  filtroCampos = [];
+  Comparadores = ['>', '<', '>=', '<=', '=', '<>'];
   form: FormGroup;
 
   constructor(
@@ -23,15 +25,19 @@ export class CreateIndicatorComponent implements OnInit {
     });
 
     this.form.controls.indicador.get('nome').valueChanges.subscribe(n => {
-      console.log(n);
-      this.getCampos(n);
+      let Campo = this.filtroFatos.filter(x => x.nome == n)
+      this.fatoCampos = this.getCampos(Campo);
+    })
+
+    this.form.controls.filtro.get('nome').valueChanges.subscribe(n => {
+      let Campo = this.filtroFatos.filter(x => x.nome == n)
+      this.filtroCampos = this.getCampos(Campo);
     })
 
   }
 
   getCampos(fato:any){
-    this.fatoCampos = fato.campos[0].split(",");
-    console.log(this.fatoCampos);
+   return fato[0].campos[0].split(",")
   }
 
   createForm(){
@@ -48,8 +54,11 @@ export class CreateIndicatorComponent implements OnInit {
         comparador: new FormControl("", []),
         valor: new FormControl("", []),
       }),
-      usuario: new FormControl("", [])
+      usuario: new FormControl("admin", []),
+      descricao: new FormControl("", [])
     }); 
+
+    
 
   }
 
