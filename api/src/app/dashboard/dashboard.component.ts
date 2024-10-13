@@ -139,13 +139,14 @@ export class DashboardComponent implements OnInit {
 
 
   createCardRequest(idx: number): DashboardRequest {
- 
+    const campo = sessionStorage.getItem("campo")
+    const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas")
     if (idx == 1) {
       return {
         'description': 'Vagas em aberto',
         'eixoX': {
           'nome': 'fato_vaga',
-          'campo': 'nr_posicoes_abertas'
+          'campo': campo_vagas_abertas ??  'nr_posicoes_abertas'
         },
         'filtros': []
       }
@@ -159,7 +160,7 @@ export class DashboardComponent implements OnInit {
         'description': 'Entrevistas marcadas',
         'eixoX': {
           'nome': 'fato_entrevista',
-          'campo': 'nr_entrevistas'
+          'campo':  campo ?? 'nr_entrevistas'
         },
         'filtros': [
           {
@@ -176,81 +177,90 @@ export class DashboardComponent implements OnInit {
       'description': 'Feedbacks Totais',
       'eixoX': {
         'nome': 'fato_entrevista',
-        'campo': 'nr_entrevistas'
+        'campo': campo ?? 'nr_entrevistas'
       },
       'filtros': []
     }
   }
 
+
+  
   createGraphicRequest(idx: number): DashboardRequest {
     const campo = sessionStorage.getItem("campo");
-    const tabela = sessionStorage.getItem("tabela");
-    const nome = sessionStorage.getItem("nome");
     const fato = sessionStorage.getItem("fato");
+    const dimensao = sessionStorage.getItem("dimensao");
+    const campo_dimensao = sessionStorage.getItem("campo_dimensao");
+    const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
+    const comparador = sessionStorage.getItem("comparador");
+    const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
+    const valor = sessionStorage.getItem("valor");
+    const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
+    
     if (idx == 1) {
       return {
-        'description': tabela ?? 'Tempo medio do processo',
+        'description': 'Tempo medio do processo',
         "eixoX": {
-          "nome":  "fato_vaga",
+          "nome": "fato_vaga",
           "campo":  "tempo_medio_processo"
         },
         "eixoY": {
-          "nome":  "dim_vaga",
-          "campo":   "titulo"
+          "nome": "dim_vaga",
+          "campo": "titulo"
         },
         "filtros": [
           {
-            "nome":   "dim_periodo",
-            "campo":    "dt_abertura",
+            "nome": "dim_periodo",
+            "campo": "dt_abertura",
             "comparador": ">=",
             "valor": "2000-09-22"
           }
         ]
       }
     }
-
     if (idx == 2) {
       return {
-        'description':  tabela ?? 'Numero de processos abertos nos ultimos 12 meses',
+        'description':  'Numero de processos abertos nos ultimos 12 meses ' ,
         "eixoX": {
-          "nome":  "fato_vaga",
+          "nome": "fato_vaga",
           "campo":   "nr_posicoes_abertas"
         },
         "eixoY": {
-          "nome":  "dim_vaga",
-          "campo":  "titulo"
+          "nome": "dim_vaga",
+          "campo": "titulo"
         },
         "filtros": [
           {
-            "nome":  "dim_periodo",
-            "campo":  "dt_abertura",
+            "nome": "dim_periodo",
+            "campo": "dt_abertura",
             "comparador": ">=",
             "valor": "2023-09-22"
           }
         ]
       }
     }
-
     return {
-      'description':  tabela ?? 'Feedbacks recebidos',
+      'description': 'Feedbacks recebidos',
       "eixoX": {
-        "nome": fato ?? "fato_entrevista",
-        "campo": campo ?? "nr_entrevistas"
+        "nome": fato ??   "fato_entrevista",
+        "campo": campo ??  "nr_entrevistas"
       },
       "eixoY": {
-        "nome": "dim_feedback",
-        "campo":   "descricao"
+        "nome": dimensao  ?? "dim_feedback",
+        "campo": campo_dimensao ?? "descricao"
       },
       "filtros": [
         {
-          "nome":  "dim_entrevista",
-          "campo":   "dt_entrevista",
-          "comparador": ">=",
-          "valor": "2023-09-22"
+          
+          "nome": filtro_dimensao ?? "dim_entrevista",
+          "campo": campo_dimensao_filtro ?? "dt_entrevista",
+          "comparador": comparador ?? ">=" ,
+          "valor": valor ?? "2023-09-22"
         }
       ]
     }
   }
+
+
 
   loadData() {
     const [requestCardOne, requestCardTwo, requestCardThree] =

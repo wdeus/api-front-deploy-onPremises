@@ -11,142 +11,203 @@ import { catchError } from 'rxjs/operators';
 })
 export class ModalConfigComponent implements OnInit {
   @Input() itemList: any;
+  itemListDimensao:any;
+  itemListDimensaoAux:any
   filterType: string = ''; 
   dataFilterFato: any[] = [];
   dataFilterDimensao: any[] = [];
-  dataFilterCampos: any[] = [];
+  selectedFato: string | undefined; 
   selectedItem: string | undefined; 
-  selectedCampo: string | undefined;
-
+  selectedFatoCampo: string | undefined;
+  todosCampos: string[] = [];
+  todosCamposDimensao: string[] = [];
+  itemListDimensaoCampo:any[] = [];
+  selectedDimensao: string | undefined;
+  selectedItemDimensao: string | undefined;
+  selectedItemDimensaoCampo2: string | undefined;
+  selectedItemDimensaoComparador: string | undefined;
+  selectedItemComparador:string | undefined;
+  selectedItemDimensaoValor:string | undefined;
+  selectedItemDimensaoCampo2Fato:string | undefined;
+  varAux: any;
   constructor(public activeModal: NgbActiveModal, private httpService: HttpClient) { }
 
   ngOnInit(): void {
-    this.filter(); // Inicializa o filtro
+  //  this.filter(); // Inicializa o filtro
   }
 
   close(): void {
     this.activeModal.dismiss('Modal closed');
   }
 
-  selectedFato: string | undefined; // Adicione isso na classe
-
-
-
+  
   filter(): void {
     let request;
   
-    if (this.filterType === 'fato') {
       request = this.httpService.get("http://localhost:8080/filtros/fatos").pipe(
         catchError(error => {
           console.error('Erro ao buscar filtro fato:', error);
           return of([]);
         })
       );
-    } else if (this.filterType === 'dimensao') {
-      if (!this.selectedFato) {
-        return; 
-      }
-      request = this.httpService.get(`http://localhost:8080/filtros/dimensoes?fato=${this.selectedFato}`).pipe(
-  
-        catchError(error => {
-          console.error(`Erro ao buscar dimensao para ${this.selectedFato}:`, error);
-          return of([]);
-        })
-      );
-    } else {
-      return; 
-    }
+     
   
     request.subscribe({
       next: (responses) => {
-        if (this.filterType === 'fato') {
           this.dataFilterFato = responses;
-          this.itemList = this.dataFilterFato;
           
-        } else if (this.filterType === 'dimensao') {
-          this.dataFilterDimensao = responses; 
-          this.itemList = this.dataFilterDimensao; 
-       
-        }
-        console.log("Resposta do filtro fato: ", this.dataFilterFato);
-        if (this.filterType === 'dimensao') {
-          const dataFilterCampos = this.itemList.map(item => item.nome == this.selectedItem).campos;
-          console.log("Resposta do filtro dimensao: ",dataFilterCampos)
-        }
-      },
+          this.itemList = responses.find(item => item.nome == this.selectedFato);
+          
+          this.todosCampos = this.itemList.campos[0].split(',');
+        },
       error: (error) => {
         console.error('Erro ao carregar filtros:', error);
       }
     });
   }
-  
 
-
-
-  // Novo método para capturar a mudança no segundo filtro
   onFatoChange(selectedValue: string): void {
+   
     this.selectedFato = selectedValue;
+    this.saveToSessionStorage('selectedFato', this.selectedFato);
     
-    this.filter(); 
+    const request = this.httpService.get(`http://localhost:8080/filtros/dimensoes?fato=${this.selectedFato}`).pipe(
+      catchError(error => {
+        console.error('Erro ao buscar filtro de dimensões:', error);
+        return of([]); // Retorna um array vazio em caso de erro
+      })
+    );
+
+    request.subscribe({
+      next: (responses) => {
+        this.itemListDimensao = responses; 
+        this.todosCamposDimensao = []; 
+        
+        this.itemListDimensao.forEach(item => {
+          this.todosCamposDimensao.push(...item.campos.flatMap(campo => campo.split(','))); 
+        });
+      },
+      error: (error) => {
+        console.error('Erro ao carregar filtros:', error);
+      }
+    });
+
+    this.updateCampos(); // Atualiza os campos após a mudança do fato
   }
 
+
+  updateCampos(): void {
+  }
 
   configure(): void {
-    if (this.selectedItem) {
-      if(this.filterType == 'dimensao'){
-        const campos = this.dataFilterDimensao.find(item => item.nome === this.selectedItem ).alias;
-        console.log("tabela selecionada: ",campos)
-        console.log(this.dataFilterDimensao)
-        sessionStorage.setItem("tabela",campos);
-      }
-      if(this.filterType === 'fato'){
-        const campos = this.dataFilterFato.find(item => item.nome === this.selectedItem).alias;
-        sessionStorage.setItem("tabela",campos);
-        console.log("tabela selecionada: ",campos)
-      
-      }
-      if(this.campos != null){
-        const selectedItemData = this.dataFilterDimensao.find(item => item.nome === this.selectedItem);
-        sessionStorage.setItem("fato",this.selectedFato);
-        if (selectedItemData) {
-          const campos = selectedItemData.campos;
-          const camposSelecionado = campos[0]?.split(',').map(item => item.trim()).find(item => item === this.selectedCampo);
-          sessionStorage.setItem("tabela",selectedItemData.alias);
-          sessionStorage.setItem("campo",camposSelecionado)
-          window.location.reload();
+      const selectedData = this.filterType === 'dimensao' ? this.dataFilterDimensao : this.dataFilterFato;
+      const campos = selectedData.find(item => item.nome === this.selectedItem)?.alias;
+     
+    const campo = sessionStorage.getItem("campo");
+    const fato = sessionStorage.getItem("fato");
+    const dimensao = sessionStorage.getItem("dimensao");
+    const campo_dimensao = sessionStorage.getItem("campo_dimensao");
+    const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
+    const comparador = sessionStorage.getItem("comparador");
+    const valor = sessionStorage.getItem("valor");
+    const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
+    const obj =   {
+      'description': 'Feedbacks recebidos',
+      "eixoX": {
+        "nome": fato ??   "fato_entrevista",
+        "campo": campo ??  "nr_entrevistas"
+      },
+      "eixoY": {
+        "nome": dimensao  ?? "dim_feedback",
+        "campo": campo_dimensao ?? "descricao"
+      },
+      "filtros": [
+        {
+          "nome": campo_dimensao_filtro ?? "dim_entrevista",
+          "campo": filtro_dimensao ?? "dt_entrevista",
+          "comparador": comparador ?? ">=",
+          "valor": valor ?? "2023-09-22"
         }
-      
-      }
-    } else {
-      console.log("Nenhum item selecionado.");
+      ]
     }
+
+    sessionStorage.setItem("campo-obj",JSON.stringify(obj)) 
+      window.location.reload()   
+
+    
   }
 
-
-  get campos(): string[] {
-    if (!this.selectedItem) return [];
-    
-    const selectedItemData = this.dataFilterDimensao.find(item => item.nome === this.selectedItem);
-    
-    if (selectedItemData) {
-      const campos = selectedItemData.campos;
-  
-      if (typeof campos === 'object' && campos !== null) {
-        const camposSelecionado = campos[0]?.split(',').map(item => item.trim()).find(item => item === this.selectedCampo);
-        sessionStorage.setItem("tabela",selectedItemData.alias);
-        sessionStorage.setItem("nome",selectedItemData.nome)
-        console.log("Session storage CAMPO preenchido com:",selectedItemData.alias);
-        return campos[0].split(',');
-      }
-      
-      
+  saveToSessionStorage(key: string, value: any) {
+    switch (key) {
+      case 'selectedItemDimensaoCampo2Fato':
+        this.varAux = value;
+        this.itemListDimensaoAux = this.itemListDimensao.find(item => item.nome === this.varAux).campos[0].split(',')
+        sessionStorage.setItem("filtro_dimensao",value);
+        break;
+      case 'selectedItemDimensaoValor':
+        sessionStorage.setItem("filtro_valor",value);
+        break;
+      case 'selectedItemDimensaoComparador':
+        sessionStorage.setItem("comparador",value)
+        break;
+      case 'selectedItemDimensaoCampo2':
+        console.log("a: ",this.itemList);
+        console.log("b:",this.todosCampos);
+        console.log("c:",this.itemListDimensao)
+        
+        
+        sessionStorage.setItem("campo_dimensao_filtro",value)
+        break;
+      case 'selectedItemDimensao':
+        sessionStorage.setItem("campo_dimensao",value)
+        break;
+      case 'selectedFatoCampo':
+        sessionStorage.setItem("campo", value);
+        break;
+      case 'selectedDimensao':
+        this.todosCamposDimensao = []; 
+          
+        const dimensaoSelecionada = this.itemListDimensao.find(item => item.nome === value);
+        console.log("abacate: ",dimensaoSelecionada)
+        if (dimensaoSelecionada) {
+          this.todosCamposDimensao.push(...dimensaoSelecionada.campos.flatMap(campo => campo.split(',')));
+        }
+        sessionStorage.setItem("dimensao",value);
+        break;
+      case 'selectedFato':
+        sessionStorage.setItem("fato", value);
+        
+        this.filter();
+        break;
+      case 'selectedItem':
+        sessionStorage.setItem("tabela", value);
+        break;
+      case 'filterType':
+        sessionStorage.setItem("filterType", value);
+        break;
     }
-    
-    return [];
+
+    /*
+    const obj =   {
+      'description': 'Feedbacks recebidos',
+      "eixoX": {
+        "nome": fato ??   "fato_entrevista",
+        "campo": campo ??  "nr_entrevistas"
+      },
+      "eixoY": {
+        "nome": dimensao  ?? "dim_feedback",
+        "campo": campo_dimensao ?? "descricao"
+      },
+      "filtros": [
+        {
+          "nome": "dim_entrevista",
+          "campo": "dt_entrevista",
+          "comparador": ">=",
+          "valor": "2023-09-22"
+        }
+      ]
+    }
+
+    sessionStorage.setItem("campo",JSON.stringify(obj)) */
   }
-  
-  
-  
-      
-  
 }

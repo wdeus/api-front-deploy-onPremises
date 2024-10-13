@@ -14,7 +14,7 @@ export interface DashboardAxis{
 export interface DashboardFilter{
   nome: string;
   campo: string;
-  comparador: '<>' | '>' | '<' | '>=' | '<=' | '='
+  comparador:string;
   valor: string;
 }
 

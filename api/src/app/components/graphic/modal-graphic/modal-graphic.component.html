@@ -1,0 +1,121 @@
+<div class="custom-modal">
+    <div class="modal-header">
+      <h4 class="modal-title">Gerenciamento de Dashboard</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+    </div>
+  
+    <div class="modal-body">
+     
+  
+      <!-- Dimensão Filtro -->
+      <div class="card" >
+        <div class="card-body">
+          <label for="fatoSelect" class="form-label">Escolha um fato:</label>
+          <select id="fatoSelect" 
+                  (change)="onFatoChange($event.target.value)" 
+                  [(ngModel)]="selectedFato" 
+                  class="form-control mb-3">
+            <option value="" disabled>Selecione um fato</option>
+            <option value="fato_entrevista">Fato Entrevista</option>
+            <option value="fato_vaga">Fato Vaga</option>
+          </select>
+  
+          <label for="campoSelect" class="form-label mt-3">Escolha um campo da dimensão:</label>
+          <select id="campoSelect" 
+                  (change)="saveToSessionStorage('selectedFatoCampo', $event.target.value)" 
+                  [(ngModel)]="selectedFatoCampo" 
+                  class="form-control mb-3">
+            <option value="" disabled>Selecione um campo</option>
+            <option *ngFor="let campo of todosCampos" [value]="campo">{{ campo }}</option>
+          </select>
+        </div>
+      </div>
+  
+      <!-- Fato Filtro -->
+      <div class="card" *ngIf="filterType === 'fato'">
+        <div class="card-body">
+          <label for="campoSelect" class="form-label mt-3">Escolha um campo da fato:</label>
+          <select id="campoSelect" 
+                  (change)="saveToSessionStorage('selectedFatoCampo', $event.target.value)" 
+                  [(ngModel)]="selectedFatoCampo" 
+                  class="form-control mb-3">
+            <option value="" disabled>Selecione um campo</option>
+            <option *ngFor="let campo of todosCampos" [value]="campo">{{ campo }}</option>
+          </select>
+  
+          <label for="fatoSelect" class="form-label">Escolha um fato:</label>
+          <select id="fatoSelect" 
+                  (change)="onFatoChange($event.target.value)" 
+                  [(ngModel)]="selectedFato" 
+                  class="form-control mb-3">
+            <option value="" disabled>Selecione um fato</option>
+            <option value="fato_entrevista">Fato Entrevista</option>
+            <option value="fato_vaga">Fato Vaga</option>
+          </select>
+        </div>
+      </div>
+  
+      <!-- Tabelas Relacionadas a Fato Entrevista -->
+      <div class="card" *ngIf="selectedFato === 'fato_entrevista'">
+        <div class="card-body">
+          <label>Escolha uma tabela relacionada à dimensão:</label>
+          <ul class="list-group mt-3">
+            <li *ngFor="let item of itemList" class="list-group-item">
+              <div class="form-check">
+                <input 
+                  type="radio"   
+                  [value]="item.alias" 
+                  [(ngModel)]="selectedItem" 
+                  (change)="saveToSessionStorage('selectedItem', item.alias)" 
+                  class="form-check-input"
+                />
+                <label class="form-check-label" for="radio-{{item.alias}}">{{item.alias}}</label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="card" *ngIf="selectedFato === 'fato_vaga'">
+        <div class="card-body">
+          <label>Escolha uma tabela:</label>
+          <ul class="list-group mt-3">
+            <li *ngFor="let item of itemList" class="list-group-item">
+              <div class="form-check">
+                <input 
+                  type="radio"   
+                  [value]="item.alias" 
+                  [(ngModel)]="selectedItem" 
+                  (change)="saveToSessionStorage('selectedItem', item.alias)" 
+                  class="form-check-input"
+                />
+                <label class="form-check-label" for="radio-{{item.alias}}">{{item.alias}}</label>
+              </div>
+            </li>
+          </ul>
+  
+          <label class="mt-3">Escolha uma dimensão da fato:</label>
+          <ul class="list-group mt-3">
+            <li *ngFor="let item of itemList" class="list-group-item">
+              <div class="form-check">
+                <input 
+                  type="radio"   
+                  [value]="item.nome" 
+                  [(ngModel)]="selectedItemDimensao" 
+                  (change)="saveToSessionStorage('selectedItem', item.nome)" 
+                  class="form-check-input"
+                />
+                <label class="form-check-label" for="radio-{{item.nome}}">{{item.nome}}</label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Fechar</button>
+        <button type="button" class="btn btn-primary" (click)="configure()">Configurar</button>
+      </div>
+    </div>
+  </div>
+  

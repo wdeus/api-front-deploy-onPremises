@@ -11,6 +11,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalConfigComponent } from './dashboard/modal-config/modal-config.component';
+import { ModalGraphicComponent } from './components/graphic/modal-graphic/modal-graphic.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ModalConfigComponent } from './dashboard/modal-config/modal-config.comp
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    ModalConfigComponent
+    ModalConfigComponent,
+    ModalGraphicComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

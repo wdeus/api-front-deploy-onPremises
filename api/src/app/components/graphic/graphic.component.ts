@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalGraphicComponent } from './modal-graphic/modal-graphic.component';
 
 @Component({
   selector: 'app-graphic',
@@ -23,7 +25,9 @@ export class GraphicComponent implements OnInit, AfterViewInit {
   @Input() public lineChartLabels: Array<any>;
   @Input() public lineChartColors: Array<any>
 
-  constructor() { }
+  constructor(  
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
     this.lineChartOptions = this.createDefaultConfig();
@@ -137,5 +141,11 @@ export class GraphicComponent implements OnInit, AfterViewInit {
         }
       }
     };
+  }
+
+
+  openModal(){
+     const modalRef = this.modalService.open(ModalGraphicComponent);
+    modalRef.componentInstance.someInput = 'someValue'
   }
 }
