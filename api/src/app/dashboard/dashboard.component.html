@@ -17,7 +17,9 @@
 <div class="main-content" *ngIf="!isLoading">
   <div class="row">
 
+    
     <div class="col-lg-4" *ngFor="let card of cardData; let i = index">
+    
       <app-card-data 
         (click)="loadFiltersCard(card, i)" 
         [filters]="card.request.filtros" 

@@ -248,6 +248,8 @@ export class DashboardComponent implements OnInit {
     const filtro_dimensao_grafico = sessionStorage.getItem("filtro_dimensao_grafico_vagas_abertas")
   
     const grafico_id_selecionado = sessionStorage.getItem("grafico_id_selecionado");
+    const campo_obj = JSON.parse(sessionStorage.getItem("campo-obj") || '{}'); // Parse JSON
+
 
     if (idx == 1) {
       if(grafico_id_selecionado == 'chartOne'){
@@ -340,14 +342,14 @@ export class DashboardComponent implements OnInit {
     
     return {
       'description': 'Feedbacks recebidos',
-      "eixoX": {
-        "nome": fato ??   "fato_entrevista",
-        "campo": campo ??  "nr_entrevistas"
-      },
-      "eixoY": {
-        "nome": dimensao  ?? "dim_feedback",
-        "campo": campo_dimensao ?? "descricao"
-      },
+        eixoX: {
+            nome: campo_obj.eixoX?.nome ?? "fato_entrevista",
+            campo: campo_obj.eixoX?.campo ?? "nr_entrevistas"
+        },
+        eixoY: {
+            nome: campo_obj.eixoY?.nome ?? "dim_feedback",
+            campo: campo_obj.eixoY?.campo ?? "descricao"
+        },
       "filtros": [
         {
           
