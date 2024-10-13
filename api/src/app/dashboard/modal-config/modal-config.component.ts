@@ -139,6 +139,17 @@ export class ModalConfigComponent implements OnInit {
     
   }
 
+   formatarString(input: string): string {
+    if (input.startsWith('dim_')) {
+      input = input.substring(4);
+    }
+    
+    return input
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+
   saveToSessionStorage(key: string, value: any) {
     switch (key) {
       case 'selectedItemDimensaoCampo2Fato':
@@ -153,9 +164,6 @@ export class ModalConfigComponent implements OnInit {
         sessionStorage.setItem("comparador",value)
         break;
       case 'selectedItemDimensaoCampo2':
-        console.log("a: ",this.itemList);
-        console.log("b:",this.todosCampos);
-        console.log("c:",this.itemListDimensao)
         
         
         sessionStorage.setItem("campo_dimensao_filtro",value)
@@ -165,20 +173,30 @@ export class ModalConfigComponent implements OnInit {
         break;
       case 'selectedFatoCampo':
         sessionStorage.setItem("campo", value);
+        if(this.idXGrafico == 0 || this.idXGrafico == 1 || this.idXGrafico == 2){
+        sessionStorage.setItem("campo_card", value);
+      }
+        
         break;
       case 'selectedDimensao':
         this.todosCamposDimensao = []; 
           
         const dimensaoSelecionada = this.itemListDimensao.find(item => item.nome === value);
-        console.log("abacate: ",dimensaoSelecionada)
         if (dimensaoSelecionada) {
           this.todosCamposDimensao.push(...dimensaoSelecionada.campos.flatMap(campo => campo.split(',')));
+        }
+        
+        if(this.idXGrafico == 0 || this.idXGrafico == 1 || this.idXGrafico == 2){
+          sessionStorage.setItem("campo_card", value);
         }
         sessionStorage.setItem("dimensao",value);
         break;
       case 'selectedFato':
         sessionStorage.setItem("fato", value);
-        
+       
+        if(this.idXGrafico == 0 || this.idXGrafico == 1 || this.idXGrafico == 2){
+          sessionStorage.setItem("fato_card", value);
+        } 
         this.filter();
         break;
       case 'selectedItem':

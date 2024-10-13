@@ -139,12 +139,12 @@ export class DashboardComponent implements OnInit {
 
 
   createCardRequest(idx: number): DashboardRequest {
-    const campo = sessionStorage.getItem("campo")
+    const campo_card = sessionStorage.getItem("campo_card");
+      const fato_card = sessionStorage.getItem("fato_card");
+      
     const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas")
     if (idx == 1) {
       if(this.idXgraficoAux == 0){
-      const campo = sessionStorage.getItem("campo");
-      const fato = sessionStorage.getItem("fato");
       const dimensao = sessionStorage.getItem("dimensao");
       const campo_dimensao = sessionStorage.getItem("campo_dimensao");
       const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
@@ -156,8 +156,8 @@ export class DashboardComponent implements OnInit {
       return {
         'description': 'Vagas em aberto',
         'eixoX': {
-          'nome': fato ?? 'fato_vaga',
-          'campo': campo ?? 'nr_posicoes_abertas'
+          'nome': fato_card ?? 'fato_vaga',
+          'campo': campo_card  ?? 'nr_posicoes_abertas'
         },
         'filtros': []
       }
@@ -170,8 +170,6 @@ export class DashboardComponent implements OnInit {
 
       now.setDate(now.getDate() - 7)
 
-      const campo = sessionStorage.getItem("campo");
-      const fato = sessionStorage.getItem("fato");
       const dimensao = sessionStorage.getItem("dimensao");
       const campo_dimensao = sessionStorage.getItem("campo_dimensao");
       const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
@@ -184,8 +182,8 @@ export class DashboardComponent implements OnInit {
       return {
         'description': 'Entrevistas marcadas',
         'eixoX': {
-          'nome': fato ?? 'fato_entrevista',
-          'campo': campo ??   'nr_entrevistas'
+          'nome': fato_card ?? 'fato_entrevista',
+          'campo': campo_card ??   'nr_entrevistas'
         },
         'filtros': [
           {
@@ -202,8 +200,8 @@ export class DashboardComponent implements OnInit {
     return {
       'description': 'Feedbacks Totais',
       'eixoX': {
-        'nome': 'fato_entrevista',
-        'campo': 'nr_entrevistas'
+        'nome': fato_card ??  'fato_entrevista',
+        'campo': campo_card ?? 'nr_entrevistas'
       },
       'filtros': []
     }
