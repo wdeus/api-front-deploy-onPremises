@@ -10,6 +10,9 @@ import { catchError } from 'rxjs/operators';
 })
 export class ModalGraphicComponent implements OnInit {
   @Input() itemList: any;
+ 
+  @Input() public idx: number = 0;
+  @Input() public chartId: string = '';
   itemListDimensao:any;
   itemListDimensaoAux:any
   filterType: string = ''; 
@@ -32,7 +35,8 @@ export class ModalGraphicComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private httpService: HttpClient) { }
 
   ngOnInit(): void {
-  //  this.filter(); // Inicializa o filtro
+    
+    //  this.filter(); // Inicializa o filtro
   }
 
   close(): void {
@@ -141,13 +145,13 @@ export class ModalGraphicComponent implements OnInit {
       case 'selectedItemDimensaoCampo2Fato':
         this.varAux = value;
         this.itemListDimensaoAux = this.itemListDimensao.find(item => item.nome === this.varAux).campos[0].split(',')
-        sessionStorage.setItem("filtro_dimensao",value);
+        sessionStorage.setItem("filtro_dimensao_grafico_vagas_abertas",value);
         break;
       case 'selectedItemDimensaoValor':
-        sessionStorage.setItem("filtro_valor",value);
+        sessionStorage.setItem("filtro_valor_grafico_vagas_abertas",value);
         break;
       case 'selectedItemDimensaoComparador':
-        sessionStorage.setItem("comparador",value)
+        sessionStorage.setItem("comparador_grafico_vagas_abertas",value)
         break;
       case 'selectedItemDimensaoCampo2':
         console.log("a: ",this.itemList);
@@ -155,13 +159,13 @@ export class ModalGraphicComponent implements OnInit {
         console.log("c:",this.itemListDimensao)
         
         
-        sessionStorage.setItem("campo_dimensao_filtro",value)
+        sessionStorage.setItem("campo_dimensao_filtro_grafico_vagas_abertas",value)
         break;
       case 'selectedItemDimensao':
-        sessionStorage.setItem("campo_dimensao",value)
+        sessionStorage.setItem("campo_dimensao_grafico_vagas_abertas",value)
         break;
       case 'selectedFatoCampo':
-        sessionStorage.setItem("campo", value);
+        sessionStorage.setItem("campo_grafico_vagas_abertas", value);
         break;
       case 'selectedDimensao':
         this.todosCamposDimensao = []; 
@@ -171,53 +175,32 @@ export class ModalGraphicComponent implements OnInit {
         if (dimensaoSelecionada) {
           this.todosCamposDimensao.push(...dimensaoSelecionada.campos.flatMap(campo => campo.split(',')));
         }
-        sessionStorage.setItem("dimensao",value);
+        sessionStorage.setItem("dimensao_grafico_vagas_abertas",value);
         break;
       case 'selectedFato':
-        sessionStorage.setItem("fato", value);
+        sessionStorage.setItem("fato_grafico_vagas_abertas", value);
         
         this.filter();
         break;
       case 'selectedItem':
-        sessionStorage.setItem("tabela", value);
+        sessionStorage.setItem("tabela_grafico_vagas_abertas", value);
         break;
       case 'filterType':
         sessionStorage.setItem("filterType", value);
         break;
     }
 
-    const campo = sessionStorage.getItem("campo");
-    const fato = sessionStorage.getItem("fato");
-    const dimensao = sessionStorage.getItem("dimensao");
-    const campo_dimensao = sessionStorage.getItem("campo_dimensao");
-    const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
-    const comparador = sessionStorage.getItem("comparador");
-    const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
-    const valor = sessionStorage.getItem("valor");
-    const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
+    const campo_grafico = sessionStorage.getItem("campo_grafico_vagas_abertas");
+    const fato_grafico = sessionStorage.getItem("fato_grafico_vagas_abertas");
+    const dimensao_grafico = sessionStorage.getItem("dimensao_grafico_vagas_abertas");
+    const campo_dimensao_grafico = sessionStorage.getItem("campo_dimensao_grafico_vagas_abertas");
+    const campo_dimensao_filtro_grafico = sessionStorage.getItem("campo_dimensao_filtro_grafico_vagas_abertas")
+    const comparador_grafico = sessionStorage.getItem("comparador_grafico_vagas_abertas");
+    const campo_vagas_abertas_grafico = sessionStorage.getItem("campo_vagas_abertas_grafico_vagas_abertas");
+    const valor_grafico = sessionStorage.getItem("valor_grafico_vagas_abertas");
+    const filtro_dimensao_grafico = sessionStorage.getItem("filtro_dimensao_grafico_vagas_abertas")
     
-    const obj =   {
-      'description': 'Feedbacks recebidos',
-      "eixoX": {
-        "nome": fato ??   "fato_entrevista",
-        "campo": campo ??  "nr_entrevistas"
-      },
-      "eixoY": {
-        "nome": dimensao  ?? "dim_feedback",
-        "campo": campo_dimensao ?? "descricao"
-      },
-      "filtros": [
-        {
-          
-          "nome": filtro_dimensao ?? "dim_entrevista",
-          "campo": campo_dimensao_filtro ?? "dt_entrevista",
-          "comparador": comparador ?? ">=" ,
-          "valor": valor ?? "2023-09-22"
-        }
-      ]
-    }
 
-    sessionStorage.setItem("campo-obj",JSON.stringify(obj))
   }
 }
 

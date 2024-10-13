@@ -11,6 +11,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class ModalConfigComponent implements OnInit {
   @Input() itemList: any;
+  idXGrafico:any;
   itemListDimensao:any;
   itemListDimensaoAux:any
   filterType: string = ''; 

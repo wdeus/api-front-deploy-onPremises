@@ -32,8 +32,8 @@ export class DashboardComponent implements OnInit {
 
   cardData: { request: DashboardRequest, value: number }[] = [];
   itemList:FiltrosCampos[] = [];
-
-  
+  idXGrafico:string;
+  idXgraficoAux:number;
   constructor(
     private dashboardService: DashboardService,
     private httpService:HttpClient,
@@ -142,35 +142,61 @@ export class DashboardComponent implements OnInit {
     const campo = sessionStorage.getItem("campo")
     const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas")
     if (idx == 1) {
+      if(this.idXgraficoAux == 0){
+      const campo = sessionStorage.getItem("campo");
+      const fato = sessionStorage.getItem("fato");
+      const dimensao = sessionStorage.getItem("dimensao");
+      const campo_dimensao = sessionStorage.getItem("campo_dimensao");
+      const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
+      const comparador = sessionStorage.getItem("comparador");
+      const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
+      const valor = sessionStorage.getItem("valor");
+      const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
+      
       return {
         'description': 'Vagas em aberto',
         'eixoX': {
-          'nome': 'fato_vaga',
-          'campo': 'nr_posicoes_abertas'
+          'nome': fato ?? 'fato_vaga',
+          'campo': campo ?? 'nr_posicoes_abertas'
         },
         'filtros': []
       }
     }
+    }
 
     if (idx == 2) {
+      if(this.idXgraficoAux == 1){
       const now = new Date();
 
       now.setDate(now.getDate() - 7)
+
+      const campo = sessionStorage.getItem("campo");
+      const fato = sessionStorage.getItem("fato");
+      const dimensao = sessionStorage.getItem("dimensao");
+      const campo_dimensao = sessionStorage.getItem("campo_dimensao");
+      const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
+      const comparador = sessionStorage.getItem("comparador");
+      const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
+      const valor = sessionStorage.getItem("valor");
+      const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
+    
+      
       return {
         'description': 'Entrevistas marcadas',
         'eixoX': {
-          'nome': 'fato_entrevista',
-          'campo':   'nr_entrevistas'
+          'nome': fato ?? 'fato_entrevista',
+          'campo': campo ??   'nr_entrevistas'
         },
         'filtros': [
           {
-            'nome': 'dim_entrevista',
-            'campo': 'dt_entrevista',
-            'valor': now.toISOString().split('T')[0],
-            'comparador': '>='
+            'nome': filtro_dimensao ?? 'dim_entrevista',
+            'campo': campo_dimensao_filtro ?? 'dt_entrevista',
+            'valor': valor ??  now.toISOString().split('T')[0],
+            'comparador': comparador ?? '>='
           }
         ]
       }
+    }
     }
 
     return {
@@ -183,7 +209,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
+  captureCanvasIds(chartId: string): void {
+    const canvasId = chartId; 
+  
+    const canvas = document.getElementById(canvasId);
+    if (canvas) {
+      this.idXGrafico = canvas.id
+      sessionStorage.setItem("grafico_id_selecionado",this.idXGrafico)
+    } else {
+      alert('Canvas selecionado não encontrado.');
+    }
+  }
+  
+  
   
   createGraphicRequest(idx: number): DashboardRequest {
     const campo = sessionStorage.getItem("campo");
@@ -196,48 +234,110 @@ export class DashboardComponent implements OnInit {
     const valor = sessionStorage.getItem("valor");
     const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
     
+
+
+
+    const campo_grafico = sessionStorage.getItem("campo_grafico_vagas_abertas");
+    const fato_grafico = sessionStorage.getItem("fato_grafico_vagas_abertas");
+    const dimensao_grafico = sessionStorage.getItem("dimensao_grafico_vagas_abertas");
+    const campo_dimensao_grafico = sessionStorage.getItem("campo_dimensao_grafico_vagas_abertas");
+    const campo_dimensao_filtro_grafico = sessionStorage.getItem("campo_dimensao_filtro_grafico_vagas_abertas")
+    const comparador_grafico = sessionStorage.getItem("comparador_grafico_vagas_abertas");
+    const campo_vagas_abertas_grafico = sessionStorage.getItem("campo_vagas_abertas_grafico_vagas_abertas");
+    const valor_grafico = sessionStorage.getItem("valor_grafico_vagas_abertas");
+    const filtro_dimensao_grafico = sessionStorage.getItem("filtro_dimensao_grafico_vagas_abertas")
+  
+    const grafico_id_selecionado = sessionStorage.getItem("grafico_id_selecionado");
+
     if (idx == 1) {
+      if(grafico_id_selecionado == 'chartOne'){
       return {
         'description': 'Tempo medio do processo',
         "eixoX": {
-          "nome": "fato_vaga",
-          "campo":  "tempo_medio_processo"
+          "nome": fato ?? "fato_vaga",
+          "campo": campo ?? "tempo_medio_processo"
         },
         "eixoY": {
-          "nome": "dim_vaga",
-          "campo": "titulo"
+          "nome": dimensao ?? "dim_vaga",
+          "campo": campo_dimensao ?? "titulo"
         },
         "filtros": [
           {
-            "nome": "dim_periodo",
+            "nome": filtro_dimensao ??  "dim_periodo",
+            "campo":campo_dimensao_filtro ?? "dt_abertura",
+            "comparador":  comparador ?? ">=",
+            "valor": valor ?? "2000-09-22"
+          }
+        ]
+      }
+    }
+    else{
+      return {
+        'description': 'Tempo medio do processo',
+        "eixoX": {
+          "nome":  "fato_vaga",
+          "campo":  "tempo_medio_processo"
+        },
+        "eixoY": {
+          "nome":  "dim_vaga",
+          "campo":  "titulo"
+        },
+        "filtros": [
+          {
+            "nome":   "dim_periodo",
             "campo": "dt_abertura",
-            "comparador": ">=",
+            "comparador":   ">=",
             "valor": "2000-09-22"
           }
         ]
       }
     }
+    }
     if (idx == 2) {
+      if(grafico_id_selecionado == 'chartTwo'){
       return {
         'description':  'Numero de processos abertos nos ultimos 12 meses ' ,
         "eixoX": {
-          "nome": "fato_vaga",
-          "campo":   "nr_posicoes_abertas"
+          "nome": fato_grafico ?? "fato_vaga",
+          "campo":  campo_grafico ?? "nr_posicoes_abertas"
         },
         "eixoY": {
-          "nome": "dim_vaga",
-          "campo": "titulo"
+          "nome": dimensao_grafico ?? "dim_vaga",
+          "campo":  campo_dimensao_grafico ?? "titulo"
         },
         "filtros": [
           {
-            "nome": "dim_periodo",
-            "campo": "dt_abertura",
-            "comparador": ">=",
-            "valor": "2023-09-22"
+            "nome": filtro_dimensao_grafico ??  "dim_periodo",
+            "campo": campo_dimensao_filtro_grafico ?? "dt_abertura",
+            "comparador": comparador_grafico ?? ">=",
+            "valor": valor_grafico ?? "2023-09-22"
           }
         ]
       }
     }
+      else{
+        return {
+          'description':  'Numero de processos abertos nos ultimos 12 meses ' ,
+          "eixoX": {
+            "nome":  "fato_vaga",
+            "campo":   "nr_posicoes_abertas"
+          },
+          "eixoY": {
+            "nome":  "dim_vaga",
+            "campo":   "titulo"
+          },
+          "filtros": [
+            {
+              "nome":   "dim_periodo",
+              "campo":  "dt_abertura",
+              "comparador":  ">=",
+              "valor": "2023-09-22"
+            }
+          ]
+        }
+      }
+    }
+    
     return {
       'description': 'Feedbacks recebidos',
       "eixoX": {
@@ -299,23 +399,41 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  loadFiltersCard(card: any, index: number) {
+    const cardValue = card.value;
+    const modalRef = this.modalService.open(ModalConfigComponent, { 
+      size: 'lg', 
+      backdrop: 'static' 
+  });
 
+  this.idXgraficoAux = index
+  
+  modalRef.componentInstance.idXGrafico = index;
 
+    this.createCardRequest(index)
+
+  }
   
-  loadFilters() {
-    const modalRef = this.modalService.open(ModalConfigComponent, { size: 'lg', backdrop: 'static' });
+
+  loadFilters(chartId: string) {
+    const modalRef = this.modalService.open(ModalConfigComponent, { 
+      size: 'lg', 
+      backdrop: 'static' 
+  });
   
+  modalRef.componentInstance.idXGrafico = this.idXGrafico;
+    
     forkJoin({
       fato: this.httpService.get("http://localhost:8080/filtros/fato").pipe(
         catchError(error => {
           console.error('Erro ao buscar filtro fato:', error);
-          return of([]); // Use of() to return an observable
+          return of([]); // Retorna um observable vazio
         })
       ),
       dimensao: this.httpService.get("http://localhost:8080/filtros/dimensao").pipe(
         catchError(error => {
           console.error('Erro ao buscar filtro dimensao:', error);
-          return of([]); // Use of() to return an observable
+          return of([]); // Retorna um observable vazio
         })
       )
     }).subscribe({
@@ -323,20 +441,22 @@ export class DashboardComponent implements OnInit {
         this.dataFilterFato = responses.fato;
         this.dataFilterDimensao = responses.dimensao;
   
-        // Set itemList to the fetched data
         this.itemList = [...this.dataFilterFato, ...this.dataFilterDimensao];
-  
-        // Pass itemList to the modal instance
         modalRef.componentInstance.itemList = this.itemList;
   
         console.log("Resposta do filtro fato: ", this.dataFilterFato);
         console.log("Resposta do filtro dimensao: ", this.dataFilterDimensao);
+  
+        // Chama a função para capturar os IDs dos canvas do gráfico específico
+        this.captureCanvasIds(chartId);
       },
       error: (error) => {
         console.error('Erro ao carregar filtros:', error);
       }
     });
   }
+  
+  
 
   transform(items: any[], filter: string): any[] {
     if (!items || !filter) {

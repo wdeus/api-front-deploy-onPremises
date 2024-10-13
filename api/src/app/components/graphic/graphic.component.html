@@ -3,13 +3,11 @@
   <div class="card-header">
     <div class="d-flex justify-content-between">
       <h5 class="card-title">{{description}}</h5>
-      <button type="button" (click)="openModal()" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
-        ngbDropdownToggle>
-        <i class="now-ui-icons loader_gear"></i>
-      </button>
     </div>
   </div>
   <div class="card-body">
+   
+  
     <div class="chart-area">
       <canvas baseChart [id]="chartId" [datasets]="lineChartData" [labels]="lineChartLabels" [colors]="lineChartColors"
         [options]="lineChartOptions" [chartType]="lineChartType"></canvas>
