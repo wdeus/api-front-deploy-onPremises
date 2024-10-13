@@ -126,7 +126,7 @@ export class ModalConfigComponent implements OnInit {
           "nome": campo_dimensao_filtro ?? "dim_entrevista",
           "campo": filtro_dimensao ?? "dt_entrevista",
           "comparador": comparador ?? ">=",
-          "valor": valor ?? "2023-09-22"
+          "valor": String(valor) ?? "2023-09-22"
         }
       ]
     }
@@ -187,7 +187,16 @@ export class ModalConfigComponent implements OnInit {
         break;
     }
 
-    /*
+    const campo = sessionStorage.getItem("campo");
+    const fato = sessionStorage.getItem("fato");
+    const dimensao = sessionStorage.getItem("dimensao");
+    const campo_dimensao = sessionStorage.getItem("campo_dimensao");
+    const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
+    const comparador = sessionStorage.getItem("comparador");
+    const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
+    const valor = sessionStorage.getItem("valor");
+    const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
+    
     const obj =   {
       'description': 'Feedbacks recebidos',
       "eixoX": {
@@ -200,14 +209,15 @@ export class ModalConfigComponent implements OnInit {
       },
       "filtros": [
         {
-          "nome": "dim_entrevista",
-          "campo": "dt_entrevista",
-          "comparador": ">=",
-          "valor": "2023-09-22"
+          
+          "nome": filtro_dimensao ?? "dim_entrevista",
+          "campo": campo_dimensao_filtro ?? "dt_entrevista",
+          "comparador": comparador ?? ">=" ,
+          "valor": valor ?? "2023-09-22"
         }
       ]
     }
 
-    sessionStorage.setItem("campo",JSON.stringify(obj)) */
+    sessionStorage.setItem("campo-obj",JSON.stringify(obj))
   }
 }

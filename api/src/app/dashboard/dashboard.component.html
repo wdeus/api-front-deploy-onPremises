@@ -8,8 +8,6 @@
           ngbDropdownToggle>
     <i class="now-ui-icons loader_gear"></i>
   </button>
-
-  <!-- Gráfico principal -->
   <canvas baseChart id="mainChart" [datasets]="graphicOneParameter?.data" [labels]="graphicOneParameter?.labels"
     [colors]="graphicOneParameter?.colors" [options]="options" [chartType]="graphicOneParameter?.type">
   </canvas>
@@ -28,9 +26,11 @@
   <!-- Gráficos adicionais -->
   <div class="row">
     <div class="col-lg-6">
+        
       <app-graphic [description]="'Vagas abertas no ultimo ano'" chartId="chartOne" [lineChartType]="graphicTwoParameter.type"
         [lineChartData]="graphicTwoParameter.data" [lineChartColors]="graphicTwoParameter.colors" [idx]="1"
         [lineChartLabels]="graphicTwoParameter.labels"></app-graphic>
+    
     </div>
     <div class="col-lg-6">
       

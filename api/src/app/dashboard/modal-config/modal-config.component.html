@@ -9,7 +9,7 @@
     <!-- Dimensão Filtro -->
     <div class="card">
       <div class="card-body">
-        <label for="fatoSelect" class="form-label">Escolha um fato:</label>
+        <label for="fatoSelect" class="form-label">Escolha um  titulo para o eixo x:</label>
         <select id="fatoSelect" 
                 (change)="onFatoChange($event.target.value)" 
                 [(ngModel)]="selectedFato" 
@@ -21,7 +21,7 @@
     
 
 
-        <label for="dimensaoSelect" class="form-label mt-3">Escolha uma dimensão:</label>
+        <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor/campo para o eixo x:</label>
         <select id="dimensaoSelect" 
                 (change)="saveToSessionStorage('selectedDimensao', $event.target.value)" 
                 [(ngModel)]="selectedDimensao" 
@@ -30,7 +30,7 @@
           <option *ngFor="let dimensao of itemListDimensao" [value]="dimensao.nome">{{ dimensao.nome }}</option>
         </select>
 
-        <label for="campoSelect" class="form-label mt-3">Escolha um campo da fato:</label>
+        <label for="campoSelect" class="form-label mt-3">Escolha um titulo para o eixo y :</label>
         <select id="campoSelect" 
                 (change)="saveToSessionStorage('selectedFatoCampo', $event.target.value)" 
                 [(ngModel)]="selectedFatoCampo" 
@@ -40,7 +40,7 @@
         </select>
     
 
-        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um campo da dimensão:</label>
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um valor para o eixo y:</label>
         <select id="campoDimensaoSelect" 
                 (change)="saveToSessionStorage('selectedItemDimensao', $event.target.value)" 
                 [(ngModel)]="selectedItemDimensao" 
@@ -50,7 +50,7 @@
         </select>
 
         
-        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um campo da fato filtro em relacao a dimensao-fato:</label>
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um valor para o filtro em relacao ao eixo x e eixo y:</label>
         <select id="campoDimensaoSelect" 
                 (change)="saveToSessionStorage('selectedItemDimensaoCampo2Fato', $event.target.value)" 
                 [(ngModel)]="selectedItemDimensaoCampo2Fato" 
@@ -61,7 +61,7 @@
         </select>
 
         
-        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um campo da dimensão filtro:</label>
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um campo/valor para filtrar:</label>
         <select id="campoDimensaoSelect" 
                 (change)="saveToSessionStorage('selectedItemDimensaoCampo2', $event.target.value)" 
                 [(ngModel)]="selectedItemDimensaoCampo2" 

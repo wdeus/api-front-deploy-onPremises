@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
         'description': 'Vagas em aberto',
         'eixoX': {
           'nome': 'fato_vaga',
-          'campo': campo_vagas_abertas ??  'nr_posicoes_abertas'
+          'campo': 'nr_posicoes_abertas'
         },
         'filtros': []
       }
@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit {
         'description': 'Entrevistas marcadas',
         'eixoX': {
           'nome': 'fato_entrevista',
-          'campo':  campo ?? 'nr_entrevistas'
+          'campo':   'nr_entrevistas'
         },
         'filtros': [
           {
@@ -177,7 +177,7 @@ export class DashboardComponent implements OnInit {
       'description': 'Feedbacks Totais',
       'eixoX': {
         'nome': 'fato_entrevista',
-        'campo': campo ?? 'nr_entrevistas'
+        'campo': 'nr_entrevistas'
       },
       'filtros': []
     }
