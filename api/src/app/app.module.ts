@@ -12,6 +12,7 @@ import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalConfigComponent } from './dashboard/modal-config/modal-config.component';
 import { ModalGraphicComponent } from './components/graphic/modal-graphic/modal-graphic.component';
+import { ModalCardComponent } from './dashboard/modal-card/modal-card.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ModalGraphicComponent } from './components/graphic/modal-graphic/modal-
     AppComponent,
     AdminLayoutComponent,
     ModalConfigComponent,
-    ModalGraphicComponent
+    ModalGraphicComponent,
+    ModalCardComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -35,7 +35,6 @@ export class ModalConfigComponent implements OnInit {
 
   ngOnInit(): void {
   //  this.filter(); // Inicializa o filtro
-  alert(this.idXGrafico)
   }
 
   close(): void {

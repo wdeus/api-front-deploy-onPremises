@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { ModalConfigComponent } from './modal-config/modal-config.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError } from 'rxjs/operators';
+import { ModalCardComponent } from './modal-card/modal-card.component';
 
 
 @Component({
@@ -139,10 +140,8 @@ export class DashboardComponent implements OnInit {
 
 
   createCardRequest(idx: number): DashboardRequest {
-    const campo_card = sessionStorage.getItem("campo_card");
-      const fato_card = sessionStorage.getItem("fato_card");
-      
-    const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas")
+    const filtroEixoX = sessionStorage.getItem('filtro_eixoX');
+    const selectedDimensao = sessionStorage.getItem('selectedDimensao');
     if (idx == 1) {
       if(this.idXgraficoAux == 0){
       const dimensao = sessionStorage.getItem("dimensao");
@@ -156,8 +155,8 @@ export class DashboardComponent implements OnInit {
       return {
         'description': 'Vagas em aberto',
         'eixoX': {
-          'nome': fato_card ?? 'fato_vaga',
-          'campo': campo_card  ?? 'nr_posicoes_abertas'
+          'nome': filtroEixoX ?? 'fato_vaga',
+          'campo': selectedDimensao  ?? 'nr_posicoes_abertas'
         },
         'filtros': []
       }
@@ -170,27 +169,19 @@ export class DashboardComponent implements OnInit {
 
       now.setDate(now.getDate() - 7)
 
-      const dimensao = sessionStorage.getItem("dimensao");
-      const campo_dimensao = sessionStorage.getItem("campo_dimensao");
-      const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
-      const comparador = sessionStorage.getItem("comparador");
-      const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
-      const valor = sessionStorage.getItem("valor");
-      const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
-    
       
       return {
         'description': 'Entrevistas marcadas',
         'eixoX': {
-          'nome': fato_card ?? 'fato_entrevista',
-          'campo': campo_card ??   'nr_entrevistas'
+          'nome': filtroEixoX ?? 'fato_entrevista',
+          'campo': selectedDimensao ??   'nr_entrevistas'
         },
         'filtros': [
           {
-            'nome': filtro_dimensao ?? 'dim_entrevista',
-            'campo': campo_dimensao_filtro ?? 'dt_entrevista',
-            'valor': valor ??  now.toISOString().split('T')[0],
-            'comparador': comparador ?? '>='
+            'nome': filtroEixoX ?? 'dim_entrevista',
+            'campo': selectedDimensao ?? 'dt_entrevista',
+            'valor':   now.toISOString().split('T')[0],
+            'comparador':  '>='
           }
         ]
       }
@@ -200,8 +191,8 @@ export class DashboardComponent implements OnInit {
     return {
       'description': 'Feedbacks Totais',
       'eixoX': {
-        'nome': fato_card ??  'fato_entrevista',
-        'campo': campo_card ?? 'nr_entrevistas'
+        'nome': filtroEixoX ??  'fato_entrevista',
+        'campo': selectedDimensao ?? 'nr_entrevistas'
       },
       'filtros': []
     }
@@ -337,27 +328,27 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
-    
     return {
       'description': 'Feedbacks recebidos',
         eixoX: {
-            nome: campo_obj.eixoX?.nome ?? "fato_entrevista",
-            campo: campo_obj.eixoX?.campo ?? "nr_entrevistas"
+            nome: campo_obj.eixoX?.nome || "fato_entrevista",
+            campo: campo_obj.eixoX?.campo || "nr_entrevistas"
         },
         eixoY: {
-            nome: campo_obj.eixoY?.nome ?? "dim_feedback",
-            campo: campo_obj.eixoY?.campo ?? "descricao"
+            nome: campo_obj.eixoY?.nome || "dim_feedback",
+            campo: campo_obj.eixoY?.campo || "descricao"
         },
       "filtros": [
         {
           
-          "nome": filtro_dimensao ?? "dim_entrevista",
-          "campo": campo_dimensao_filtro ?? "dt_entrevista",
-          "comparador": comparador ?? ">=" ,
-          "valor": valor ?? "2023-09-22"
+          "nome": filtro_dimensao || "dim_entrevista",
+          "campo": campo_dimensao_filtro || "dt_entrevista",
+          "comparador": comparador || ">=" ,
+          "valor": valor || "2023-09-22"
         }
       ]
     }
+  
   }
 
 
@@ -401,12 +392,13 @@ export class DashboardComponent implements OnInit {
 
   loadFiltersCard(card: any, index: number) {
     const cardValue = card.value;
-    const modalRef = this.modalService.open(ModalConfigComponent, { 
+    const modalRef = this.modalService.open(ModalCardComponent, { 
       size: 'lg', 
       backdrop: 'static' 
   });
 
   this.idXgraficoAux = index
+  sessionStorage.setItem("card_index",String(this.idXgraficoAux));
   
   modalRef.componentInstance.idXGrafico = index;
 
@@ -420,6 +412,7 @@ export class DashboardComponent implements OnInit {
       size: 'lg', 
       backdrop: 'static' 
   });
+  alert(chartId)
   
   modalRef.componentInstance.idXGrafico = this.idXGrafico;
     
