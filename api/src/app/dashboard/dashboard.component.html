@@ -2,7 +2,7 @@
 <div class="panel-header panel-header-lg" style="position: relative;">
   <!-- Botão posicionado dentro do cabeçalho do painel -->
   <button type="button"
-          (click)="loadFilters('chartOne')"
+          (click)="loadFilters('1')"
           class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret float-right responsive-button"
           style="position: absolute; margin-bottom: 50px; right: 20px;"
           ngbDropdownToggle>
@@ -32,28 +32,27 @@
   </div>
   
   <!-- Gráficos adicionais -->
-  <div class="row">
-    <div class="col-lg-6">
-      <button type="button" (click)="loadFilters('chartTwo')" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
-      ngbDropdownToggle>
-      <i class="now-ui-icons loader_gear"></i>
-  
-    </button>
-      <app-graphic [description]="'Vagas abertas no ultimo ano'" chartId="chartOne" [lineChartType]="graphicTwoParameter.type"
-        [lineChartData]="graphicTwoParameter.data" [lineChartColors]="graphicTwoParameter.colors" [idx]="1"
-        [lineChartLabels]="graphicTwoParameter.labels"></app-graphic>
-    
-    </div>
-    <div class="col-lg-6">
-      <button type="button" (click)="loadFilters('chartThree')" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
-      ngbDropdownToggle>
-      <i class="now-ui-icons loader_gear"></i>
-  
-    </button>
-      <app-graphic chartId="chartTwo" [description]="'Feedbacks por descricao'" [lineChartType]="graphicThreeParameter.type"
-        [lineChartData]="graphicThreeParameter.data" [lineChartColors]="graphicThreeParameter.colors" [idx]="2"
-        [lineChartLabels]="graphicThreeParameter.labels"></app-graphic>
-    </div>
+  <!-- Gráficos adicionais -->
+<div class="row">
+  <div class="col-lg-6">
+    <app-graphic [description]="'Vagas abertas no ultimo ano'" chartId="chartOne" 
+                  [lineChartType]="graphicTwoParameter.type"
+                  [lineChartData]="graphicTwoParameter.data" 
+                  [lineChartColors]="graphicTwoParameter.colors" 
+                  [idx]="1"
+                  [lineChartLabels]="graphicTwoParameter.labels">
+    </app-graphic>
   </div>
+  <div class="col-lg-6">
+    <app-graphic chartId="chartTwo" [description]="'Feedbacks por descricao'" 
+                  [lineChartType]="graphicThreeParameter.type"
+                  [lineChartData]="graphicThreeParameter.data" 
+                  [lineChartColors]="graphicThreeParameter.colors" 
+                  [idx]="2"
+                  [lineChartLabels]="graphicThreeParameter.labels">
+    </app-graphic>
+  </div>
+</div>
+
 </div>
 

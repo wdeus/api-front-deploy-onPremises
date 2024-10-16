@@ -1,12 +1,22 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalGraphicComponent } from './modal-graphic/modal-graphic.component';
+import { catchError } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+interface FiltrosCamposGraphics{
+  nome:string;
+  campos: string[];
+  alias:string;
 
+}
 @Component({
   selector: 'app-graphic',
   templateUrl: './graphic.component.html',
   styleUrls: ['./graphic.component.scss']
 })
+
+
 export class GraphicComponent implements OnInit, AfterViewInit {
   public gradientStroke: any;
   public chartColor = "#FFFFFF";
@@ -24,8 +34,15 @@ export class GraphicComponent implements OnInit, AfterViewInit {
   @Input() public lineChartData: Array<any>;
   @Input() public lineChartLabels: Array<any>;
   @Input() public lineChartColors: Array<any>
-
-  constructor(  
+  itemList:FiltrosCamposGraphics[] = [];
+  idXGrafico:string;
+  idXgraficoAux:number;
+  private dataFilterFato:any;
+  
+  private dataFilterDimensao:any;
+ 
+  constructor( 
+    private httpService: HttpClient, 
     private modalService: NgbModal
   ) { }
 
@@ -91,6 +108,23 @@ export class GraphicComponent implements OnInit, AfterViewInit {
     this.gradientFill = this.ctx.createLinearGradient(0, 170, 0, 50);
     this.gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
     this.gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+  }
+
+  
+  loadFilters(chartId: string) {
+    sessionStorage.setItem("chart",chartId)
+  }
+
+  
+  captureCanvasIds(chartId: string): void {
+    const canvasId = chartId; 
+  
+    const canvas = document.getElementById(canvasId);
+    if (canvas) {
+      this.idXGrafico = canvas.id
+      sessionStorage.setItem("grafico_id_selecionado",this.idXGrafico)
+    } else {
+    }
   }
 
   createDefaultConfig() {

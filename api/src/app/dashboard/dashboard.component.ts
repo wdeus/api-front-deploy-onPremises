@@ -1,6 +1,6 @@
 import { Component, OnInit, Pipe } from '@angular/core';
-import { forkJoin, of } from 'rxjs';
-import { DashboardRequest, FiltrosCampos } from '../models/dashboard-request.model';
+import { forkJoin, of, Subject } from 'rxjs';
+import { DashboardFilter, DashboardRequest, FiltrosCampos } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
 import { DashboardService } from '../services/dashboard.service';
 import { CardData } from '../services/dashboard.service';
@@ -23,7 +23,11 @@ export class DashboardComponent implements OnInit {
   public gradientFill: any;
   public options: any;
   private dataFilterFato:any;
-  
+  private chartChangeSubject = new Subject<void>();
+  private currentChart: string | null = sessionStorage.getItem("chart");
+  private intervalId: any;
+
+
   private dataFilterDimensao:any;
   graphicOneParameter?: GraphicParameters;
   graphicTwoParameter?: GraphicParameters;
@@ -45,8 +49,28 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
     this.chartColor = "#FFFFFF";
     this.loadData();
+
+    //ao detectar mudanca no chart chamar a funcao loadfilter
+    this.subscribeToChartChanges();
+    this.startMonitoringChart();
   }
 
+  private subscribeToChartChanges(): void {
+    this.chartChangeSubject.subscribe(() => {
+      const chart = sessionStorage.getItem("chart");
+      this.loadFilters(chart)      // Adicione sua lógica adicional aqui
+    });
+  }
+
+  private startMonitoringChart(): void {
+    this.intervalId = setInterval(() => {
+      const newChart = sessionStorage.getItem("chart");
+      if (newChart !== this.currentChart) {
+        this.currentChart = newChart;
+        this.chartChangeSubject.next(); // Notifica sobre a mudança
+      }
+    }, 500); // Verifica a cada 500 ms
+  }
   createGraphic(title: string, color: 'orange' | 'green', labels: string[], data: number[]) {
     const colorObj = color == 'green' ? {
       borderColor: "#18ce0f",
@@ -140,23 +164,27 @@ export class DashboardComponent implements OnInit {
 
 
   createCardRequest(idx: number): DashboardRequest {
-    const filtroEixoX = sessionStorage.getItem('filtro_eixoX');
-    const selectedDimensao = sessionStorage.getItem('selectedDimensao');
+    const card_index = sessionStorage.getItem("card_index")
     if (idx == 1) {
-      if(this.idXgraficoAux == 0){
-      const dimensao = sessionStorage.getItem("dimensao");
-      const campo_dimensao = sessionStorage.getItem("campo_dimensao");
-      const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
-      const comparador = sessionStorage.getItem("comparador");
-      const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
-      const valor = sessionStorage.getItem("valor");
-      const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
-      
+      const filtro0 = JSON.parse(sessionStorage.getItem("filtro0")) as DashboardRequest;
+
+      if(card_index == '0'){
+     
       return {
         'description': 'Vagas em aberto',
         'eixoX': {
-          'nome': filtroEixoX ?? 'fato_vaga',
-          'campo': selectedDimensao  ?? 'nr_posicoes_abertas'
+          'nome': filtro0.eixoX.nome ,
+          'campo': filtro0.eixoX.campo
+        },
+        'filtros': []
+      }
+    }
+    else{
+      return {
+        'description': 'Vagas em aberto',
+        'eixoX': {
+                 'nome': 'fato_vaga',
+          'campo':  'nr_posicoes_abertas'
         },
         'filtros': []
       }
@@ -164,7 +192,9 @@ export class DashboardComponent implements OnInit {
     }
 
     if (idx == 2) {
-      if(this.idXgraficoAux == 1){
+      const filtro1 = JSON.parse(sessionStorage.getItem("filtro1")) as DashboardRequest;
+
+      if(card_index == '1'){
       const now = new Date();
 
       now.setDate(now.getDate() - 7)
@@ -173,13 +203,35 @@ export class DashboardComponent implements OnInit {
       return {
         'description': 'Entrevistas marcadas',
         'eixoX': {
-          'nome': filtroEixoX ?? 'fato_entrevista',
-          'campo': selectedDimensao ??   'nr_entrevistas'
+          'nome': filtro1.eixoX.nome ,
+          'campo': filtro1.eixoX.campo
         },
         'filtros': [
           {
-            'nome': filtroEixoX ?? 'dim_entrevista',
-            'campo': selectedDimensao ?? 'dt_entrevista',
+            'nome': filtro1.filtros[0].nome ,
+            'campo': filtro1.filtros[0].campo,
+            'valor': filtro1.filtros[0].valor,
+            'comparador':  filtro1.filtros[0].comparador
+          }
+        ]
+      }
+    }
+    else{
+      const now = new Date();
+
+      now.setDate(now.getDate() - 7)
+
+      
+      return {
+        'description': 'Entrevistas marcadas',
+        'eixoX': {
+          'nome':   'fato_entrevista',
+          'campo':    'nr_entrevistas'
+        },
+        'filtros': [
+          {
+            'nome':   'dim_entrevista',
+            'campo':  'dt_entrevista',
             'valor':   now.toISOString().split('T')[0],
             'comparador':  '>='
           }
@@ -187,15 +239,31 @@ export class DashboardComponent implements OnInit {
       }
     }
     }
+    if(card_index == '2'){
+   
+      const filtro2 = JSON.parse(sessionStorage.getItem("filtro2")) as DashboardRequest;
 
-    return {
+      return {
       'description': 'Feedbacks Totais',
       'eixoX': {
-        'nome': filtroEixoX ??  'fato_entrevista',
-        'campo': selectedDimensao ?? 'nr_entrevistas'
+        'nome': filtro2.eixoX.nome ,
+        'campo': filtro2.eixoX.campo
+
       },
       'filtros': []
     }
+    }
+    else{
+     return {
+      'description': 'Feedbacks Totais',
+      'eixoX': {
+        'nome':   'fato_entrevista',
+        'campo':  'nr_entrevistas'
+      },
+      'filtros': []
+    }
+    }
+
   }
 
   captureCanvasIds(chartId: string): void {
@@ -206,61 +274,18 @@ export class DashboardComponent implements OnInit {
       this.idXGrafico = canvas.id
       sessionStorage.setItem("grafico_id_selecionado",this.idXGrafico)
     } else {
-      alert('Canvas selecionado não encontrado.');
     }
   }
   
   
   
   createGraphicRequest(idx: number): DashboardRequest {
-    const campo = sessionStorage.getItem("campo");
-    const fato = sessionStorage.getItem("fato");
-    const dimensao = sessionStorage.getItem("dimensao");
-    const campo_dimensao = sessionStorage.getItem("campo_dimensao");
-    const campo_dimensao_filtro = sessionStorage.getItem("campo_dimensao_filtro")
-    const comparador = sessionStorage.getItem("comparador");
-    const campo_vagas_abertas = sessionStorage.getItem("campo_vagas_abertas");
-    const valor = sessionStorage.getItem("valor");
-    const filtro_dimensao = sessionStorage.getItem("filtro_dimensao")
-    
-
-
-
-    const campo_grafico = sessionStorage.getItem("campo_grafico_vagas_abertas");
-    const fato_grafico = sessionStorage.getItem("fato_grafico_vagas_abertas");
-    const dimensao_grafico = sessionStorage.getItem("dimensao_grafico_vagas_abertas");
-    const campo_dimensao_grafico = sessionStorage.getItem("campo_dimensao_grafico_vagas_abertas");
-    const campo_dimensao_filtro_grafico = sessionStorage.getItem("campo_dimensao_filtro_grafico_vagas_abertas")
-    const comparador_grafico = sessionStorage.getItem("comparador_grafico_vagas_abertas");
-    const campo_vagas_abertas_grafico = sessionStorage.getItem("campo_vagas_abertas_grafico_vagas_abertas");
-    const valor_grafico = sessionStorage.getItem("valor_grafico_vagas_abertas");
-    const filtro_dimensao_grafico = sessionStorage.getItem("filtro_dimensao_grafico_vagas_abertas")
-  
     const grafico_id_selecionado = sessionStorage.getItem("grafico_id_selecionado");
-    const campo_obj = JSON.parse(sessionStorage.getItem("campo-obj") || '{}'); // Parse JSON
-
 
     if (idx == 1) {
-      if(grafico_id_selecionado == 'chartOne'){
-      return {
-        'description': 'Tempo medio do processo',
-        "eixoX": {
-          "nome": fato ?? "fato_vaga",
-          "campo": campo ?? "tempo_medio_processo"
-        },
-        "eixoY": {
-          "nome": dimensao ?? "dim_vaga",
-          "campo": campo_dimensao ?? "titulo"
-        },
-        "filtros": [
-          {
-            "nome": filtro_dimensao ??  "dim_periodo",
-            "campo":campo_dimensao_filtro ?? "dt_abertura",
-            "comparador":  comparador ?? ">=",
-            "valor": valor ?? "2000-09-22"
-          }
-        ]
-      }
+      if(grafico_id_selecionado == '1'){
+        const grafico1 = JSON.parse(sessionStorage.getItem("grafico1")) as DashboardRequest;
+        return grafico1;
     }
     else{
       return {
@@ -285,26 +310,10 @@ export class DashboardComponent implements OnInit {
     }
     }
     if (idx == 2) {
-      if(grafico_id_selecionado == 'chartTwo'){
-      return {
-        'description':  'Numero de processos abertos nos ultimos 12 meses ' ,
-        "eixoX": {
-          "nome": fato_grafico ?? "fato_vaga",
-          "campo":  campo_grafico ?? "nr_posicoes_abertas"
-        },
-        "eixoY": {
-          "nome": dimensao_grafico ?? "dim_vaga",
-          "campo":  campo_dimensao_grafico ?? "titulo"
-        },
-        "filtros": [
-          {
-            "nome": filtro_dimensao_grafico ??  "dim_periodo",
-            "campo": campo_dimensao_filtro_grafico ?? "dt_abertura",
-            "comparador": comparador_grafico ?? ">=",
-            "valor": valor_grafico ?? "2023-09-22"
-          }
-        ]
-      }
+      if(grafico_id_selecionado == '2'){
+        const grafico2 = JSON.parse(sessionStorage.getItem("grafico2")) as DashboardRequest;
+        return grafico2;
+  
     }
       else{
         return {
@@ -327,26 +336,34 @@ export class DashboardComponent implements OnInit {
           ]
         }
       }
+    
     }
+    if(grafico_id_selecionado == '3'){
+      const grafico2 = JSON.parse(sessionStorage.getItem("grafico3")) as DashboardRequest;
+      return grafico2;    
+    }
+    else{
+      
     return {
       'description': 'Feedbacks recebidos',
         eixoX: {
-            nome: campo_obj.eixoX?.nome || "fato_entrevista",
-            campo: campo_obj.eixoX?.campo || "nr_entrevistas"
+            nome:   "fato_entrevista",
+            campo:  "nr_entrevistas"
         },
         eixoY: {
-            nome: campo_obj.eixoY?.nome || "dim_feedback",
-            campo: campo_obj.eixoY?.campo || "descricao"
+            nome:  "dim_feedback",
+            campo:  "descricao"
         },
       "filtros": [
         {
           
-          "nome": filtro_dimensao || "dim_entrevista",
-          "campo": campo_dimensao_filtro || "dt_entrevista",
-          "comparador": comparador || ">=" ,
-          "valor": valor || "2023-09-22"
+          "nome":   "dim_entrevista",
+          "campo":  "dt_entrevista",
+          "comparador":  ">=" ,
+          "valor":  "2023-09-22"
         }
       ]
+    }
     }
   
   }
@@ -391,12 +408,15 @@ export class DashboardComponent implements OnInit {
   }
 
   loadFiltersCard(card: any, index: number) {
+    
     const cardValue = card.value;
+    
     const modalRef = this.modalService.open(ModalCardComponent, { 
       size: 'lg', 
       backdrop: 'static' 
   });
 
+  alert(index)
   this.idXgraficoAux = index
   sessionStorage.setItem("card_index",String(this.idXgraficoAux));
   
@@ -408,11 +428,14 @@ export class DashboardComponent implements OnInit {
   
 
   loadFilters(chartId: string) {
+  
+   const chart = sessionStorage.getItem("chart")
+   if(chart == '1'){
+  
     const modalRef = this.modalService.open(ModalConfigComponent, { 
       size: 'lg', 
       backdrop: 'static' 
   });
-  alert(chartId)
   
   modalRef.componentInstance.idXGrafico = this.idXGrafico;
     
@@ -447,6 +470,45 @@ export class DashboardComponent implements OnInit {
         console.error('Erro ao carregar filtros:', error);
       }
     });
+  }else{
+    
+    const modalRef = this.modalService.open(ModalConfigComponent, { 
+      size: 'lg', 
+      backdrop: 'static' 
+  });
+  
+  modalRef.componentInstance.idXGrafico = this.idXGrafico;
+    
+    forkJoin({
+      fato: this.httpService.get("http://localhost:8080/filtros/fato").pipe(
+        catchError(error => {
+          console.error('Erro ao buscar filtro fato:', error);
+          return of([]); // Retorna um observable vazio
+        })
+      ),
+      dimensao: this.httpService.get("http://localhost:8080/filtros/dimensao").pipe(
+        catchError(error => {
+          console.error('Erro ao buscar filtro dimensao:', error);
+          return of([]); // Retorna um observable vazio
+        })
+      )
+    }).subscribe({
+      next: (responses) => {
+        this.dataFilterFato = responses.fato;
+        this.dataFilterDimensao = responses.dimensao;
+  
+        this.itemList = [...this.dataFilterFato, ...this.dataFilterDimensao];
+        modalRef.componentInstance.itemList = this.itemList;
+  
+  
+        // Chama a função para capturar os IDs dos canvas do gráfico específico
+        this.captureCanvasIds(chartId);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar filtros:', error);
+      }
+    });
+  }
   }
   
   

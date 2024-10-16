@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app.routing';
@@ -21,7 +21,8 @@ import { ModalCardComponent } from './dashboard/modal-card/modal-card.component'
     RouterModule,
     AppRoutingModule,
     ComponentsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,
@@ -29,6 +30,7 @@ import { ModalCardComponent } from './dashboard/modal-card/modal-card.component'
     ModalConfigComponent,
     ModalGraphicComponent,
     ModalCardComponent
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

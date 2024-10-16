@@ -1,113 +1,103 @@
 <div class="custom-modal">
-    <div class="modal-header">
-      <h4 class="modal-title">Gerenciamento de Dashboard</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+  <div class="modal-header">
+    <h4 class="modal-title">Gerenciamento de Dashboard</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="card" *ngIf="idXGrafico == 0">
+      <div class="card-body">
+        <label for="fatoSelect" class="form-label">Escolha o eixo x:</label>
+        <select id="fatoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('nome')">
+          <option value="" disabled>Selecione um fato</option>
+          <option *ngFor="let fato of fatos" [value]="fato.nome">{{fato.alias}}</option>
+        </select>
+
+        <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor para o eixo x:</label>
+        <select id="dimensaoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('campo')">
+          <option value="" disabled>Selecione um campo</option>
+          <option *ngFor="let campo of fatosCampos" [value]="campo">{{ formatarString(campo) }}
+          </option>
+        </select>
+      </div>
     </div>
-  
-    <div class="modal-body">
-      <!-- Dimensão Filtro -->
-      <div class="card" *ngIf="varAuxCard == '0'">
-        <div class="card-body">
-          <label for="fatoSelect" class="form-label">Escolha um título para o eixo x:</label>
-          <select id="fatoSelect" 
-                  (change)="saveSelectedValue('filtro_eixoX', $event.target.value)" 
-                  [(ngModel)]="selectedFato" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione um fato</option>
-            <option value="fato_entrevista">Fato Entrevista</option>
-            <option value="fato_vaga">Fato Vaga</option>
-          </select>
-  
-          <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor/campo para o eixo x:</label>
-          <select id="dimensaoSelect" 
-                  (change)="saveSelectedValue('selectedDimensao_filtro', $event.target.value)" 
-                  [(ngModel)]="selectedDimensao" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione uma dimensão</option>
-            <option *ngFor="let dimensao of itemListDimensao" [value]="dimensao.nome">{{ formatarString(dimensao.nome) }}</option>
-          </select>
-        </div>
+
+    <div class="card" *ngIf="idXGrafico == 1">
+      <div class="card-body">
+        <label for="fatoSelect" class="form-label">Escolha o eixo x:</label>
+        <select id="fatoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('nome')">
+          <option value="" disabled>Selecione um fato</option>
+          <option *ngFor="let fato of fatos" [value]="fato.nome">{{fato.alias}}</option>
+        </select>
+
+        <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor para o eixo x:</label>
+        <select id="dimensaoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('campo')">
+          <option value="" disabled>Selecione um campo</option>
+          <option *ngFor="let campo of fatosCampos" [value]="campo">{{ formatarString(campo) }}
+          </option>
+        </select>
+
+
+
+
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha o filtro :</label>
+        <select id="campoDimensaoSelect" class="form-control mb-3"
+          [formControl]="form.controls.filtros.get('0').get('nome')">
+          <option value="" disabled>Selecione um campo</option>
+
+          <option *ngFor="let d of dimensao" [value]="d.nome">{{ d.alias }}</option>
+        </select>
+
+
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um campo/valor para filtrar:</label>
+        <select id="campoDimensaoSelect" class="form-control mb-3"
+          [formControl]="form.controls.filtros.get('0').get('campo')">
+          <option value="" disabled>Selecione um campo</option>
+          <option *ngFor="let campo of filtroCampos" [value]="campo">{{ formatarString(campo) }}</option>
+        </select>
+
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um comparador:</label>
+        <select id="campoDimensaoSelect" class="form-control mb-3"
+          [formControl]="form.controls.filtros.get('0').get('comparador')">
+          <option value="" disabled>Selecione um campo</option>
+          <option value="=">=</option>
+          <option value=">=">>=</option>
+          <option value="<=">
+            <= </option>
+          <option value=">">></option>
+          <option value="<">
+            < </option>
+        </select>
+
+        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um valor do filtro:</label>
+        <input id="campoDimensaoSelect" class="form-control mb-3"
+          [formControl]="form.controls.filtros.get('0').get('valor')" />
+
       </div>
-  
-      <div class="card" *ngIf="varAuxCard == '1'">
-        <div class="card-body">
-          <label for="fatoSelect" class="form-label">Escolha um título para o eixo x:</label>
-          <select id="fatoSelect" 
-                  (change)="saveSelectedValue('filtro_eixoX', $event.target.value)" 
-                  [(ngModel)]="selectedFato" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione um fato</option>
-            <option value="fato_entrevista">Fato Entrevista</option>
-            <option value="fato_vaga">Fato Vaga</option>
-          </select>
-  
-          <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor/campo para o eixo x:</label>
-          <select id="dimensaoSelect" 
-                  (change)="saveSelectedValue('selectedDimensao_filtro', $event.target.value)" 
-                  [(ngModel)]="selectedDimensao" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione uma dimensão</option>
-            <option *ngFor="let dimensao of itemListDimensao" [value]="dimensao.nome">{{ formatarString(dimensao.nome) }}</option>
-          </select>
-  
-          <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um campo/valor para filtrar:</label>
-          <select id="campoDimensaoSelect" 
-                  (change)="saveSelectedValue('selectedItemDimensaoCampo2_filtro', $event.target.value)" 
-                  [(ngModel)]="selectedItemDimensaoCampo2" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione um campo</option>
-            <option *ngFor="let campo of itemListDimensaoAux" [value]="campo">{{ formatarString(campo) }}</option>
-          </select>
-  
-          <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um comparador:</label>
-          <select id="campoDimensaoSelect" 
-                  (change)="saveSelectedValue('selectedItemDimensaoComparador_filtro', $event.target.value)" 
-                  [(ngModel)]="selectedItemDimensaoComparador" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione um campo</option>
-            <option value="=">=</option>
-            <option value=">=">>=</option>
-            <option value="<="><=</option>
-            <option value=">">></option>
-            <option value="<"><</option>
-          </select>
-  
-          <label for="campoDimensaoValor" class="form-label mt-3">Escolha um valor do filtro:</label>
-          <input id="campoDimensaoValor" 
-                 (change)="saveSelectedValue('selectedItemDimensaoValor_filtro', $event.target.value)" 
-                 [(ngModel)]="selectedItemDimensaoValor" 
-                 class="form-control mb-3" />
-        </div>
+    </div>
+
+    <div class="card" *ngIf="idXGrafico == 2">
+      <div class="card-body">
+        <label for="fatoSelect" class="form-label">Escolha o eixo x:</label>
+        <select id="fatoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('nome')">
+          <option value="" disabled>Selecione um fato</option>
+          <option *ngFor="let fato of fatos" [value]="fato.nome">{{fato.alias}}</option>
+        </select>
+
+        <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor para o eixo x:</label>
+        <select id="dimensaoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('campo')">
+          <option value="" disabled>Selecione um campo</option>
+          <option *ngFor="let campo of fatosCampos" [value]="campo">{{ formatarString(campo) }}
+          </option>
+        </select>
       </div>
-  
-      <div class="card" *ngIf="varAuxCard == '2'">
-        <div class="card-body">
-          <label for="fatoSelect" class="form-label">Escolha um título para o eixo x:</label>
-          <select id="fatoSelect" 
-                  (change)="saveSelectedValue('filtro_eixoX', $event.target.value)" 
-                  [(ngModel)]="selectedFato" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione um fato</option>
-            <option value="fato_entrevista">Fato Entrevista</option>
-            <option value="fato_vaga">Fato Vaga</option>
-          </select>
-  
-          <label for="dimensaoSelect" class="form-label mt-3">Escolha um valor/campo para o eixo x:</label>
-          <select id="dimensaoSelect" 
-                  (change)="saveSelectedValue('selectedDimensao', $event.target.value)" 
-                  [(ngModel)]="selectedDimensao" 
-                  class="form-control mb-3">
-            <option value="" disabled>Selecione uma dimensão</option>
-            <option *ngFor="let dimensao of itemListDimensao" [value]="dimensao.nome">{{ formatarString(dimensao.nome) }}</option>
-          </select>
-  
-        </div>
-      </div>
-  
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="close()">Fechar</button>
-        <button type="button" class="btn btn-primary" (click)="configure()">Configurar</button>
-      </div>
+    </div>
+
+
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="close()">Fechar</button>
+      <button type="button" class="btn btn-primary" (click)="configure()">Configurar</button>
     </div>
   </div>
-  
+</div>

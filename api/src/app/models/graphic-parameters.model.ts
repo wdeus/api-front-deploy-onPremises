@@ -4,3 +4,11 @@ export interface GraphicParameters {
   labels: string[],
   colors: any[]
 }
+
+
+export interface FiltrosCamposGraphics{
+  nome:string;
+  campos: string[];
+  alias:string;
+
+}
