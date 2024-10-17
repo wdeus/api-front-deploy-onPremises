@@ -14,4 +14,9 @@ export class KeyIndicatorsService {
     const url = `${environment.apiUrl}indicadores`;
     return this.httpClient.get<KeyIndicator[]>(url);
   }
+
+  saveIndicadorData(data: any): Observable<any> {
+    return this.httpClient.post<any>(`${environment.apiUrl}indicadores`, data);  // Faz o POST e retorna um Observable
+  }
 }
+
