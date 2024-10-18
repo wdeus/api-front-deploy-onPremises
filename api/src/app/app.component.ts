@@ -12,8 +12,8 @@ export class AppComponent implements OnInit {
     constructor(private http: HttpClient) { }
 
     ngOnInit(): void {
-        setTimeout(() => {
-            this.http.post(environment + '/notificacoes', { usuario: 'admin' }).subscribe()
+        setInterval(() => {
+            this.http.post(environment.apiUrl + 'notificacoes', { usuario: 'admin' }).subscribe()
         }, 60000)
     }
 }
