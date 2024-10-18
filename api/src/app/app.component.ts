@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         setTimeout(() => {
-            this.http.post(environment + '/notificacoes', { indicador: 'admin' }).subscribe()
+            this.http.post(environment + '/notificacoes', { usuario: 'admin' }).subscribe()
         }, 60000)
     }
 }

@@ -1,13 +1,11 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalGraphicComponent } from './modal-graphic/modal-graphic.component';
-import { catchError } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-interface FiltrosCamposGraphics{
-  nome:string;
+import { ModalConfigComponent } from '../../dashboard/modal-config/modal-config.component';
+interface FiltrosCamposGraphics {
+  nome: string;
   campos: string[];
-  alias:string;
+  alias: string;
 
 }
 @Component({
@@ -34,15 +32,11 @@ export class GraphicComponent implements OnInit, AfterViewInit {
   @Input() public lineChartData: Array<any>;
   @Input() public lineChartLabels: Array<any>;
   @Input() public lineChartColors: Array<any>
-  itemList:FiltrosCamposGraphics[] = [];
-  idXGrafico:string;
-  idXgraficoAux:number;
-  private dataFilterFato:any;
-  
-  private dataFilterDimensao:any;
- 
-  constructor( 
-    private httpService: HttpClient, 
+  itemList: FiltrosCamposGraphics[] = [];
+  idXGrafico: string;
+  idXgraficoAux: number;
+
+  constructor(
     private modalService: NgbModal
   ) { }
 
@@ -110,23 +104,6 @@ export class GraphicComponent implements OnInit, AfterViewInit {
     this.gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
   }
 
-  
-  loadFilters(chartId: string) {
-    sessionStorage.setItem("chart",chartId)
-  }
-
-  
-  captureCanvasIds(chartId: string): void {
-    const canvasId = chartId; 
-  
-    const canvas = document.getElementById(canvasId);
-    if (canvas) {
-      this.idXGrafico = canvas.id
-      sessionStorage.setItem("grafico_id_selecionado",this.idXGrafico)
-    } else {
-    }
-  }
-
   createDefaultConfig() {
     return {
       maintainAspectRatio: false,
@@ -178,8 +155,9 @@ export class GraphicComponent implements OnInit, AfterViewInit {
   }
 
 
-  openModal(){
-     const modalRef = this.modalService.open(ModalGraphicComponent);
-    modalRef.componentInstance.someInput = 'someValue'
+  openModal() {
+    let modalRef = this.modalService.open(ModalConfigComponent);
+    modalRef.componentInstance.idXGrafico = this.idx
+    modalRef.componentInstance.tipo = 'grafico'
   }
 }

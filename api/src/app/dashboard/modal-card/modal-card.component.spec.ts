@@ -51,7 +51,7 @@ describe('ModalCardComponent', () => {
 
 
   it('deve buscar dimensao quando onFatoChange for chamado', () => {
-    const mockFatos = [{ nome: 'fato_entrevista'  }];
+    const mockFatos = [{ nome: 'fato_entrevista' }];
     component.ngOnInit();
     const reqFatos = httpMock.expectOne('http://localhost:8080/filtros/fatos');
     reqFatos.flush(mockFatos);

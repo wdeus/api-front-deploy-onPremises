@@ -1,14 +1,10 @@
 import { Component, OnInit, Pipe } from '@angular/core';
 import { forkJoin, of, Subject } from 'rxjs';
-import { DashboardFilter, DashboardRequest, FiltrosCampos } from '../models/dashboard-request.model';
+import { DashboardRequest, FiltrosCampos } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
 import { DashboardService } from '../services/dashboard.service';
-import { CardData } from '../services/dashboard.service';
-import { HttpClient } from '@angular/common/http';
-import { ModalConfigComponent } from './modal-config/modal-config.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { catchError } from 'rxjs/operators';
-import { ModalCardComponent } from './modal-card/modal-card.component';
+import { ModalConfigComponent } from './modal-config/modal-config.component';
 
 
 @Component({
@@ -22,13 +18,7 @@ export class DashboardComponent implements OnInit {
   public ctx: any;
   public gradientFill: any;
   public options: any;
-  private dataFilterFato:any;
-  private chartChangeSubject = new Subject<void>();
-  private currentChart: string | null = sessionStorage.getItem("chart");
-  private intervalId: any;
 
-
-  private dataFilterDimensao:any;
   graphicOneParameter?: GraphicParameters;
   graphicTwoParameter?: GraphicParameters;
   graphicThreeParameter?: GraphicParameters;
@@ -36,9 +26,9 @@ export class DashboardComponent implements OnInit {
   isLoading: boolean = true;
 
   cardData: { request: DashboardRequest, value: number }[] = [];
-  itemList:FiltrosCampos[] = [];
-  idXGrafico:string;
-  idXgraficoAux:number;
+  itemList: FiltrosCampos[] = [];
+  idXGrafico: string;
+  idXgraficoAux: number;
   constructor(
     private dashboardService: DashboardService,
     private modalService: NgbModal
@@ -48,28 +38,8 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
     this.chartColor = "#FFFFFF";
     this.loadData();
-
-    //ao detectar mudanca no chart chamar a funcao loadfilter
-    this.subscribeToChartChanges();
-    this.startMonitoringChart();
   }
 
-  private subscribeToChartChanges(): void {
-    this.chartChangeSubject.subscribe(() => {
-      const chart = sessionStorage.getItem("chart");
-      this.loadFilters(chart)     
-    });
-  }
-
-  private startMonitoringChart(): void {
-    this.intervalId = setInterval(() => {
-      const newChart = sessionStorage.getItem("chart");
-      if (newChart !== this.currentChart) {
-        this.currentChart = newChart;
-        this.chartChangeSubject.next();
-      }
-    }, 500); 
-  }
   createGraphic(title: string, color: 'orange' | 'green', labels: string[], data: number[]) {
     const colorObj = color == 'green' ? {
       borderColor: "#18ce0f",
@@ -84,10 +54,10 @@ export class DashboardComponent implements OnInit {
     }
 
     return {
+      description: title,
       labels: labels,
       data: [
         {
-          label: title,
           pointBorderWidth: 2,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 1,
@@ -158,213 +128,151 @@ export class DashboardComponent implements OnInit {
       type: 'line'
     }
   }
-  
- 
-
 
   createCardRequest(idx: number): DashboardRequest {
-    const card_index = sessionStorage.getItem("card_index")
     if (idx == 1) {
-      const filtro0 = JSON.parse(sessionStorage.getItem("filtro0")) as DashboardRequest;
+      const cardOne = JSON.parse(sessionStorage.getItem("card1")) as DashboardRequest;
 
-      if(card_index == '0'){
-     
-      return {
-        'description': 'Vagas em aberto',
-        'eixoX': {
-          'nome': filtro0.eixoX.nome ,
-          'campo': filtro0.eixoX.campo
-        },
-        'filtros': []
+      if (cardOne) {
+        return cardOne
       }
-    }
-    else{
-      return {
-        'description': 'Vagas em aberto',
-        'eixoX': {
-                 'nome': 'fato_vaga',
-          'campo':  'nr_posicoes_abertas'
-        },
-        'filtros': []
-      }
-    }
-    }
-
-    if (idx == 2) {
-      const filtro1 = JSON.parse(sessionStorage.getItem("filtro1")) as DashboardRequest;
-
-      if(card_index == '1'){
-      const now = new Date();
-
-      now.setDate(now.getDate() - 7)
-
-      
-      return {
-        'description': 'Entrevistas marcadas',
-        'eixoX': {
-          'nome': filtro1.eixoX.nome ,
-          'campo': filtro1.eixoX.campo
-        },
-        'filtros': [
-          {
-            'nome': filtro1.filtros[0].nome ,
-            'campo': filtro1.filtros[0].campo,
-            'valor': filtro1.filtros[0].valor,
-            'comparador':  filtro1.filtros[0].comparador
-          }
-        ]
-      }
-    }
-    else{
-      const now = new Date();
-
-      now.setDate(now.getDate() - 7)
-
-      
-      return {
-        'description': 'Entrevistas marcadas',
-        'eixoX': {
-          'nome':   'fato_entrevista',
-          'campo':    'nr_entrevistas'
-        },
-        'filtros': [
-          {
-            'nome':   'dim_entrevista',
-            'campo':  'dt_entrevista',
-            'valor':   now.toISOString().split('T')[0],
-            'comparador':  '>='
-          }
-        ]
-      }
-    }
-    }
-    if(card_index == '2'){
-   
-      const filtro2 = JSON.parse(sessionStorage.getItem("filtro2")) as DashboardRequest;
-
-      return {
-      'description': 'Feedbacks Totais',
-      'eixoX': {
-        'nome': filtro2.eixoX.nome ,
-        'campo': filtro2.eixoX.campo
-
-      },
-      'filtros': []
-    }
-    }
-    else{
-     return {
-      'description': 'Feedbacks Totais',
-      'eixoX': {
-        'nome':   'fato_entrevista',
-        'campo':  'nr_entrevistas'
-      },
-      'filtros': []
-    }
-    }
-
-  }
-
-  captureCanvasIds(chartId: string): void {
-    const canvasId = chartId; 
-  
-    const canvas = document.getElementById(canvasId);
-    if (canvas) {
-      this.idXGrafico = canvas.id
-      sessionStorage.setItem("grafico_id_selecionado",this.idXGrafico)
-    } else {
-    }
-  }
-  
-  
-  
-  createGraphicRequest(idx: number): DashboardRequest {
-    const grafico_id_selecionado = sessionStorage.getItem("grafico_id_selecionado");
-
-    if (idx == 1) {
-      if(grafico_id_selecionado == '1'){
-        const grafico1 = JSON.parse(sessionStorage.getItem("grafico1")) as DashboardRequest;
-        return grafico1;
-    }
-    else{
-      return {
-        'description': 'Tempo medio do processo',
-        "eixoX": {
-          "nome":  "fato_vaga",
-          "campo":  "tempo_medio_processo"
-        },
-        "eixoY": {
-          "nome":  "dim_vaga",
-          "campo":  "titulo"
-        },
-        "filtros": [
-          {
-            "nome":   "dim_periodo",
-            "campo": "dt_abertura",
-            "comparador":   ">=",
-            "valor": "2000-09-22"
-          }
-        ]
-      }
-    }
-    }
-    if (idx == 2) {
-      if(grafico_id_selecionado == '2'){
-        const grafico2 = JSON.parse(sessionStorage.getItem("grafico2")) as DashboardRequest;
-        return grafico2;
-  
-    }
-      else{
+      else {
         return {
-          'description':  'Numero de processos abertos nos ultimos 12 meses ' ,
+          'description': 'Vagas em aberto',
+          'eixoX': {
+            'nome': 'fato_vaga',
+            'campo': 'nr_posicoes_abertas'
+          },
+          'filtros': []
+        }
+      }
+    }
+
+    if (idx == 2) {
+      const cardTwo = JSON.parse(sessionStorage.getItem("card2")) as DashboardRequest;
+
+      if (cardTwo) {
+        return cardTwo
+      }
+      else {
+        const now = new Date();
+        now.setDate(now.getDate() - 7)
+
+        return {
+          'description': 'Entrevistas marcadas',
+          'eixoX': {
+            'nome': 'fato_entrevista',
+            'campo': 'nr_entrevistas'
+          },
+          'filtros': [
+            {
+              'nome': 'dim_entrevista',
+              'campo': 'dt_entrevista',
+              'valor': now.toISOString().split('T')[0],
+              'comparador': '>='
+            }
+          ]
+        }
+      }
+    }
+
+    const cardThree = JSON.parse(sessionStorage.getItem("card3")) as DashboardRequest;
+    if (cardThree) {
+      return cardThree
+    }
+
+    return {
+      'description': 'Feedbacks Totais',
+      'eixoX': {
+        'nome': 'fato_entrevista',
+        'campo': 'nr_entrevistas'
+      },
+      'filtros': []
+    }
+  }
+
+  createGraphicRequest(idx: number): DashboardRequest {
+
+    if (idx == 1) {
+      const grafico1 = JSON.parse(sessionStorage.getItem("grafico1")) as DashboardRequest;
+      if (grafico1) {
+        return grafico1;
+      }
+      else {
+        return {
+          'description': 'Tempo medio do processo',
           "eixoX": {
-            "nome":  "fato_vaga",
-            "campo":   "nr_posicoes_abertas"
+            "nome": "fato_vaga",
+            "campo": "tempo_medio_processo"
           },
           "eixoY": {
-            "nome":  "dim_vaga",
-            "campo":   "titulo"
+            "nome": "dim_vaga",
+            "campo": "titulo"
           },
           "filtros": [
             {
-              "nome":   "dim_periodo",
-              "campo":  "dt_abertura",
-              "comparador":  ">=",
+              "nome": "dim_periodo",
+              "campo": "dt_abertura",
+              "comparador": ">=",
+              "valor": "2000-09-22"
+            }
+          ]
+        }
+      }
+    }
+    if (idx == 2) {
+      const grafico2 = JSON.parse(sessionStorage.getItem("grafico2")) as DashboardRequest;
+      if (grafico2) {
+        return grafico2;
+      }
+      else {
+        return {
+          'description': 'Numero de processos abertos nos ultimos 12 meses ',
+          "eixoX": {
+            "nome": "fato_vaga",
+            "campo": "nr_posicoes_abertas"
+          },
+          "eixoY": {
+            "nome": "dim_vaga",
+            "campo": "titulo"
+          },
+          "filtros": [
+            {
+              "nome": "dim_periodo",
+              "campo": "dt_abertura",
+              "comparador": ">=",
               "valor": "2023-09-22"
             }
           ]
         }
       }
-    
     }
-    if(grafico_id_selecionado == '3'){
-      const grafico2 = JSON.parse(sessionStorage.getItem("grafico3")) as DashboardRequest;
-      return grafico2;    
+
+    const grafico2 = JSON.parse(sessionStorage.getItem("grafico3")) as DashboardRequest;
+    if (grafico2) {
+      return grafico2;
     }
-    else{
-      
+
     return {
       'description': 'Feedbacks recebidos',
-        eixoX: {
-            nome:   "fato_entrevista",
-            campo:  "nr_entrevistas"
-        },
-        eixoY: {
-            nome:  "dim_feedback",
-            campo:  "descricao"
-        },
+      eixoX: {
+        nome: "fato_entrevista",
+        campo: "nr_entrevistas"
+      },
+      eixoY: {
+        nome: "dim_feedback",
+        campo: "descricao"
+      },
       "filtros": [
         {
-          
-          "nome":   "dim_entrevista",
-          "campo":  "dt_entrevista",
-          "comparador":  ">=" ,
-          "valor":  "2023-09-22"
+
+          "nome": "dim_entrevista",
+          "campo": "dt_entrevista",
+          "comparador": ">=",
+          "valor": "2023-09-22"
         }
       ]
     }
-    }
-  
   }
 
 
@@ -406,59 +314,10 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  loadFiltersCard(card: any, index: number) {
-    
-    const cardValue = card.value;
-    
-    const modalRef = this.modalService.open(ModalCardComponent, { 
-      size: 'lg', 
-      backdrop: 'static' 
-  });
-
-  alert(index)
-  this.idXgraficoAux = index
-  sessionStorage.setItem("card_index",String(this.idXgraficoAux));
-  
-  modalRef.componentInstance.idXGrafico = index;
-
-    this.createCardRequest(index)
+  openModal() {
+    let modalRef = this.modalService.open(ModalConfigComponent);
+    modalRef.componentInstance.idXGrafico = 1
+    modalRef.componentInstance.tipo = 'grafico'
 
   }
-  
-
-  loadFilters(chartId: string) {
-  
-   const chart = sessionStorage.getItem("chart")
-   if(chart == '1'){
-  
-    const modalRef = this.modalService.open(ModalConfigComponent, { 
-      size: 'lg', 
-      backdrop: 'static' 
-  });
-  
-  modalRef.componentInstance.idXGrafico = this.idXGrafico;
-
-  }else{
-    
-    const modalRef = this.modalService.open(ModalConfigComponent, { 
-      size: 'lg', 
-      backdrop: 'static' 
-  });
-  
-  modalRef.componentInstance.idXGrafico = this.idXGrafico;
-  }
-  }
-  
-  
-
-  transform(items: any[], filter: string): any[] {
-    if (!items || !filter) {
-      return items;
-    }
-    return items.filter(item => 
-      item.alias.toLowerCase().includes(filter.toLowerCase()) || 
-      item.nome.toLowerCase().includes(filter.toLowerCase())
-    );
-  }
-  
 }

@@ -7,6 +7,9 @@
   <div class="modal-body">
     <div class="card">
       <div class="card-body">
+        <label for="fatoSelect" class="form-label">Descricao:</label>
+        <input [formControl]="form.controls.description" class="form-control mb-3">
+
         <label for="fatoSelect" class="form-label">Escolha o eixo x:</label>
         <select id="fatoSelect" class="form-control mb-3" [formControl]="form.controls.eixoX.get('nome')">
           <option value="" disabled>Selecione um fato</option>
@@ -20,15 +23,18 @@
           </option>
         </select>
 
-        <label for="campoSelect" class="form-label mt-3">Escolha o eixo y :</label>
-        <select id="campoSelect" class="form-control mb-3" [formControl]="form.controls.eixoY.get('nome')">
+        <label for="campoSelect" *ngIf="tipo != 'card'" class="form-label mt-3">Escolha o eixo y :</label>
+        <select id="campoSelect" class="form-control mb-3" *ngIf="tipo != 'card'"
+          [formControl]="form.controls.eixoY.get('nome')">
           <option value="" disabled>Selecione um campo</option>
           <option *ngFor="let d of dimensao" [value]="d.nome">{{ d.alias }}</option>
         </select>
 
 
-        <label for="campoDimensaoSelect" class="form-label mt-3">Escolha um valor para o eixo y:</label>
-        <select id="campoDimensaoSelect" class="form-control mb-3" [formControl]="form.controls.eixoY.get('campo')">
+        <label for="campoDimensaoSelect" *ngIf="tipo != 'card'" class="form-label mt-3">Escolha um valor para o eixo
+          y:</label>
+        <select id="campoDimensaoSelect" *ngIf="tipo != 'card'" class="form-control mb-3"
+          [formControl]="form.controls.eixoY.get('campo')">
           <option value="" disabled>Selecione um campo</option>
           <option *ngFor="let campo of dimensaoCampos" [value]="campo">{{ formatarString(campo) }}</option>
         </select>

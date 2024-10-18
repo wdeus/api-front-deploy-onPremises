@@ -1,8 +1,6 @@
-<!-- Cabeçalho do painel com botão no canto direito -->
 <div class="panel-header panel-header-lg" style="position: relative;">
-  <!-- Botão posicionado dentro do cabeçalho do painel -->
   <button type="button"
-          (click)="loadFilters('1')"
+          (click)="openModal()"
           class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret float-right responsive-button"
           style="position: absolute; margin-bottom: 50px; right: 20px;"
           ngbDropdownToggle>
@@ -17,38 +15,36 @@
 <div class="main-content" *ngIf="!isLoading">
   <div class="row">
 
-    
+
     <div class="col-lg-4" *ngFor="let card of cardData; let i = index">
-    
-      <app-card-data 
-        (click)="loadFiltersCard(card, i)" 
-        [filters]="card.request.filtros" 
-        [description]="card.request.description" 
+
+      <app-card-data
+        [filters]="card.request.filtros"
+        [description]="card.request.description"
         [value]="card.value"
-        [id]="i"> 
+        [idx]="i+1"
+        [id]="i">
       </app-card-data>
     </div>
-    
+
   </div>
-  
-  <!-- Gráficos adicionais -->
-  <!-- Gráficos adicionais -->
+
 <div class="row">
   <div class="col-lg-6">
-    <app-graphic [description]="'Vagas abertas no ultimo ano'" chartId="chartOne" 
+    <app-graphic [description]="graphicTwoParameter.description" chartId="chartOne"
                   [lineChartType]="graphicTwoParameter.type"
-                  [lineChartData]="graphicTwoParameter.data" 
-                  [lineChartColors]="graphicTwoParameter.colors" 
-                  [idx]="1"
+                  [lineChartData]="graphicTwoParameter.data"
+                  [lineChartColors]="graphicTwoParameter.colors"
+                  [idx]="2"
                   [lineChartLabels]="graphicTwoParameter.labels">
     </app-graphic>
   </div>
   <div class="col-lg-6">
-    <app-graphic chartId="chartTwo" [description]="'Feedbacks por descricao'" 
+    <app-graphic chartId="chartTwo" [description]="graphicThreeParameter.description"
                   [lineChartType]="graphicThreeParameter.type"
-                  [lineChartData]="graphicThreeParameter.data" 
-                  [lineChartColors]="graphicThreeParameter.colors" 
-                  [idx]="2"
+                  [lineChartData]="graphicThreeParameter.data"
+                  [lineChartColors]="graphicThreeParameter.colors"
+                  [idx]="3"
                   [lineChartLabels]="graphicThreeParameter.labels">
     </app-graphic>
   </div>

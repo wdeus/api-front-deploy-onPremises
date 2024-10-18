@@ -42,7 +42,7 @@ xdescribe('ModalGraphicComponent', () => {
   });
 
   it('deve buscar filtros de fato com sucesso', () => {
-    const mockResponse = [{ nome: 'fato_entrevista'}];
+    const mockResponse = [{ nome: 'fato_entrevista' }];
     component.filter();
 
     const req = httpTestingController.expectOne('http://localhost:8080/filtros/fatos');
@@ -51,7 +51,7 @@ xdescribe('ModalGraphicComponent', () => {
 
     expect(component.dataFilterFato).toEqual(mockResponse);
     expect(component.itemList).toEqual(mockResponse[0]);
-    
+
   });
 
   it('deve lidar com erro ao buscar filtros de fato', () => {
@@ -66,5 +66,5 @@ xdescribe('ModalGraphicComponent', () => {
   });
 
 
- 
+
 });
