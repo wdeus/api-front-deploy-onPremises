@@ -10,16 +10,16 @@ import { catchError } from 'rxjs/operators';
 })
 export class ModalGraphicComponent implements OnInit {
   @Input() itemList: any;
- 
+
   @Input() public idx: number = 0;
   @Input() public chartId: string = '';
   itemListDimensao:any;
   itemListDimensaoAux:any
-  filterType: string = ''; 
+  filterType: string = '';
   dataFilterFato: any[] = [];
   dataFilterDimensao: any[] = [];
-  selectedFato: string | undefined; 
-  selectedItem: string | undefined; 
+  selectedFato: string | undefined;
+  selectedItem: string | undefined;
   selectedFatoCampo: string | undefined;
   todosCampos: string[] = [];
   todosCamposDimensao: string[] = [];
@@ -35,7 +35,7 @@ export class ModalGraphicComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private httpService: HttpClient) { }
 
   ngOnInit(): void {
-    
+
     //  this.filter(); // Inicializa o filtro
   }
 
@@ -43,24 +43,24 @@ export class ModalGraphicComponent implements OnInit {
     this.activeModal.dismiss('Modal closed');
   }
 
-  
+
   filter(): void {
     let request;
-  
+
       request = this.httpService.get("http://localhost:8080/filtros/fatos").pipe(
         catchError(error => {
           console.error('Erro ao buscar filtro fato:', error);
           return of([]);
         })
       );
-     
-  
+
+
     request.subscribe({
       next: (responses) => {
           this.dataFilterFato = responses;
-          
+
           this.itemList = responses.find(item => item.nome == this.selectedFato);
-          
+
           this.todosCampos = this.itemList.campos[0].split(',');
         },
       error: (error) => {
@@ -70,10 +70,10 @@ export class ModalGraphicComponent implements OnInit {
   }
 
   onFatoChange(selectedValue: string): void {
-   
+
     this.selectedFato = selectedValue;
     this.saveToSessionStorage('selectedFato', this.selectedFato);
-    
+
     const request = this.httpService.get(`http://localhost:8080/filtros/dimensoes?fato=${this.selectedFato}`).pipe(
       catchError(error => {
         console.error('Erro ao buscar filtro de dimensões:', error);
@@ -83,11 +83,11 @@ export class ModalGraphicComponent implements OnInit {
 
     request.subscribe({
       next: (responses) => {
-        this.itemListDimensao = responses; 
-        this.todosCamposDimensao = []; 
-        
+        this.itemListDimensao = responses;
+        this.todosCamposDimensao = [];
+
         this.itemListDimensao.forEach(item => {
-          this.todosCamposDimensao.push(...item.campos.flatMap(campo => campo.split(','))); 
+          this.todosCamposDimensao.push(...item.campos.flatMap(campo => campo.split(',')));
         });
       },
       error: (error) => {
@@ -105,7 +105,7 @@ export class ModalGraphicComponent implements OnInit {
   configure(): void {
       const selectedData = this.filterType === 'dimensao' ? this.dataFilterDimensao : this.dataFilterFato;
       const campos = selectedData.find(item => item.nome === this.selectedItem)?.alias;
-     
+
     const campo = sessionStorage.getItem("campo");
     const fato = sessionStorage.getItem("fato");
     const dimensao = sessionStorage.getItem("dimensao");
@@ -134,10 +134,10 @@ export class ModalGraphicComponent implements OnInit {
       ]
     }
 
-    sessionStorage.setItem("campo-obj",JSON.stringify(obj)) 
-      window.location.reload()   
+    sessionStorage.setItem("campo-obj",JSON.stringify(obj))
+      //window.location.reload()
 
-    
+
   }
 
   saveToSessionStorage(key: string, value: any) {
@@ -157,8 +157,8 @@ export class ModalGraphicComponent implements OnInit {
         console.log("a: ",this.itemList);
         console.log("b:",this.todosCampos);
         console.log("c:",this.itemListDimensao)
-        
-        
+
+
         sessionStorage.setItem("campo_dimensao_filtro_grafico_vagas_abertas",value)
         break;
       case 'selectedItemDimensao':
@@ -168,8 +168,8 @@ export class ModalGraphicComponent implements OnInit {
         sessionStorage.setItem("campo_grafico_vagas_abertas", value);
         break;
       case 'selectedDimensao':
-        this.todosCamposDimensao = []; 
-          
+        this.todosCamposDimensao = [];
+
         const dimensaoSelecionada = this.itemListDimensao.find(item => item.nome === value);
         console.log("abacate: ",dimensaoSelecionada)
         if (dimensaoSelecionada) {
@@ -179,7 +179,7 @@ export class ModalGraphicComponent implements OnInit {
         break;
       case 'selectedFato':
         sessionStorage.setItem("fato_grafico_vagas_abertas", value);
-        
+
         this.filter();
         break;
       case 'selectedItem':
@@ -199,7 +199,7 @@ export class ModalGraphicComponent implements OnInit {
     const campo_vagas_abertas_grafico = sessionStorage.getItem("campo_vagas_abertas_grafico_vagas_abertas");
     const valor_grafico = sessionStorage.getItem("valor_grafico_vagas_abertas");
     const filtro_dimensao_grafico = sessionStorage.getItem("filtro_dimensao_grafico_vagas_abertas")
-    
+
 
   }
 }

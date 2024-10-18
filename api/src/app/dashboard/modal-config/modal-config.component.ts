@@ -27,7 +27,7 @@ export class ModalConfigComponent implements OnInit {
         this.createForm();
         this.getFatos();
 
-        
+
 
         this.form.controls.eixoX.get('nome').valueChanges.subscribe(val => {
             const fato = this.fatos.filter(x => x.nome == val)[0]
@@ -47,7 +47,7 @@ export class ModalConfigComponent implements OnInit {
     }
 
 
-    
+
     createForm() {
         this.form = new FormGroup({
             description: new FormControl('', []),
@@ -99,10 +99,9 @@ export class ModalConfigComponent implements OnInit {
     }
 
     configure(): void {
-      const grafico_id_selecionado = sessionStorage.getItem("grafico_id_selecionado");
+        const grafico_id_selecionado = sessionStorage.getItem("grafico_id_selecionado");
 
-      sessionStorage.setItem('grafico' + grafico_id_selecionado, JSON.stringify(this.form.value))
-      window.location.reload()
+        sessionStorage.setItem('grafico' + grafico_id_selecionado, JSON.stringify(this.form.value))
     }
 
     close(): void {

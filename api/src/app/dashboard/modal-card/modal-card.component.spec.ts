@@ -29,7 +29,7 @@ describe('ModalCardComponent', () => {
   it('deve criar o formulário na inicialização', () => {
     component.ngOnInit();
     expect(component.form).toBeDefined();
-    
+
     const req = httpMock.expectOne('http://localhost:8080/filtros/fatos');
     expect(component.form.controls['description']).toBeDefined();
     expect(component.form.controls['eixoX']).toBeDefined();
@@ -71,7 +71,7 @@ describe('ModalCardComponent', () => {
 
     let test = false;
 
-    spyOn(window.location, 'reload').and.callFake(() => {test = true});
+    //spyOn(window.location, 'reload').and.callFake(() => {test = true});
 
     component.configure();
 
