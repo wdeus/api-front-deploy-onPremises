@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ModalConfigComponent } from './modal-config.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { assert } from 'console';
 
 describe('ModalConfigComponent', () => {
   let component: ModalConfigComponent;
@@ -34,6 +35,8 @@ describe('ModalConfigComponent', () => {
     expect(component).toBeTruthy();
     req.flush(null);
   });
+
+  
 
   it('deve inicializar o formulário corretamente', () => {
     component.createForm();
@@ -88,6 +91,68 @@ describe('ModalConfigComponent', () => {
 
     expect(sessionStorage.setItem).toHaveBeenCalled();
   })
+
+
+  
+  it('deve criar o componente', () => {
+    spyOn(component,'getFatos').and.callFake(()=>{
+
+    })
+    fixture.detectChanges();
+    
+    component.fatos = [{ nome:"fato",campos:['campo1,campo2']}]
+    spyOn(component,'onFatoChange').and.callFake(()=>{
+
+    })
+    
+    component.form.controls.eixoX.get("nome").setValue("fato")
+    expect(component.fatosCampos).toBeTruthy()  
+  });
+
+
+  it('deve criar o componente', () => {
+    spyOn(component,'getFatos').and.callFake(()=>{
+
+    })
+    component.dimensao = [{ nome:"dimensao",campos:['campo1,campo2']}]
+    
+    fixture.detectChanges()
+    component.form.controls.eixoY.get('nome').setValue("dimensao")
+    
+    expect(component.dimensaoCampos).toBeTruthy()  
+  });
+
+
+  
+  it('deve criar o componente', () => {
+    spyOn(component,'getFatos').and.callFake(()=>{
+
+    })
+    component.dimensao = [{ nome:"dimensao",campos:['campo1,campo2']}]
+    
+    fixture.detectChanges()
+    component.form.controls.filtros.get('0').get("nome").setValue("dimensao")
+    
+    expect(component.dimensaoCampos).toBeTruthy()  
+  });
+
+
+  
+
+
+
+
+
+  
+
+  it('deve inicializar o formulário corretamente', () => {
+    component.createForm();
+
+    expect(component.form).toBeDefined();
+    expect(component.form.get('description')?.value).toBe('');
+    expect(component.form.get('eixoX.nome')?.value).toBe('');
+    expect(component.form.get('eixoY.nome')?.value).toBe('');
+  });
 
 
 });
