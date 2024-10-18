@@ -41,7 +41,6 @@ export class DashboardComponent implements OnInit {
   idXgraficoAux:number;
   constructor(
     private dashboardService: DashboardService,
-    private httpService:HttpClient,
     private modalService: NgbModal
   ) { }
 
@@ -58,7 +57,7 @@ export class DashboardComponent implements OnInit {
   private subscribeToChartChanges(): void {
     this.chartChangeSubject.subscribe(() => {
       const chart = sessionStorage.getItem("chart");
-      this.loadFilters(chart)      // Adicione sua lógica adicional aqui
+      this.loadFilters(chart)     
     });
   }
 
@@ -67,9 +66,9 @@ export class DashboardComponent implements OnInit {
       const newChart = sessionStorage.getItem("chart");
       if (newChart !== this.currentChart) {
         this.currentChart = newChart;
-        this.chartChangeSubject.next(); // Notifica sobre a mudança
+        this.chartChangeSubject.next();
       }
-    }, 500); // Verifica a cada 500 ms
+    }, 500); 
   }
   createGraphic(title: string, color: 'orange' | 'green', labels: string[], data: number[]) {
     const colorObj = color == 'green' ? {
@@ -438,38 +437,7 @@ export class DashboardComponent implements OnInit {
   });
   
   modalRef.componentInstance.idXGrafico = this.idXGrafico;
-    
-    forkJoin({
-      fato: this.httpService.get("http://localhost:8080/filtros/fato").pipe(
-        catchError(error => {
-          console.error('Erro ao buscar filtro fato:', error);
-          return of([]); // Retorna um observable vazio
-        })
-      ),
-      dimensao: this.httpService.get("http://localhost:8080/filtros/dimensao").pipe(
-        catchError(error => {
-          console.error('Erro ao buscar filtro dimensao:', error);
-          return of([]); // Retorna um observable vazio
-        })
-      )
-    }).subscribe({
-      next: (responses) => {
-        this.dataFilterFato = responses.fato;
-        this.dataFilterDimensao = responses.dimensao;
-  
-        this.itemList = [...this.dataFilterFato, ...this.dataFilterDimensao];
-        modalRef.componentInstance.itemList = this.itemList;
-  
-        console.log("Resposta do filtro fato: ", this.dataFilterFato);
-        console.log("Resposta do filtro dimensao: ", this.dataFilterDimensao);
-  
-        // Chama a função para capturar os IDs dos canvas do gráfico específico
-        this.captureCanvasIds(chartId);
-      },
-      error: (error) => {
-        console.error('Erro ao carregar filtros:', error);
-      }
-    });
+
   }else{
     
     const modalRef = this.modalService.open(ModalConfigComponent, { 
@@ -478,36 +446,6 @@ export class DashboardComponent implements OnInit {
   });
   
   modalRef.componentInstance.idXGrafico = this.idXGrafico;
-    
-    forkJoin({
-      fato: this.httpService.get("http://localhost:8080/filtros/fato").pipe(
-        catchError(error => {
-          console.error('Erro ao buscar filtro fato:', error);
-          return of([]); // Retorna um observable vazio
-        })
-      ),
-      dimensao: this.httpService.get("http://localhost:8080/filtros/dimensao").pipe(
-        catchError(error => {
-          console.error('Erro ao buscar filtro dimensao:', error);
-          return of([]); // Retorna um observable vazio
-        })
-      )
-    }).subscribe({
-      next: (responses) => {
-        this.dataFilterFato = responses.fato;
-        this.dataFilterDimensao = responses.dimensao;
-  
-        this.itemList = [...this.dataFilterFato, ...this.dataFilterDimensao];
-        modalRef.componentInstance.itemList = this.itemList;
-  
-  
-        // Chama a função para capturar os IDs dos canvas do gráfico específico
-        this.captureCanvasIds(chartId);
-      },
-      error: (error) => {
-        console.error('Erro ao carregar filtros:', error);
-      }
-    });
   }
   }
   

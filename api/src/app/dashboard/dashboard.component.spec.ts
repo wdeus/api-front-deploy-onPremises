@@ -43,7 +43,7 @@ describe('DashboardComponent', () => {
           provide: DashboardService,
           useValue: serviceSpy
         }
-      ]
+      ],
     })
     .compileComponents();
   }));

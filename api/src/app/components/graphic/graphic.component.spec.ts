@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GraphicComponent } from './graphic.component';
 import exp from 'constants';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GraphicComponent', () => {
   let component: GraphicComponent;
@@ -9,7 +10,8 @@ describe('GraphicComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GraphicComponent ]
+      declarations: [ GraphicComponent ],
+      imports: [ HttpClientTestingModule ]
     })
     .compileComponents();
   });

@@ -46,6 +46,8 @@ export class ModalConfigComponent implements OnInit {
         })
     }
 
+
+    
     createForm() {
         this.form = new FormGroup({
             description: new FormControl('', []),

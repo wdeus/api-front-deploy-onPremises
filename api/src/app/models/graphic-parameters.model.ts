@@ -5,10 +5,3 @@ export interface GraphicParameters {
   colors: any[]
 }
 
-
-export interface FiltrosCamposGraphics{
-  nome:string;
-  campos: string[];
-  alias:string;
-
-}
