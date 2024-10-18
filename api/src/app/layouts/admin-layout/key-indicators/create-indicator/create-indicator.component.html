@@ -1,0 +1,98 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<div class="main-content">
+  <div class="row mt-4">
+    <div class="col">
+      <h4>
+        Indicador
+      </h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>Descrição</label>
+        <input class="form-control" [formControl]="form.controls.descricao">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>Tabela</label>
+        <select class="form-control" [formControl]="form.controls.indicador.get('nome')">
+          <option *ngFor="let filtro of filtroFatos" [value]="filtro.nome">{{filtro.alias}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Campo</label>
+        <select class="form-control" [formControl]="form.controls.indicador.get('campo')">
+          <option *ngFor="let filtro of fatoCampos" [value]="filtro">{{filtro}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Comparador</label>
+        <select class="form-control" [formControl]="form.controls.indicador.get('comparador')">
+          <option *ngFor="let filtro of comparadores" [value]="filtro">{{filtro}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+      <label>Valor</label>
+      <input class="form-control" [formControl]="form.controls.indicador.get('valor')">
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h4>
+        Filtro
+      </h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>Nome</label>
+        <select class="form-control" [formControl]="form.controls.filtro.get('nome')">
+          <option *ngFor="let filtro of dimensoes" [value]="filtro.nome">{{filtro.alias}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Campo</label>
+        <select class="form-control" [formControl]="form.controls.filtro.get('campo')">
+          <option *ngFor="let filtro of filtroCampos" [value]="filtro">{{filtro}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Comparador</label>
+        <select class="form-control" [formControl]="form.controls.filtro.get('comparador')">
+          <option *ngFor="let filtro of comparadores" [value]="filtro">{{filtro}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Valor</label>
+        <input class="form-control" [formControl]="form.controls.filtro.get('valor')">
+      </div>
+    </div>
+  </div>
+
+  <div class="row d-flex mt-4">
+    <div class="col d-flex justify-content-end">
+      <button class="btn btn-success" (click)="save()">Criar Indicador</button>
+    </div>
+  </div>
+</div>

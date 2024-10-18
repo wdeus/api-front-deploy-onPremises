@@ -8,6 +8,7 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'design_app', class: '' },
+    { path: '/key-indicators', title: 'Indicadores Chave',  icon: 'now-ui-icons business_briefcase-24', class: '' },
 ];
 
 @Component({

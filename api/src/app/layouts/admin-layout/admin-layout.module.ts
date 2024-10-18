@@ -11,6 +11,8 @@ import { ChartsModule } from 'ng2-charts';
 import { GraphicComponent } from '../../components/graphic/graphic.component';
 import { CardDataComponent } from '../../components/card-data/card-data.component';
 import {HttpClientModule} from '@angular/common/http';
+import { KeyIndicatorsComponent } from './key-indicators/key-indicators.component';
+import { CreateIndicatorComponent } from './key-indicators/create-indicator/create-indicator.component';
 
 @NgModule({
   imports: [
@@ -23,11 +25,13 @@ import {HttpClientModule} from '@angular/common/http';
   ],
   declarations: [
     DashboardComponent,
+    KeyIndicatorsComponent,
     TableListComponent,
     TypographyComponent,
     IconsComponent,
     GraphicComponent,
-    CardDataComponent
+    CardDataComponent,
+    CreateIndicatorComponent
   ],
 })
 
