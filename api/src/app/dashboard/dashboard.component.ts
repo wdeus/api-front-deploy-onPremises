@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
-import { DashboardRequest } from '../models/dashboard-request.model';
+import { Component, OnInit, Pipe } from '@angular/core';
+import { forkJoin, of, Subject } from 'rxjs';
+import { DashboardRequest, FiltrosCampos } from '../models/dashboard-request.model';
 import { GraphicParameters } from '../models/graphic-parameters.model';
 import { DashboardService } from '../services/dashboard.service';
-import { CardData } from '../services/dashboard.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalConfigComponent } from './modal-config/modal-config.component';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -23,8 +25,14 @@ export class DashboardComponent implements OnInit {
 
   isLoading: boolean = true;
 
-  cardData: { request: DashboardRequest, value: number }[] = []
-  constructor(private dashboardService: DashboardService) { }
+  cardData: { request: DashboardRequest, value: number }[] = [];
+  itemList: FiltrosCampos[] = [];
+  idXGrafico: string;
+  idXgraficoAux: number;
+  constructor(
+    private dashboardService: DashboardService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -46,10 +54,10 @@ export class DashboardComponent implements OnInit {
     }
 
     return {
+      description: title,
       labels: labels,
       data: [
         {
-          label: title,
           pointBorderWidth: 2,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 1,
@@ -123,34 +131,54 @@ export class DashboardComponent implements OnInit {
 
   createCardRequest(idx: number): DashboardRequest {
     if (idx == 1) {
-      return {
-        'description': 'Vagas em aberto',
-        'eixoX': {
-          'nome': 'fato_vaga',
-          'campo': 'nr_posicoes_abertas'
-        },
-        'filtros': []
+      const cardOne = JSON.parse(sessionStorage.getItem("card1")) as DashboardRequest;
+
+      if (cardOne) {
+        return cardOne
+      }
+      else {
+        return {
+          'description': 'Vagas em aberto',
+          'eixoX': {
+            'nome': 'fato_vaga',
+            'campo': 'nr_posicoes_abertas'
+          },
+          'filtros': []
+        }
       }
     }
 
     if (idx == 2) {
-      const now = new Date();
-      now.setDate(now.getDate() - 7)
-      return {
-        'description': 'Entrevistas marcadas',
-        'eixoX': {
-          'nome': 'fato_entrevista',
-          'campo': 'nr_entrevistas'
-        },
-        'filtros': [
-          {
-            'nome': 'dim_entrevista',
-            'campo': 'dt_entrevista',
-            'valor': now.toISOString().split('T')[0],
-            'comparador': '>='
-          }
-        ]
+      const cardTwo = JSON.parse(sessionStorage.getItem("card2")) as DashboardRequest;
+
+      if (cardTwo) {
+        return cardTwo
       }
+      else {
+        const now = new Date();
+        now.setDate(now.getDate() - 7)
+
+        return {
+          'description': 'Entrevistas marcadas',
+          'eixoX': {
+            'nome': 'fato_entrevista',
+            'campo': 'nr_entrevistas'
+          },
+          'filtros': [
+            {
+              'nome': 'dim_entrevista',
+              'campo': 'dt_entrevista',
+              'valor': now.toISOString().split('T')[0],
+              'comparador': '>='
+            }
+          ]
+        }
+      }
+    }
+
+    const cardThree = JSON.parse(sessionStorage.getItem("card3")) as DashboardRequest;
+    if (cardThree) {
+      return cardThree
     }
 
     return {
@@ -164,62 +192,80 @@ export class DashboardComponent implements OnInit {
   }
 
   createGraphicRequest(idx: number): DashboardRequest {
+
     if (idx == 1) {
-      return {
-        'description': 'Tempo medio do processo',
-        "eixoX": {
-          "nome": "fato_vaga",
-          "campo": "tempo_medio_processo"
-        },
-        "eixoY": {
-          "nome": "dim_vaga",
-          "campo": "titulo"
-        },
-        "filtros": [
-          {
-            "nome": "dim_periodo",
-            "campo": "dt_abertura",
-            "comparador": ">=",
-            "valor": "2000-09-22"
-          }
-        ]
+      const grafico1 = JSON.parse(sessionStorage.getItem("grafico1")) as DashboardRequest;
+      if (grafico1) {
+        return grafico1;
+      }
+      else {
+        return {
+          'description': 'Tempo medio do processo',
+          "eixoX": {
+            "nome": "fato_vaga",
+            "campo": "tempo_medio_processo"
+          },
+          "eixoY": {
+            "nome": "dim_vaga",
+            "campo": "titulo"
+          },
+          "filtros": [
+            {
+              "nome": "dim_periodo",
+              "campo": "dt_abertura",
+              "comparador": ">=",
+              "valor": "2000-09-22"
+            }
+          ]
+        }
+      }
+    }
+    if (idx == 2) {
+      const grafico2 = JSON.parse(sessionStorage.getItem("grafico2")) as DashboardRequest;
+      if (grafico2) {
+        return grafico2;
+      }
+      else {
+        return {
+          'description': 'Numero de processos abertos nos ultimos 12 meses ',
+          "eixoX": {
+            "nome": "fato_vaga",
+            "campo": "nr_posicoes_abertas"
+          },
+          "eixoY": {
+            "nome": "dim_vaga",
+            "campo": "titulo"
+          },
+          "filtros": [
+            {
+              "nome": "dim_periodo",
+              "campo": "dt_abertura",
+              "comparador": ">=",
+              "valor": "2023-09-22"
+            }
+          ]
+        }
       }
     }
 
-    if (idx == 2) {
-      return {
-        'description': 'Numero de processos abertos nos ultimos 12 meses',
-        "eixoX": {
-          "nome": "fato_vaga",
-          "campo": "nr_posicoes_abertas"
-        },
-        "eixoY": {
-          "nome": "dim_vaga",
-          "campo": "titulo"
-        },
-        "filtros": [
-          {
-            "nome": "dim_periodo",
-            "campo": "dt_abertura",
-            "comparador": ">=",
-            "valor": "2023-09-22"
-          }
-        ]
-      }
+    const grafico2 = JSON.parse(sessionStorage.getItem("grafico3")) as DashboardRequest;
+    if (grafico2) {
+      return grafico2;
     }
 
     return {
       'description': 'Feedbacks recebidos',
-      "eixoX": {
-        "nome": "fato_entrevista",
-        "campo": "nr_entrevistas"
+      eixoX: {
+        nome: "fato_entrevista",
+        campo: "nr_entrevistas"
       },
-      "eixoY": {
-        "nome": "dim_feedback",
-        "campo": "descricao"
+      eixoY: {
+        nome: "dim_feedback",
+        campo: "descricao"
       },
       "filtros": [
         {
+
           "nome": "dim_entrevista",
           "campo": "dt_entrevista",
           "comparador": ">=",
@@ -228,6 +274,8 @@ export class DashboardComponent implements OnInit {
       ]
     }
   }
+
+
 
   loadData() {
     const [requestCardOne, requestCardTwo, requestCardThree] =
@@ -264,5 +312,12 @@ export class DashboardComponent implements OnInit {
 
         this.isLoading = false;
       });
+  }
+
+  openModal() {
+    let modalRef = this.modalService.open(ModalConfigComponent);
+    modalRef.componentInstance.idXGrafico = 1
+    modalRef.componentInstance.tipo = 'grafico'
+
   }
 }

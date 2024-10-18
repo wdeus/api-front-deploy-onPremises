@@ -1,10 +1,20 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
+import { ModalConfigComponent } from '../../dashboard/modal-config/modal-config.component';
+interface FiltrosCamposGraphics {
+  nome: string;
+  campos: string[];
+  alias: string;
 
+}
 @Component({
   selector: 'app-graphic',
   templateUrl: './graphic.component.html',
   styleUrls: ['./graphic.component.scss']
 })
+
+
 export class GraphicComponent implements OnInit, AfterViewInit {
   public gradientStroke: any;
   public chartColor = "#FFFFFF";
@@ -22,8 +32,13 @@ export class GraphicComponent implements OnInit, AfterViewInit {
   @Input() public lineChartData: Array<any>;
   @Input() public lineChartLabels: Array<any>;
   @Input() public lineChartColors: Array<any>
+  itemList: FiltrosCamposGraphics[] = [];
+  idXGrafico: string;
+  idXgraficoAux: number;
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
     this.lineChartOptions = this.createDefaultConfig();
@@ -137,5 +152,12 @@ export class GraphicComponent implements OnInit, AfterViewInit {
         }
       }
     };
+  }
+
+
+  openModal() {
+    let modalRef = this.modalService.open(ModalConfigComponent);
+    modalRef.componentInstance.idXGrafico = this.idx
+    modalRef.componentInstance.tipo = 'grafico'
   }
 }

@@ -2,8 +2,7 @@
   <div class="card-header">
     <div class="d-flex justify-content-between">
       <h5 class="card-title">{{description}}</h5>
-      <button type="button" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
-        ngbDropdownToggle>
+      <button type="button" (click)="openModal()" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret">
         <i class="now-ui-icons loader_gear"></i>
       </button>
     </div>
@@ -16,7 +15,7 @@
   </div>
   <div class="card-footer">
     <div class="stats">
-      <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+      <i class="now-ui-icons arrows-1_refresh-69"></i> Atualizado recentemente
     </div>
   </div>
 </div>
