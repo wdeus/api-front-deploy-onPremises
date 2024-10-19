@@ -14,6 +14,6 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         setInterval(() => {
             this.http.post(environment.apiUrl + 'notificacoes', { usuario: 'admin' }).subscribe()
-        }, 60000)
+        }, 15000)
     }
 }

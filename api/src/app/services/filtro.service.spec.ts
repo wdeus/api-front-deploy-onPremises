@@ -3,22 +3,22 @@ import { FiltroService } from './filtro.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../environments/environment';
 
-fdescribe('FiltroService', () => {
+describe('FiltroService', () => {
   let service: FiltroService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], 
-      providers: [FiltroService] 
+      imports: [HttpClientTestingModule],
+      providers: [FiltroService]
     });
 
-    service = TestBed.inject(FiltroService); 
-    httpMock = TestBed.inject(HttpTestingController); 
+    service = TestBed.inject(FiltroService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify(); 
+    httpMock.verify();
   });
 
   it('should fetch "fatos" using GET request', () => {
