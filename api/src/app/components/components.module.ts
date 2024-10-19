@@ -7,7 +7,6 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CardDataComponent } from './card-data/card-data.component';
 
 @NgModule({
   imports: [

@@ -1,0 +1,37 @@
+/* Personalização do modal */
+.custom-modal .modal-content {
+    height: 100%; 
+    border-radius: 0;
+    box-shadow: none; 
+}
+
+.custom-modal .modal-backdrop.show {
+    background-color: rgba(209, 213, 219, 1);
+    opacity: 1;
+}
+
+
+.custom-modal .modal-header {
+    background-color: #fd7e14; 
+    color: white;
+}
+
+/* Customizações adicionais */
+.custom-modal .modal-footer {
+    background-color: #f8f9fa; /* Cor do rodapé */
+}
+
+/* Personalização dos botões de fechar */
+.custom-modal .btn-close {
+    color: white;
+}
+@media (max-width: 768px) {
+    .modal-title {
+      font-size: 1.5rem; // ajuste do tamanho da fonte
+    }
+  
+    .form-control {
+      font-size: 1rem; // ajuste da fonte
+    }
+  }
+  

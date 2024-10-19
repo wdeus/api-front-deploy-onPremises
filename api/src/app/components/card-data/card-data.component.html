@@ -4,7 +4,7 @@
       <h5 class="card-title">
         {{description}}
       </h5>
-      <button type="button" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
+      <button type="button" (click)="openModal()" class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret"
         ngbDropdownToggle>
         <i class="now-ui-icons loader_gear"></i>
       </button>
@@ -15,7 +15,7 @@
   </div>
   <div class="card-footer">
     <h5 class="card-category" *ngFor="let filter of filters">
-      <div>Filtrando por: {{filter.nome.replace("dim_","")}} {{filter.comparador}} {{filter.valor}}</div>
+      <div>Filtrando por: {{filter.nome.replace(nome,"")}} {{filter.comparador}} {{formatarData(filter.valor)}}</div>
     </h5>
     <h5 class="card-category" *ngIf="filters && filters.length == 0">
       <div>Sem filtros</div>

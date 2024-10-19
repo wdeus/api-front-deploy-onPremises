@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  jenkins-angular:
+    build: .
+    container_name: jenkins-angular-container
+    ports:
+      - "8080:8080" # Porta padrão do Jenkins
+      - "50000:50000" # Porta para agentes remotos do Jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./pipeline-scripts:/var/jenkins_home/pipeline-scripts
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+
+volumes:
+  jenkins_home:
