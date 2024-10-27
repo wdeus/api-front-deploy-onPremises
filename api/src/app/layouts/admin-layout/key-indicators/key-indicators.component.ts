@@ -20,4 +20,10 @@ export class KeyIndicatorsComponent implements OnInit {
         this.tableData = resp.filter(x => x.usuario == this.user);
       });
   }
+
+  botaoDeletarIndicador(id: any) {
+    this.keyIndicatorsService.botaoDeletarIndicador(id)
+      .subscribe();
+  }
+  
 }

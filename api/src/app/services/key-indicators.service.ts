@@ -18,5 +18,10 @@ export class KeyIndicatorsService {
   saveIndicadorData(data: any): Observable<any> {
     return this.httpClient.post<any>(`${environment.apiUrl}indicadores`, data);  // Faz o POST e retorna um Observable
   }
+
+  botaoDeletarIndicador(id: any) {
+    return this.httpClient.delete(`${environment.apiUrl}indicadores/`+id);
+  } 
+  
 }
 
