@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -11,10 +12,13 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   registerForm: FormGroup;
-  apiUrl: string = 'http://localhost:8080/api/auth'; // Atualize com a URL do seu backend
+  apiUrl: string = 'http://localhost:8080/api/auth'; 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private navigate:Router
 
+  ) {
+    
    }
 
   ngOnInit(): void {
@@ -22,7 +26,6 @@ export class LoginComponent implements OnInit {
     this.createRegisterForm();
   }
 
-  // Cria o formulário de login
   createLoginForm() {
     this.loginForm = new FormGroup({
       login: new FormControl('', [Validators.required, Validators.email]),
@@ -39,7 +42,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Método de login
   onLoginClick(): void {
     console.log(this.loginForm)
     if (this.loginForm.valid == false)  {
@@ -48,7 +50,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           console.log('Token recebido:', response.token);
           localStorage.setItem('authToken', response.token);
-          // Redirecionar ou realizar outras ações após login bem-sucedido
+            this.navigate.navigate(['/dashboard']) ;
         },
         error: (error) => {
           console.error('Erro no login:', error);
