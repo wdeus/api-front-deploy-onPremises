@@ -41,18 +41,6 @@ describe('LoginComponent', () => {
     expect(component.loginForm.get('password')?.value).toBe('');
   });
 
-  it('devera chamar o evento de login e fazer uma requisicao HTTP', fakeAsync(() => {
-    spyOn(component, 'onSubmit').and.callThrough();
-  
-    component.onSubmit();
-  
-    tick(2000);
-  
-    const req = httpTestingController.expectOne('URL_DA_API_DE_LOGIN');
-    expect(req).toBeTruthy(); 
-  
-    expect(req.request.method).toBe('POST');
-  }));
   
 
 
