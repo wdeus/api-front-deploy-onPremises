@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   registerForm: FormGroup;
-  apiUrl: string = 'http://localhost:8080/api/auth'; 
+  apiUrl: string = 'http://localhost:8080/auth'; 
 
   constructor(private http: HttpClient,
     private navigate:Router
@@ -33,16 +33,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Cria o formulário de registro
   createRegisterForm() {
     this.registerForm = new FormGroup({
-      login: new FormControl('', [Validators.required, Validators.email]),
+      login: new FormControl('', [Validators.required, Validators.minLength(5)]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      role: new FormControl('', [Validators.required])
     });
   }
 
-  // Método de login
   onLoginClick(): void {
     console.log(this.loginForm)
     if (this.loginForm.valid == false)  {
@@ -62,21 +59,4 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  // Método de registro
-  onRegisterSubmit(): void {
-    if (this.registerForm.valid) {
-      const registerData = this.registerForm.value;
-      this.http.post(`${this.apiUrl}/register`, registerData).subscribe({
-        next: () => {
-          console.log('Usuário registrado com sucesso');
-          // Redirecionar ou realizar outras ações após registro bem-sucedido
-        },
-        error: (error) => {
-          console.error('Erro no registro:', error);
-        }
-      });
-    } else {
-      console.log('Formulário de registro inválido');
-    }
-  }
 }
