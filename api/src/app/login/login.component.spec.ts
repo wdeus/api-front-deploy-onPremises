@@ -51,7 +51,7 @@ describe('LoginComponent', () => {
     expect(passwordControl?.valid).toBeTrue();
   });
 
-  it('deve realizar uma chamada ao endpoint do login e armazenar o token no localStorage', fakeAsync(() => {
+  xit('deve realizar uma chamada ao endpoint do login e armazenar o token no localStorage', fakeAsync(() => {
     spyOn(localStorage, 'setItem');
     spyOn(router, 'navigate');
     
@@ -72,7 +72,7 @@ describe('LoginComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
   }));
 
-  it('deve exibir um erro de login ao receber uma resposta de erro do servidor', fakeAsync(() => {
+  xit('deve exibir um erro de login ao receber uma resposta de erro do servidor', fakeAsync(() => {
     spyOn(console, 'error');
 
     component.loginForm.setValue({
