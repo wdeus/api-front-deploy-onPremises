@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltroService {
-
+  private tokenAuth: string | null = localStorage.getItem("authToken");
   constructor(private httpClient: HttpClient) { }
 
   getFatos(): Observable<any[]> {
     const url = `${environment.apiUrl}filtros/fatos`;
-    return this.httpClient.get<any[]>(url);
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    return this.httpClient.get<any[]>(url, { headers });
+  
   }
 
   getDimensoes(fato: string): Observable<any[]> {
     const url = `${environment.apiUrl}filtros/dimensoes?fato=`+fato;
-    return this.httpClient.get<any[]>(url);
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    return this.httpClient.get<any[]>(url, { headers });
   }
 }

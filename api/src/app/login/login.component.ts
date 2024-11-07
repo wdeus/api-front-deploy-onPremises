@@ -41,13 +41,16 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginClick(): void {
-    console.log(this.loginForm)
     if (this.loginForm.valid == false)  {
       const loginData = this.loginForm.value;
-      this.http.post<{ token: string }>(`${this.apiUrl}/login`, loginData).subscribe({
+      
+      this.http.post<{ token: string; permissaoGrupoProjection: string;}>
+            (`${this.apiUrl}/login`, loginData)
+
+      .subscribe({
         next: (response) => {
-          console.log('Token recebido:', response.token);
           localStorage.setItem('authToken', response.token);
+          localStorage.setItem('permissaoGrupoProjection',response.permissaoGrupoProjection);
             this.navigate.navigate(['/dashboard']) ;
         },
         error: (error) => {
