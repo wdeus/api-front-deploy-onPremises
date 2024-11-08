@@ -12,6 +12,7 @@ import { ComponentsModule } from './components/components.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ModalConfigComponent } from './dashboard/modal-config/modal-config.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { ModalConfigComponent } from './dashboard/modal-config/modal-config.comp
     FormsModule,
     RouterModule,
     AppRoutingModule,
+    
     ComponentsModule,
     HttpClientModule,
     ReactiveFormsModule
@@ -28,7 +30,7 @@ import { ModalConfigComponent } from './dashboard/modal-config/modal-config.comp
     AppComponent,
     AdminLayoutComponent,
     ModalConfigComponent,
-
+        
   ],
   providers: [],
   bootstrap: [AppComponent]
