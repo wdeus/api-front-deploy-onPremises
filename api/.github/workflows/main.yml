@@ -12,7 +12,7 @@ on:
       - main
       - qas
   schedule:
-    - cron: '0 18 * * *'  # Executa todos os dias às 18:00 UTC
+    - cron: '0 18 * * *'  
 
 jobs:
   build:
