@@ -25,5 +25,10 @@ export class KeyIndicatorsService {
 
     return this.httpClient.post<any>(`${environment.apiUrl}indicadores`, data,  { headers });
   }
+
+  botaoDeletarIndicador(id: any) {
+    return this.httpClient.delete(`${environment.apiUrl}indicadores/`+id);
+  } 
+  
 }
 

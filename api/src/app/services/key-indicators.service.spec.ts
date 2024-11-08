@@ -55,4 +55,16 @@ describe('KeyIndicatorsService', () => {
       req.flush(mockResponse);
     });
   });
+
+  it('should call botaoDeletarIndicador with the correct ID and reload the window', () => {
+    const spyOnService = spyOn(service, 'botaoDeletarIndicador').and.callThrough();
+    const id = 1; 
+    service.botaoDeletarIndicador(id).subscribe();
+
+    expect(spyOnService).toHaveBeenCalledWith(id);
+    const req = httpMock.expectOne(`${environment.apiUrl}indicadores/${id}`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
+
 });

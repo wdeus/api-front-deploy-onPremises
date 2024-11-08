@@ -41,14 +41,10 @@ describe('CardDataComponent', () => {
     component.openModal();
     expect(component['ngbModal'].open).toHaveBeenCalled()
   })
-  
-  
   it('deve formatar uma data válida no formato pt-BR', () => {
     const dataISO = '2024-11-06';
     const resultado = component.formatarData(dataISO);
-
-    // Verifica se o resultado contém "/" e está no formato DD/MM/YYYY
-    expect(resultado).toContain('/');
+     expect(resultado).toContain('/');
     expect(resultado).toMatch(/^\d{2}\/\d{2}\/\d{4}$/);
   });
 

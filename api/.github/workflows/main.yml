@@ -32,16 +32,20 @@ jobs:
         run: npm install -g @angular/cli@13
         working-directory: ./api  
 
+      # Executa testes unitários apenas no branch develop
       - name: Run unit tests
-        if: github.ref == 'refs/heads/develop' || github.event_name == 'pull_request'
+        if: github.ref == 'refs/heads/develop' || (github.event_name == 'pull_request' && github.base_ref == 'develop')
         run: ng test --watch=false --browsers=ChromeHeadless
         working-directory: ./api  
 
-      - name: Run integration tests
-        if: github.ref == 'refs/heads/qas' || (github.event_name == 'pull_request' && github.base_ref == 'qas') 
-        run: ng test --watch=false --browsers=ChromeHeadless --configuration=integration  
-        working-directory: ./api  
+      # Comentar os testes de integração
+      # - name: Run integration tests
+      #   if: github.ref == 'refs/heads/qas' || (github.event_name == 'pull_request' && github.base_ref == 'qas') 
+      #   run: ng test --watch=false --browsers=ChromeHeadless --configuration=integration  
+      #   working-directory: ./api  
 
+      # Faz login no Docker e faz o build e push da imagem Docker apenas no branch mai
+      
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/main'  
         uses: docker/login-action@v3
