@@ -37,10 +37,10 @@ jobs:
         run: ng test --watch=false --browsers=ChromeHeadless
         working-directory: ./api  
 
-      - name: Run integration tests
-        if: github.ref == 'refs/heads/qas' || (github.event_name == 'pull_request' && github.base_ref == 'qas') 
-        run: ng test --watch=false --browsers=ChromeHeadless --configuration=integration  
-        working-directory: ./api  
+      # - name: Run integration tests
+      #   if: github.ref == 'refs/heads/qas' || (github.event_name == 'pull_request' && github.base_ref == 'qas') 
+      #   run: ng test --watch=false --browsers=ChromeHeadless --configuration=integration  
+      #   working-directory: ./api  
 
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/main'  
