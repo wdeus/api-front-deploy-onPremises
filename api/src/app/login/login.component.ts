@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (response) => {
           localStorage.setItem('authToken', response.token);
-          localStorage.setItem('permissaoGrupoProjection',response.permissaoGrupoProjection);
+          localStorage.setItem('permissions',JSON.stringify(response.permissaoGrupoProjection));
             this.navigate.navigate(['/dashboard']) ;
         },
         error: (error) => {

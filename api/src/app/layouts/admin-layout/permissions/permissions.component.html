@@ -1,0 +1,57 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Gerenciamento de Permissao</h4>
+        </div>
+        <div class="card-body row">
+          <div class="col-6 form-group ">
+            <label>Nível hierarquico</label>
+            <select [formControl]="form.controls.grupoId" style="text-transform: capitalize;" class="form-control">
+              <option style="text-transform: capitalize;" *ngFor="let group of groups" [value]="group.id">
+                  {{group.nome}}
+              </option>
+            </select>
+          </div>
+          <div class="col-3" style="margin-top: 12.5px;">
+            <button class="btn btn-block btn-outline-primary" (click)="search()" type="button">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="hasSearched" >
+    <div class="col-md-12" *permission="6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title" style="text-transform: capitalize;">Editando {{currentGroup.nome}}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4 mt-4" *ngFor="let permission of permissions">
+              <div class="row">
+                <div class="col-1">
+                  <input (click)="toggle(permission.idPermissao)" [checked]="isChecked(permission.idPermissao)" type="checkbox">
+                </div>
+                <div class="col">
+                  {{permission.descricao}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *permission="6">
+    <div class="col d-flex justify-content-end">
+      <button class="btn btn-block btn-success" (click)="save()" type="button">Atualizar Permissoes</button>
+    </div>
+  </div>
+</div>

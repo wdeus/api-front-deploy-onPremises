@@ -12,6 +12,7 @@ import { ComponentsModule } from './components/components.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ModalConfigComponent } from './dashboard/modal-config/modal-config.component';
+import { PermissionDirective } from './permission.directive';
 import { LoginComponent } from './login/login.component';
 
 
@@ -29,8 +30,7 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    ModalConfigComponent,
-        
+    ModalConfigComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,10 +1,12 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
+import { environment } from '../environments/environment';
 
-xdescribe('AppComponent', () => {
+describe('AppComponent', () => {
+  let httpMock: HttpTestingController;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -12,6 +14,8 @@ xdescribe('AppComponent', () => {
       ],
       imports: [HttpClientTestingModule],
     }).compileComponents();
+
+    httpMock = TestBed.inject(HttpTestingController);
   }));
 
   it('should create the app', async(() => {
@@ -20,14 +24,19 @@ xdescribe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  it('should request notify every 1min', fakeAsync(() => {
+  it('should send a POST request every 15 seconds', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const component = fixture.debugElement.componentInstance;
+    component.ngOnInit();
 
-    spyOn(app['http'], 'post').and.returnValue(of({}))
-    app.ngOnInit()
-    tick(100000)
+    tick(15001);
+    let req = httpMock.expectOne(environment.apiUrl + 'notificacoes');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ usuario: 'admin' });
+    req.flush({}); 
+    
+    component.ngOnDestroy();
 
-    expect(app['http'].post).toHaveBeenCalled();
-  }))
+    httpMock.verify();
+  }));
 });
