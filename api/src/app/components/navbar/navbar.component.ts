@@ -3,7 +3,7 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router,NavigationEnd  } from '@angular/router';
 import Chart from 'chart.js';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class NavbarComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   isDashboardRoute: boolean = false;
+  private tokenAuth: string | null = localStorage.getItem("authToken");
   
   private listTitles: any[];
     location: Location;
@@ -171,34 +172,37 @@ export class NavbarComponent implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
+  
   importDadosProvisionados(event: any) {
     const file: File = event.target.files[0];
-
+  
     if (file) {
-      // Mostrar o spinner enquanto o upload está em progresso
       this.isLoading = true;
-
-      // Criar um objeto FormData
+  
       const formData: FormData = new FormData();
       formData.append('file', file, file.name); 
-
-      this.httpService.post("http://localhost:8080/importacao", formData, {
-        headers: { 'enctype': 'multipart/form-data' }
-      }).subscribe(
-        response => {
-          console.log('Arquivo enviado com sucesso', response);
-          this.isLoading = false; 
-        },
-        error => {
-          console.error('Erro ao enviar arquivo', error);
-          this.isLoading = false; 
-        }
-
-      );
+  
+      const headers = new HttpHeaders()
+        .set('Authorization', ` ${this.tokenAuth}`)
+        .set('enctype', 'multipart/form-data');
+  
+      this.httpService.post("http://localhost:8080/importacao", formData, { headers })
+        .subscribe(
+          response => {
+            console.log('Arquivo enviado com sucesso', response);
+            this.isLoading = false; 
+          },
+          error => {
+            console.error('Erro ao enviar arquivo', error);
+            this.isLoading = false; 
+          }
+        );
     } else {
       console.log("Nenhum arquivo selecionado.");
     }
   }
+  
+
 }
 
      
