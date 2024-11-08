@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Page</title>
+</head>
+<body>
+  <div class="container">
+    <!-- Seção Esquerda -->
+    <div class="left-section">
+      <div class="logo-container">
+        <img src="./assets/img/logo-p4t-navbar-branco.png" alt="Logo" class="logo">
+        <h2 class="welcome-title">Bem-vindo ao Nosso Portal</h2>
+        <p class="welcome-text">Acesse sua conta para explorar todas as funcionalidades</p>
+      </div>
+    </div>
+
+    <!-- Seção Direita (Login) -->
+    <div class="right-section">
+      <div class="login-card">
+        <form [formGroup]="loginForm"> 
+          <div class="form-group">
+            <label for="login" class="form-label">Login</label>
+            <input formControlName="login" type="email" id="login"  placeholder="Digite seu login" required />
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Senha</label>
+            <input formControlName="password" type="password" id="password"  placeholder="Digite sua senha" required />
+          </div>
+          <button type="button" class="btn-primary" (click)="onLoginClick()">Entrar</button>
+        </form>
+        <div class="text-center mt-3">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

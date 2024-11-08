@@ -11,7 +11,7 @@ describe('KeyIndicatorsComponent', () => {
   let keyIndicatorsServiceSpy: jasmine.SpyObj<KeyIndicatorsService>
 
   beforeEach(async () => {
-    keyIndicatorsServiceSpy = jasmine.createSpyObj<KeyIndicatorsService>("service", ['getKeyIndicators'])
+    keyIndicatorsServiceSpy = jasmine.createSpyObj<KeyIndicatorsService>("service", ['getKeyIndicators', 'botaoDeletarIndicador'])
     await TestBed.configureTestingModule({
       declarations: [KeyIndicatorsComponent],
       providers: [
@@ -90,6 +90,18 @@ describe('KeyIndicatorsComponent', () => {
     component.ngOnInit();
 
     expect(component.tableData).toHaveSize(1);
+  });
+
+  it('should call botaoDeletarIndicador with the correct ID and reload the window', () => {
+    // Arrange
+    const testId = 123;
+    keyIndicatorsServiceSpy.botaoDeletarIndicador.and.returnValue(of(1)); // simula a resposta do serviço
+
+    // Act
+    component.botaoDeletarIndicador(testId);
+
+    // Assert 
+    expect(keyIndicatorsServiceSpy.botaoDeletarIndicador).toHaveBeenCalledWith(testId);
   });
 
 });

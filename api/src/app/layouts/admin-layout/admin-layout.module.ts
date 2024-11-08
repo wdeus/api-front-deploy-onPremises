@@ -13,6 +13,8 @@ import { CardDataComponent } from '../../components/card-data/card-data.componen
 import {HttpClientModule} from '@angular/common/http';
 import { KeyIndicatorsComponent } from './key-indicators/key-indicators.component';
 import { CreateIndicatorComponent } from './key-indicators/create-indicator/create-indicator.component';
+import { PermissionsComponent } from './permissions/permissions.component';
+import { PermissionDirective } from '../../permission.directive';
 
 @NgModule({
   imports: [
@@ -31,7 +33,9 @@ import { CreateIndicatorComponent } from './key-indicators/create-indicator/crea
     IconsComponent,
     GraphicComponent,
     CardDataComponent,
-    CreateIndicatorComponent
+    CreateIndicatorComponent,
+    PermissionsComponent,
+    PermissionDirective
   ],
 })
 

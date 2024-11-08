@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -9,6 +9,9 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./modal-config.component.scss']
 })
 export class ModalConfigComponent implements OnInit {
+
+  private tokenAuth: string | null = localStorage.getItem("authToken");
+ 
   idXGrafico: number;
   tipo: string;
 
@@ -68,7 +71,10 @@ export class ModalConfigComponent implements OnInit {
   }
 
   getFatos(): void {
-    this.httpService.get("http://localhost:8080/filtros/fatos")
+ 
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    this.httpService.get("http://localhost:8080/filtros/fatos", { headers })
       .subscribe({
         next: (responses: any[]) => {
           this.fatos = responses
@@ -77,7 +83,10 @@ export class ModalConfigComponent implements OnInit {
   }
 
   onFatoChange(value: string): void {
-    this.httpService.get(`http://localhost:8080/filtros/dimensoes?fato=${value}`)
+    
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    this.httpService.get(`http://localhost:8080/filtros/dimensoes?fato=${value}`, { headers })
       .subscribe({
         next: (response: any[]) => {
           this.dimensao = response;
