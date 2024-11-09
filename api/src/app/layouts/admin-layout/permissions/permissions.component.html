@@ -49,8 +49,8 @@
     </div>
   </div>
 
-  <div class="row" *permission="6">
-    <div class="col d-flex justify-content-end">
+  <div class="row" *ngIf="hasSearched">
+    <div class="col d-flex justify-content-end" *permission="6">
       <button class="btn btn-block btn-success" (click)="save()" type="button">Atualizar Permissoes</button>
     </div>
   </div>
