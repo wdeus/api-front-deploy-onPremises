@@ -27,7 +27,9 @@ export class KeyIndicatorsService {
   }
 
   botaoDeletarIndicador(id: any) {
-    return this.httpClient.delete(`${environment.apiUrl}indicadores/`+id);
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    return this.httpClient.delete(`${environment.apiUrl}indicadores/`+id, {headers});
   } 
   
 }
