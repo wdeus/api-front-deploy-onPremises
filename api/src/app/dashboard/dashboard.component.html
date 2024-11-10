@@ -1,5 +1,6 @@
 <div class="panel-header panel-header-lg" style="position: relative;">
   <button type="button"
+          *permission="4"
           (click)="openModal()"
           class="btn btn-round btn-default dropdown-toggle btn-simple btn-icon no-caret float-right responsive-button"
           style="position: absolute; margin-bottom: 50px; right: 20px;"
@@ -13,7 +14,7 @@
 
 <!-- Conteúdo principal -->
 <div class="main-content" *ngIf="!isLoading">
-  <div class="row">
+  <div class="row" *permission="4">
 
 
     <div class="col-lg-4" *ngFor="let card of cardData; let i = index">
@@ -29,7 +30,7 @@
 
   </div>
 
-<div class="row">
+<div class="row" *permission="4">
   <div class="col-lg-6">
     <app-graphic [description]="graphicTwoParameter.description" chartId="chartOne"
                   [lineChartType]="graphicTwoParameter.type"

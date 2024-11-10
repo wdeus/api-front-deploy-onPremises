@@ -12,6 +12,8 @@ import { ComponentsModule } from './components/components.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ModalConfigComponent } from './dashboard/modal-config/modal-config.component';
+import { PermissionDirective } from './permission.directive';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -20,6 +22,7 @@ import { ModalConfigComponent } from './dashboard/modal-config/modal-config.comp
     FormsModule,
     RouterModule,
     AppRoutingModule,
+    
     ComponentsModule,
     HttpClientModule,
     ReactiveFormsModule
@@ -27,8 +30,7 @@ import { ModalConfigComponent } from './dashboard/modal-config/modal-config.comp
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    ModalConfigComponent,
-
+    ModalConfigComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

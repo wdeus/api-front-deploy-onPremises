@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -8,19 +8,28 @@ import { KeyIndicator } from '../models/key-indicator.model';
   providedIn: 'root'
 })
 export class KeyIndicatorsService {
+  private tokenAuth: string | null = localStorage.getItem("authToken");
+ 
   constructor(private httpClient: HttpClient) { }
 
   getKeyIndicators(): Observable<KeyIndicator[]> {
     const url = `${environment.apiUrl}indicadores`;
-    return this.httpClient.get<KeyIndicator[]>(url);
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    return this.httpClient.get<KeyIndicator[]>(url, { headers });
   }
 
   saveIndicadorData(data: any): Observable<any> {
-    return this.httpClient.post<any>(`${environment.apiUrl}indicadores`, data);  // Faz o POST e retorna um Observable
+
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    return this.httpClient.post<any>(`${environment.apiUrl}indicadores`, data,  { headers });
   }
 
   botaoDeletarIndicador(id: any) {
-    return this.httpClient.delete(`${environment.apiUrl}indicadores/`+id);
+    const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
+
+    return this.httpClient.delete(`${environment.apiUrl}indicadores/`+id, {headers});
   } 
   
 }
