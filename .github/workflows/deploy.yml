@@ -47,4 +47,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/angularapp/api
-            nohup ng s > ~/angularapp/angularapp.log 2>&1 &
+            nohup /home/azureuser/.nvm/versions/node/v20.18.0/bin/ng s > ~/angularapp/angularapp.log 2>&1 &
