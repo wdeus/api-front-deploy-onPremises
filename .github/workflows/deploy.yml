@@ -47,6 +47,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/angularapp/api
-            npm ci
-            npm install -g @angular/cli@13
+            /.nvm/versions/node/v20.18.0/bin/npm ci
+            /.nvm/versions/node/v20.18.0/bin/npm install -g @angular/cli@13
             nohup ng s > ~/angularapp/angularapp.log 2>&1 &
