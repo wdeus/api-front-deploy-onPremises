@@ -47,4 +47,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/angularapp/api
-            nohup /home/azureuser/.nvm/versions/node/v20.18.0/bin/ng serve --host 0.0.0.0 --port 4200 > ~/angularapp/angularapp.log 2>&1 &
+            nohup /home/azureuser/.nvm/versions/node/v20.18.0/bin/node /home/azureuser/.nvm/versions/node/v20.18.0/bin/ng serve --host 0.0.0.0 > ~/angularapp/angularapp.log 2>&1 &
