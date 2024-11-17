@@ -53,7 +53,7 @@ describe('NavbarComponent', () => {
 
     component.importDadosProvisionados(mockEvent);
 
-    const req = httpMock.expectOne('http://localhost:8080/api/importacao');
+    const req = httpMock.expectOne('/api/importacao');
     expect(req.request.method).toBe('POST');
 
     req.flush({ success: true });
@@ -67,7 +67,7 @@ describe('NavbarComponent', () => {
 
     component.importDadosProvisionados(mockEvent);
 
-    const req = httpMock.expectOne('http://localhost:8080/api/importacao');
+    const req = httpMock.expectOne('/api/importacao');
     expect(req.request.method).toBe('POST');
 
     req.flush({ message: 'Erro no upload' }, { status: 500, statusText: 'Server Error' });
@@ -82,7 +82,7 @@ describe('NavbarComponent', () => {
 
     component.importDadosProvisionados(mockEvent);
 
-    httpMock.expectNone('http://localhost:8080/api/importacao');
+    httpMock.expectNone('/api/importacao');
     expect(component.isLoading).toBeFalse();
   });
 });
