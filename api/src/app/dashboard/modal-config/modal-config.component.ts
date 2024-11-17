@@ -74,7 +74,7 @@ export class ModalConfigComponent implements OnInit {
  
     const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
 
-    this.httpService.get("http://localhost:8080/filtros/fatos", { headers })
+    this.httpService.get("http://localhost:8080/api/filtros/fatos", { headers })
       .subscribe({
         next: (responses: any[]) => {
           this.fatos = responses
@@ -86,7 +86,7 @@ export class ModalConfigComponent implements OnInit {
     
     const headers = new HttpHeaders().set('Authorization', `${this.tokenAuth}`);
 
-    this.httpService.get(`http://localhost:8080/filtros/dimensoes?fato=${value}`, { headers })
+    this.httpService.get(`http://localhost:8080/api/filtros/dimensoes?fato=${value}`, { headers })
       .subscribe({
         next: (response: any[]) => {
           this.dimensao = response;

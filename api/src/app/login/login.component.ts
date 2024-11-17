@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   registerForm: FormGroup;
-  apiUrl: string = 'http://localhost:8080/auth'; 
+  apiUrl: string = 'http://localhost:8080/api/auth'; 
 
   constructor(private http: HttpClient,
     private navigate:Router

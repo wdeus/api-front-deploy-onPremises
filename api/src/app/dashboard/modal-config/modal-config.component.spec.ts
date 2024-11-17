@@ -31,7 +31,7 @@ describe('ModalConfigComponent', () => {
 
   it('deve criar o componente', () => {
     fixture.detectChanges();
-    const req = httpTestingController.expectOne('http://localhost:8080/filtros/fatos');
+    const req = httpTestingController.expectOne('http://localhost:8080/api/filtros/fatos');
     expect(component).toBeTruthy();
     req.flush(null);
   });
@@ -52,7 +52,7 @@ describe('ModalConfigComponent', () => {
     const mockResponse = [{ nome: 'Fato1', campos: ['campo1,campo2'] }];
     component.getFatos();
 
-    const req = httpTestingController.expectOne('http://localhost:8080/filtros/fatos');
+    const req = httpTestingController.expectOne('http://localhost:8080/api/filtros/fatos');
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
 
@@ -63,7 +63,7 @@ describe('ModalConfigComponent', () => {
     const mockResponse = [{ nome: 'Dimensao1', campos: ['campoA,campoB'] }];
     component.onFatoChange('Fato1');
 
-    const req = httpTestingController.expectOne('http://localhost:8080/filtros/dimensoes?fato=Fato1');
+    const req = httpTestingController.expectOne('http://localhost:8080/api/filtros/dimensoes?fato=Fato1');
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
 
